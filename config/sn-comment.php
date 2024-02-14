@@ -2,12 +2,10 @@
 
 return [
 
-
     /**
      * comment table name
      */
     'comment_table_name' => 'sn_comments',
-
 
     /*
      * User tables foreign key name.

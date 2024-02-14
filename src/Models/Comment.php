@@ -3,15 +3,12 @@
 namespace Wsmallnews\Comment\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
-
     protected $casts = [
-        'status' => \Wsmallnews\Comment\Enums\CommentStatus::class
+        'status' => \Wsmallnews\Comment\Enums\CommentStatus::class,
     ];
-
 
     public function commentable()
     {
