@@ -4,4 +4,6 @@ namespace Wsmallnews\Comment;
 
 class Comment
 {
+
+    
 }

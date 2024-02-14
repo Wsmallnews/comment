@@ -8,6 +8,7 @@ use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
@@ -18,7 +19,7 @@ use Wsmallnews\Comment\Testing\TestsComment;
 
 class CommentServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'comment';
+    public static string $name = 'sn-comment';
 
     public static string $viewNamespace = 'comment';
 
@@ -49,13 +50,13 @@ class CommentServiceProvider extends PackageServiceProvider
             $package->hasMigrations($this->getMigrations());
         }
 
-        if (file_exists($package->basePath('/../resources/lang'))) {
-            $package->hasTranslations();
-        }
+        // if (file_exists($package->basePath('/../resources/lang'))) {
+        //     $package->hasTranslations();
+        // }
 
-        if (file_exists($package->basePath('/../resources/views'))) {
-            $package->hasViews(static::$viewNamespace);
-        }
+        // if (file_exists($package->basePath('/../resources/views'))) {
+        //     $package->hasViews(static::$viewNamespace);
+        // }
     }
 
     public function packageRegistered(): void
@@ -64,6 +65,11 @@ class CommentServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
+        // 注册模型别名
+        Relation::enforceMorphMap([
+            static::$name => 'Wsmallnews\Comment\Models\Comment',
+        ]);
+
         // Asset Registration
         FilamentAsset::register(
             $this->getAssets(),
@@ -103,8 +109,8 @@ class CommentServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('comment', __DIR__ . '/../resources/dist/components/comment.js'),
-            Css::make('comment-styles', __DIR__ . '/../resources/dist/comment.css'),
-            Js::make('comment-scripts', __DIR__ . '/../resources/dist/comment.js'),
+            // Css::make('comment-styles', __DIR__ . '/../resources/dist/comment.css'),
+            // Js::make('comment-scripts', __DIR__ . '/../resources/dist/comment.js'),
         ];
     }
 
@@ -148,7 +154,7 @@ class CommentServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_comment_table',
+            'create_sn_comments_table',
         ];
     }
 }

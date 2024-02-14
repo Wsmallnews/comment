@@ -9,7 +9,7 @@ class CommentPlugin implements Plugin
 {
     public function getId(): string
     {
-        return 'comment';
+        return 'sn-comment';
     }
 
     public function register(Panel $panel): void
