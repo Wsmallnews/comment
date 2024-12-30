@@ -4,7 +4,7 @@ namespace Wsmallnews\Comment\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 use Filament\Support\Contracts\HasColor;
-use Wsmallnews\Product\Traits\EnumHelper;
+use Wsmallnews\Support\Enums\Traits\EnumHelper;
 
 Enum CommentStatus :string implements HasColor, HasLabel
 {

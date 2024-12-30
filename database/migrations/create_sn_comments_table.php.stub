@@ -12,23 +12,27 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create(config('sn_comment.comment_table_name'), function (Blueprint $table) {
+        Schema::create(config('sn-comment.comment_table_name'), function (Blueprint $table) {
             $table->comment('评论');
             $table->engine = 'InnoDB';
             $table->id();
-            $table->unsignedBigInteger('parent_id')->default(0)->comment('上级');
+            $table->string('scope_type')->nullable()->comment('范围类型');
+            $table->unsignedBigInteger('scope_id')->default(0)->comment('范围');
             $table->morphs('commentable');
-            $table->unsignedBigInteger(config('sn_comment.user_foreign_key'))->default(0)->comment('用户');
+            $table->unsignedBigInteger('parent_id')->default(0)->comment('上级');
+            $table->unsignedBigInteger('user_id')->default(0)->comment('用户');
             $table->string('user_nickname')->nullable()->comment('用户昵称');
             $table->string('user_avatar')->nullable()->comment('用户头像');
+            $table->unsignedBigInteger('reply_id')->default(0)->comment('回复用户');
             $table->string('content', 1024)->nullable()->comment('评论内容');
             $table->json('images')->nullable()->comment('评论图片');
-            $table->integer('like_num')->default(0)->comment('喜欢数量');
-            $table->integer('comment_num')->default(0)->comment('子评论数量');
+            $table->unsignedInteger('like_num')->default(0)->comment('喜欢数量');
+            $table->unsignedInteger('comment_num')->default(0)->comment('评论数量');
             $table->string('status', 20)->comment('状态:normal=正常,unaudited=未审核,hidden=已隐藏');
+            $table->string('from_district', 60)->nullable()->comment('来源区域');
             $table->json('options')->nullable()->comment('选项');
             $table->timestamps();
-            $table->index(config('sn_comment.user_foreign_key'));
+            $table->index('user_id');
         });
     }
 
@@ -38,6 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(config('sn_comment.comment_table_name'));
+        Schema::dropIfExists(config('sn-comment.comment_table_name'));
     }
 };

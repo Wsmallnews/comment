@@ -10,18 +10,24 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Blade;
+use Livewire\Livewire;
 use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Wsmallnews\Comment\Commands\CommentCommand;
+use Wsmallnews\Comment\Livewire\CommentCard;
+use Wsmallnews\Comment\Livewire\CommentList;
+use Wsmallnews\Comment\Livewire\CommentAdd;
+use Wsmallnews\Comment\Livewire\Paginator;
 use Wsmallnews\Comment\Testing\TestsComment;
 
 class CommentServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'sn-comment';
 
-    public static string $viewNamespace = 'comment';
+    public static string $viewNamespace = 'sn-comment';
 
     public function configurePackage(Package $package): void
     {
@@ -54,9 +60,9 @@ class CommentServiceProvider extends PackageServiceProvider
         //     $package->hasTranslations();
         // }
 
-        // if (file_exists($package->basePath('/../resources/views'))) {
-        //     $package->hasViews(static::$viewNamespace);
-        // }
+        if (file_exists($package->basePath('/../resources/views'))) {
+            $package->hasViews(static::$viewNamespace);
+        }
     }
 
     public function packageRegistered(): void
@@ -92,6 +98,14 @@ class CommentServiceProvider extends PackageServiceProvider
                 ], 'comment-stubs');
             }
         }
+
+        // 注册 livewire 组件
+        Livewire::component('sn-comment-card', CommentCard::class);
+        Livewire::component('sn-comment-list', CommentList::class);
+        Livewire::component('sn-comment-add', CommentAdd::class);
+
+
+        Livewire::component('sn-paginator', Paginator::class);
 
         // Testing
         Testable::mixin(new TestsComment());
