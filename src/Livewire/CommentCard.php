@@ -4,7 +4,6 @@ namespace Wsmallnews\Comment\Livewire;
 
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Livewire\Attributes\Renderless;
 use Livewire\Component;
 use Wsmallnews\Comment\Models\Comment;
@@ -22,12 +21,10 @@ class CommentCard extends Component implements HasForms
         $this->loadChildren = true;
     }
 
-
     public function hiddenChildren()
     {
         $this->loadChildren = false;
     }
-
 
     #[Renderless]
     public function toggleLike()

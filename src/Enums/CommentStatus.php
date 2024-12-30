@@ -3,8 +3,8 @@
 namespace Wsmallnews\Comment\Enums;
 
 use Filament\Support\Contracts\HasColor;
-use Wsmallnews\Support\Enums\Traits\EnumHelper;
 use Filament\Support\Contracts\HasLabel;
+use Wsmallnews\Support\Enums\Traits\EnumHelper;
 
 enum CommentStatus: string implements HasColor, HasLabel
 {

@@ -2,7 +2,6 @@
 
 namespace Wsmallnews\Comment\Livewire;
 
-use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Wsmallnews\Comment\Models\Comment;
@@ -12,6 +11,7 @@ class CommentList extends Component
     use WithPagination;
 
     public int $parent_id;
+
     public string $type;
 
     public function mount($parent_id = 0, $type = '')
@@ -20,12 +20,10 @@ class CommentList extends Component
         $this->type = $type;
     }
 
-
-
     public function render()
     {
         return view('sn-comment::livewire.comment-list', [
-            'comments' => Comment::query()->with(['children'])->where('parent_id', $this->parent_id)->paginate(10)
+            'comments' => Comment::query()->with(['children'])->where('parent_id', $this->parent_id)->paginate(10),
         ])->title('评论列表');
     }
 }

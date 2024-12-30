@@ -4,14 +4,14 @@ namespace Wsmallnews\Comment\Livewire;
 
 use Illuminate\Support\Collection;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 use Wsmallnews\Comment\Models\Comment;
 
 class CommentList extends Component
 {
-    use WithPagination;
     use WithoutUrlPagination;
+    use WithPagination;
 
     public int $parentId = 0;
 
@@ -40,8 +40,6 @@ class CommentList extends Component
 
         $this->comments = $this->comments ?? collect([]);
     }
-
-
 
     public function render()
     {
@@ -91,7 +89,7 @@ class CommentList extends Component
         }
 
         return view('sn-comment::livewire.comment-list', [
-            'paginatorLink' => $current->links()
+            'paginatorLink' => $current->links(),
         ])->title('评论列表');
     }
 }

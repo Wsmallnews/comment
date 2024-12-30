@@ -2,6 +2,4 @@
 
 namespace Wsmallnews\Comment;
 
-class Comment
-{
-}
+class Comment {}

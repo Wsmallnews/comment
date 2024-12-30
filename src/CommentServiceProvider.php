@@ -10,16 +10,15 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Blade;
-use Livewire\Livewire;
 use Livewire\Features\SupportTesting\Testable;
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Wsmallnews\Comment\Commands\CommentCommand;
+use Wsmallnews\Comment\Livewire\CommentAdd;
 use Wsmallnews\Comment\Livewire\CommentCard;
 use Wsmallnews\Comment\Livewire\CommentList;
-use Wsmallnews\Comment\Livewire\CommentAdd;
 use Wsmallnews\Comment\Livewire\Paginator;
 use Wsmallnews\Comment\Testing\TestsComment;
 
@@ -65,9 +64,7 @@ class CommentServiceProvider extends PackageServiceProvider
         }
     }
 
-    public function packageRegistered(): void
-    {
-    }
+    public function packageRegistered(): void {}
 
     public function packageBooted(): void
     {
@@ -104,11 +101,10 @@ class CommentServiceProvider extends PackageServiceProvider
         Livewire::component('sn-comment-list', CommentList::class);
         Livewire::component('sn-comment-add', CommentAdd::class);
 
-
         Livewire::component('sn-paginator', Paginator::class);
 
         // Testing
-        Testable::mixin(new TestsComment());
+        Testable::mixin(new TestsComment);
     }
 
     protected function getAssetPackageName(): ?string

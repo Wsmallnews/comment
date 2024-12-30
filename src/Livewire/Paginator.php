@@ -2,7 +2,6 @@
 
 namespace Wsmallnews\Comment\Livewire;
 
-use Illuminate\Support\Collection;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
 

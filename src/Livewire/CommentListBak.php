@@ -5,14 +5,14 @@ namespace Wsmallnews\Comment\Livewire;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 use Wsmallnews\Comment\Models\Comment;
 
 class CommentListBak extends Component
 {
-    use WithPagination;
     use WithoutUrlPagination;
+    use WithPagination;
 
     public int $parentId = 0;
 
@@ -27,7 +27,6 @@ class CommentListBak extends Component
     public array $paginatorsInfo = [];
 
     public $currentData;
-
 
     public $title;
 
@@ -45,7 +44,6 @@ class CommentListBak extends Component
         $this->comments = $this->comments ?? collect([]);
     }
 
-
     #[On('save-page')]
     public function save($bbb = '')
     {
@@ -54,13 +52,11 @@ class CommentListBak extends Component
         $this->pageName = $bbb ?: $this->title;
     }
 
-
-
     public function pageEvent($event)
     {
-        echo $event;exit;
+        echo $event;
+        exit;
     }
-
 
     public function render()
     {
@@ -108,7 +104,7 @@ class CommentListBak extends Component
         // ];
 
         return view('sn-comment::livewire.comment-list', [
-            'pagination' => $current->links()
+            'pagination' => $current->links(),
         ])->title('评论列表');
     }
 }
