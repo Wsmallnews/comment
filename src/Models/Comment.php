@@ -12,7 +12,7 @@ class Comment extends Model
     protected $table = 'sn_comments';
 
     protected $casts = [
-        'status' => \Wsmallnews\Comment\Enums\CommentStatus::class
+        'status' => \Wsmallnews\Comment\Enums\CommentStatus::class,
     ];
 
 
@@ -31,7 +31,7 @@ class Comment extends Model
     }
 
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(config('sn-comment.user_model'), 'user_id');
     }

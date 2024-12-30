@@ -2,13 +2,12 @@
 
 namespace Wsmallnews\Comment\Enums;
 
-use Filament\Support\Contracts\HasLabel;
 use Filament\Support\Contracts\HasColor;
 use Wsmallnews\Support\Enums\Traits\EnumHelper;
+use Filament\Support\Contracts\HasLabel;
 
-Enum CommentStatus :string implements HasColor, HasLabel
+enum CommentStatus: string implements HasColor, HasLabel
 {
-
     use EnumHelper;
 
     case Normal = 'normal';
@@ -34,5 +33,4 @@ Enum CommentStatus :string implements HasColor, HasLabel
             self::Hidden => 'gray',
         };
     }
-
 }
