@@ -1,6 +1,6 @@
 <?php
 
-namespace Wsmallnews\Comment\Livewire;
+namespace Wsmallnews\Comment\Livewire\Components;
 
 use Illuminate\Support\Collection;
 use Livewire\Component;
@@ -27,30 +27,39 @@ class CommentList extends Component
 
     public bool $loadChildren = false;
 
+    protected $listeners = ['commentCreated' => 'refreshComments'];
+
     public function mount($pageName = '', $perPage = 0, $pageType = '')
     {
         // 分页名字
-        $this->pageName = $pageName ?: config('sn-comment.page_name');
+        $this->pageName = $pageName ?: config('sn-comment.pagination.page_name', 'page');
 
         // 每页条数
-        $this->perPage = $perPage ?: config('sn-comment.per_page');
+        $this->perPage = $perPage ?: config('sn-comment.pagination.per_page', 10);
 
         // 分页类型
-        $this->pageType = $pageType ?: config('sn-comment.page_type');
+        $this->pageType = $pageType ?: config('sn-comment.pagination.page_type', 'paginator');
 
         $this->comments = $this->comments ?? collect([]);
     }
 
+    public function refreshComments()
+    {
+        // 重置评论列表
+        $this->comments = collect([]);
+        // 重置分页
+        $this->resetPage();
+    }
+
     public function render()
     {
-        // \Illuminate\Support\Facades\DB::listen(function($query) {
-        //     echo $query->sql . json_encode($query->bindings);
-        // });
-        $current = Comment::query()->where('parent_id', $this->parentId);
+        $current = Comment::query()
+            ->where('parent_id', $this->parentId)
+            ->orderBy('created_at', 'desc');
 
         if ($this->pageType == 'paginator') {
             $current = $current->paginate($this->perPage, pageName: $this->pageName);
-            $this->comments = $current->getCollection();        // 获取 collection 格式的数据
+            $this->comments = $current->getCollection();
         } else {
             $current = $current->simplePaginate($this->perPage, pageName: $this->pageName);
             $this->comments = $this->comments->merge($current->items());
@@ -58,16 +67,16 @@ class CommentList extends Component
 
         // 分页信息
         $this->pageInfo = [
-            'count' => $current->count(),                                       // 当前查询最终的结果数量
-            'per_page' => $current->perPage(),                                  // 每页条件
-            'current_page' => $current->currentPage(),                          // 当前页码
-            'load_status' => 'loading',                                         // 默认加载中
-            'is_last_page' => 0,                                                // 默认不是最有一页
+            'count' => $current->count(),
+            'per_page' => $current->perPage(),
+            'current_page' => $current->currentPage(),
+            'load_status' => 'loading',
+            'is_last_page' => 0,
         ];
 
         if ($this->pageType == 'paginator') {
-            $this->pageInfo['total'] = $current->total();                  // 满足条件总条数
-            $this->pageInfo['last_page'] = $current->lastPage();           // 最后的页码
+            $this->pageInfo['total'] = $current->total();
+            $this->pageInfo['last_page'] = $current->lastPage();
 
             if ($this->pageInfo['current_page'] >= $this->pageInfo['last_page']) {
                 $this->pageInfo['is_last_page'] = 1;

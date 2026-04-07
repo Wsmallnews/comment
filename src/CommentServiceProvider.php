@@ -16,11 +16,11 @@ use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Wsmallnews\Comment\Commands\CommentCommand;
-use Wsmallnews\Comment\Livewire\CommentAdd;
-use Wsmallnews\Comment\Livewire\CommentCard;
-use Wsmallnews\Comment\Livewire\CommentList;
-use Wsmallnews\Comment\Livewire\Paginator;
-use Wsmallnews\Comment\Testing\TestsComment;
+use Wsmallnews\Comment\Support\Utils;
+// use Wsmallnews\Comment\Livewire\Components\CommentAdd;
+// use Wsmallnews\Comment\Livewire\Components\CommentCard;
+// use Wsmallnews\Comment\Livewire\Components\CommentList;
+// use Wsmallnews\Comment\Livewire\Components\Paginator;
 
 class CommentServiceProvider extends PackageServiceProvider
 {
@@ -30,13 +30,11 @@ class CommentServiceProvider extends PackageServiceProvider
 
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package->name(static::$name)
             ->hasCommands($this->getCommands())
+            ->hasConfigFile()
+            ->hasTranslations()
+            ->hasViews(static::$viewNamespace)
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
@@ -45,32 +43,24 @@ class CommentServiceProvider extends PackageServiceProvider
                     ->askToStarRepoOnGitHub('wsmallnews/comment');
             });
 
-        $configFileName = $package->shortName();
-
-        if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
-            $package->hasConfigFile();
-        }
-
         if (file_exists($package->basePath('/../database/migrations'))) {
             $package->hasMigrations($this->getMigrations());
-        }
-
-        // if (file_exists($package->basePath('/../resources/lang'))) {
-        //     $package->hasTranslations();
-        // }
-
-        if (file_exists($package->basePath('/../resources/views'))) {
-            $package->hasViews(static::$viewNamespace);
+            $package->runsMigrations();
         }
     }
 
-    public function packageRegistered(): void {}
+    public function packageRegistered(): void
+    {
+        $this->app->singleton(Comment::class, function () {
+            return new Comment();
+        });
+    }
 
     public function packageBooted(): void
     {
         // 注册模型别名
         Relation::enforceMorphMap([
-            static::$name => 'Wsmallnews\Comment\Models\Comment',
+            'sn-comment' => Utils::getCommentModel(),
         ]);
 
         // Asset Registration
@@ -97,14 +87,11 @@ class CommentServiceProvider extends PackageServiceProvider
         }
 
         // 注册 livewire 组件
-        Livewire::component('sn-comment-card', CommentCard::class);
-        Livewire::component('sn-comment-list', CommentList::class);
-        Livewire::component('sn-comment-add', CommentAdd::class);
+        Livewire::component('sn-comment-components-card', CommentCard::class);
+        Livewire::component('sn-comment-components-list', CommentList::class);
+        Livewire::component('sn-comment-components-add', CommentAdd::class);
+        // Livewire::component('sn-paginator', Paginator::class);
 
-        Livewire::component('sn-paginator', Paginator::class);
-
-        // Testing
-        Testable::mixin(new TestsComment);
     }
 
     protected function getAssetPackageName(): ?string
@@ -164,7 +151,7 @@ class CommentServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_sn_comments_table',
+            '2026_04_07_150952_create_sn_comments_table',
         ];
     }
 }

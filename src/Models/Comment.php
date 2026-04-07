@@ -2,39 +2,35 @@
 
 namespace Wsmallnews\Comment\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Wsmallnews\Support\Models\SupportModel;
 
-class Comment extends Model
+class Comment extends SupportModel
 {
     protected $table = 'sn_comments';
 
     protected $casts = [
+        'options' => 'array',
         'status' => \Wsmallnews\Comment\Enums\CommentStatus::class,
     ];
 
-    protected function childrenNum(): Attribute
+    public function commentable(): MorphTo
     {
-        $children = $this->children;
-
-        return Attribute::make(
-            get: fn () => $children->count(),
-        );
+        return $this->morphTo();
     }
 
-    public function commentable()
+    public function commenter(): MorphTo
     {
-        return $this->morphTo(__FUNCTION__, 'commentable_type', 'commentable_id');
+        return $this->morphTo();
     }
 
-    public function user(): BelongsTo
+    public function beReplyer(): MorphTo
     {
-        return $this->belongsTo(config('sn-comment.user_model'), 'user_id');
+        return $this->morphTo();
     }
 
     public function children()
     {
-        return $this->hasMany(self::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id')->orderBy('created_at', 'asc');
     }
 }

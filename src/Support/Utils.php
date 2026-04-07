@@ -1,0 +1,117 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Wsmallnews\Comment\Support;
+
+use Wsmallnews\Comment\Exceptions\CommentException;
+use Wsmallnews\Support\Data\ScopeableContext;
+use Wsmallnews\Support\Exceptions\InvalidScopeException;
+use Wsmallnews\Support\Support\Utils as SupportUtils;
+
+/**
+ * Utility class for CMS package configuration and helpers.
+ */
+class Utils
+{
+    /**
+     * Get configuration value.
+     *
+     * @param  string|null  $name  Configuration key (dot notation)
+     * @param  mixed  $default  Default value if not found
+     */
+    public static function getConfig(?string $name = null, mixed $default = null): mixed
+    {
+        $config = config('sn-comment');
+
+        return $name ? (data_get($config, $name) ?? $default) : $config;
+    }
+
+    /**
+     * Get scopeable configuration as ScopeableContext object.
+     *
+     *
+     * @throws CommentException
+     */
+    public static function getScopeableContext(): ScopeableContext
+    {
+        try {
+            return SupportUtils::getScopeFromConfig('sn-comment.scopeable');
+        } catch (InvalidScopeException $e) {
+            throw new CommentException('Scopeable配置错误: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Get scopeable array (legacy method for backward compatibility).
+     *
+     * @return array{scope_type: string, scope_id: int}
+     *
+     * @throws CommentException
+     */
+    public static function getScopeable(): array
+    {
+        return self::getScopeableContext()->toArray();
+    }
+
+    /**
+     * Get scope type.
+     *
+     *
+     * @throws CommentException
+     */
+    public static function getScopeType(): string
+    {
+        return self::getScopeableContext()->scopeType;
+    }
+
+    /**
+     * Get scope ID.
+     *
+     *
+     * @throws CommentException
+     */
+    public static function getScopeId(): int
+    {
+        return self::getScopeableContext()->scopeId;
+    }
+
+    /**
+     * Get model class by name.
+     *
+     * @param  string  $name  Model name (e.g., 'post', 'navigation')
+     * @param  bool  $shouldException  Whether to throw exception if not found
+     *
+     * @throws CommentException
+     */
+    public static function getModel(string $name, bool $shouldException = true): ?string
+    {
+        $model = self::getConfig('models')[$name] ?? null;
+
+        if (blank($model) && $shouldException) {
+            throw new CommentException("模型 {$name} 不存在");
+        }
+
+        return $model;
+    }
+
+    /**
+     * Get Comment model class.
+     *
+     * @return string Models\Comment
+     */
+    public static function getCommentModel(): string
+    {
+        return self::getModel('comment');
+    }
+
+    /**
+     * Get file directory path with optional type and date.
+     *
+     * @param  string|null  $type  Directory type
+     */
+    public static function getFileDirectory(?string $type = null): string
+    {
+        return self::getConfig('file_directory', 'sn/comment/') . ($type ? $type . '/' : '') . date('Ymd');
+    }
+}

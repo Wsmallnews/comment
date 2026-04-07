@@ -1,10 +1,9 @@
 <?php
 
-namespace Wsmallnews\Comment\Livewire;
+namespace Wsmallnews\Comment\Livewire\Components;
 
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Livewire\Attributes\Renderless;
 use Livewire\Component;
 use Wsmallnews\Comment\Models\Comment;
 
@@ -26,10 +25,10 @@ class CommentCard extends Component implements HasForms
         $this->loadChildren = false;
     }
 
-    #[Renderless]
     public function toggleLike()
     {
         $this->comment->increment('like_num');
+        $this->comment->refresh();
 
         return $this->comment->like_num;
     }

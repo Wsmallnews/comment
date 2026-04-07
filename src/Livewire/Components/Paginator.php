@@ -1,6 +1,6 @@
 <?php
 
-namespace Wsmallnews\Comment\Livewire;
+namespace Wsmallnews\Comment\Livewire\Components;
 
 use Livewire\Attributes\Reactive;
 use Livewire\Component;

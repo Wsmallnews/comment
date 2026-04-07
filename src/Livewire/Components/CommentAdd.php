@@ -1,6 +1,6 @@
 <?php
 
-namespace Wsmallnews\Comment\Livewire;
+namespace Wsmallnews\Comment\Livewire\Components;
 
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -21,7 +21,6 @@ class CommentAdd extends Component implements HasForms
 
     public function form(Form $form): Form
     {
-
         return $form
             ->schema([
                 RichEditor::make('content')
@@ -38,7 +37,14 @@ class CommentAdd extends Component implements HasForms
 
     public function create()
     {
-        dd($this->form->getState());
+        // $data = $this->form->getState();
+        // // 这里可以添加评论创建逻辑
+        
+        // // 重置表单
+        // $this->form->fill();
+        
+        // // 触发评论列表刷新
+        // $this->dispatch('commentCreated');
     }
 
     public function render()
