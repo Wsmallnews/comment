@@ -3,6 +3,7 @@
 namespace Wsmallnews\Comment\Models;
 
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Support\Models\SupportModel;
 
 class Comment extends SupportModel
@@ -11,7 +12,7 @@ class Comment extends SupportModel
 
     protected $casts = [
         'options' => 'array',
-        'status' => \Wsmallnews\Comment\Enums\CommentStatus::class,
+        'status' => CommentStatus::class,
     ];
 
     public function commentable(): MorphTo

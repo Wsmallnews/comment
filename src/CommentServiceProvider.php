@@ -10,13 +10,13 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\Filesystem;
-use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Wsmallnews\Comment\Commands\CommentCommand;
 use Wsmallnews\Comment\Support\Utils;
+
 // use Wsmallnews\Comment\Livewire\Components\CommentAdd;
 // use Wsmallnews\Comment\Livewire\Components\CommentCard;
 // use Wsmallnews\Comment\Livewire\Components\CommentList;
@@ -52,7 +52,7 @@ class CommentServiceProvider extends PackageServiceProvider
     public function packageRegistered(): void
     {
         $this->app->singleton(Comment::class, function () {
-            return new Comment();
+            return new Comment;
         });
     }
 

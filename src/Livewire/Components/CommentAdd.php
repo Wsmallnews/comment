@@ -39,10 +39,10 @@ class CommentAdd extends Component implements HasForms
     {
         // $data = $this->form->getState();
         // // 这里可以添加评论创建逻辑
-        
+
         // // 重置表单
         // $this->form->fill();
-        
+
         // // 触发评论列表刷新
         // $this->dispatch('commentCreated');
     }
