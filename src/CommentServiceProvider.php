@@ -16,11 +16,9 @@ use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Wsmallnews\Comment\Commands\CommentCommand;
+use Wsmallnews\Comment\Livewire\Components\Comments as ComponentsComments;
+use Wsmallnews\Comment\Livewire\Components\Comment as ComponentsComment;
 use Wsmallnews\Comment\Support\Utils;
-// use Wsmallnews\Comment\Livewire\Components\CommentAdd;
-// use Wsmallnews\Comment\Livewire\Components\CommentCard;
-// use Wsmallnews\Comment\Livewire\Components\CommentList;
-// use Wsmallnews\Comment\Livewire\Components\Paginator;
 
 class CommentServiceProvider extends PackageServiceProvider
 {
@@ -51,9 +49,7 @@ class CommentServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        $this->app->singleton(Comment::class, function () {
-            return new Comment();
-        });
+
     }
 
     public function packageBooted(): void
@@ -87,10 +83,8 @@ class CommentServiceProvider extends PackageServiceProvider
         }
 
         // 注册 livewire 组件
-        Livewire::component('sn-comment-components-card', CommentCard::class);
-        Livewire::component('sn-comment-components-list', CommentList::class);
-        Livewire::component('sn-comment-components-add', CommentAdd::class);
-        // Livewire::component('sn-paginator', Paginator::class);
+        Livewire::component('sn-comment-components-comments', ComponentsComments::class);
+        Livewire::component('sn-comment-components-comment', ComponentsComment::class);
 
     }
 
