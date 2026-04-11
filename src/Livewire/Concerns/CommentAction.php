@@ -5,16 +5,14 @@ namespace Wsmallnews\Comment\Livewire\Concerns;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Forms;
-use Filament\Schemas;
 use Filament\Support\Enums\Width;
 use Illuminate\Database\Eloquent\Model;
+use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Support\Utils as SupportUtils;
-use Wsmallnews\Comment\Enums\CommentStatus;
 
 trait CommentAction
 {
-
     public function commentAction(): Action
     {
         return $this->configureAction(
@@ -34,7 +32,6 @@ trait CommentAction
             'reply'
         );
     }
-
 
     /**
      * 配置 createAction 操作
@@ -77,10 +74,10 @@ trait CommentAction
 
                 $parentCommentId = $arguments['id'] ?? null;
                 $parentComment = $parentCommentId ? Utils::getCommentModel()::find($parentCommentId) : null;
-                
+
                 // 填充租户信息
                 $data['team_id'] = current_tenant()?->id;
-                
+
                 if ($parentComment) {
                     // 所有子评论都属于同一评论之下
                     $data['parent_id'] = $parentComment->parent_id ? $parentComment->parent_id : $parentComment->id;

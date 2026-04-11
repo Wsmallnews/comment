@@ -26,8 +26,8 @@ return new class extends Migration
             $table->string('commenter_name')->nullable()->comment('评论者昵称');
             $table->string('commenter_avatar_url')->nullable()->comment('评论者头像');
 
-            $table->string("be_replyer_type")->nullable()->comment('被回复者类型');
-            $table->unsignedBigInteger("be_replyer_id")->default(0)->comment('被回复者ID');
+            $table->string('be_replyer_type')->nullable()->comment('被回复者类型');
+            $table->unsignedBigInteger('be_replyer_id')->default(0)->comment('被回复者ID');
             $table->string('be_replyer_name')->nullable()->comment('被回复者昵称');
             $table->string('be_replyer_avatar_url')->nullable()->comment('被回复者头像');
 

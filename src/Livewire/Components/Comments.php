@@ -9,17 +9,17 @@ use Filament\Schemas\Contracts\HasSchemas;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Livewire\WithoutUrlPagination;
-use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
+use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\CanPagination;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
 
 class Comments extends Base implements HasActions, HasSchemas
 {
-    use CommentAction;
     use CanBeContained;
     use CanPagination;
+    use CommentAction;
     use HasAuth;
     use InteractsWithActions;
     use InteractsWithSchemas;
@@ -27,25 +27,19 @@ class Comments extends Base implements HasActions, HasSchemas
 
     /**
      * 父级评论 id
-     *
-     * @var integer
      */
     public int $parentId = 0;
 
     /**
      * 是否直接加载子集评论
-     *
-     * @var boolean
      */
     public bool $loadChildren = false;
 
     /**
      * 评论关联模型
-     *
-     * @var Model
      */
     public Model $commentable;
-    
+
     public Collection $comments;
 
     public function mount()

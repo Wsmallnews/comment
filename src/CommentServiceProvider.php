@@ -15,8 +15,8 @@ use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Wsmallnews\Comment\Commands\CommentCommand;
-use Wsmallnews\Comment\Livewire\Components\Comments as ComponentsComments;
 use Wsmallnews\Comment\Livewire\Components\Comment as ComponentsComment;
+use Wsmallnews\Comment\Livewire\Components\Comments as ComponentsComments;
 use Wsmallnews\Comment\Support\Utils;
 
 class CommentServiceProvider extends PackageServiceProvider
@@ -46,9 +46,7 @@ class CommentServiceProvider extends PackageServiceProvider
         }
     }
 
-    public function packageRegistered(): void
-    {
-    }
+    public function packageRegistered(): void {}
 
     public function packageBooted(): void
     {

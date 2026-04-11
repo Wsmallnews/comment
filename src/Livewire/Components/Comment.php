@@ -20,8 +20,6 @@ class Comment extends Base implements HasActions, HasSchemas
 
     /**
      * 评论关联模型
-     *
-     * @var Model
      */
     public Model $commentable;
 
@@ -38,7 +36,6 @@ class Comment extends Base implements HasActions, HasSchemas
     {
         $this->loadChildren = false;
     }
-
 
     // public function toggleLike()
     // {
