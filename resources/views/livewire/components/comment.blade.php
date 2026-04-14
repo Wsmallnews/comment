@@ -1,4 +1,5 @@
 @php
+    use Illuminate\Support\Arr;
     $childPageName = 'ccp_' . $comment->id . '_children';
 @endphp
 
@@ -26,11 +27,12 @@
                         {{ $comment->content }}
                     </div>
                     @if ($comment->images)
-                        <div class="flex flex-wrap gap-2">
-                            @foreach ($comment->images as $image)
-                                <img src="{{ files_url($image) }}" class="sn-rounded w-20 h-20" />
-                            @endforeach
-                        </div>
+                        @php
+                            $galleries = Arr::map($comment->images, function ($gallery) {
+                                return files_url($gallery);
+                            });
+                        @endphp
+                        <x-sn-support::lightbox class="w-full" :galleries="$galleries" thumb-class="size-20" />
                     @endif
                 </div>
 
