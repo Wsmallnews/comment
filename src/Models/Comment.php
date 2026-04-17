@@ -12,6 +12,8 @@ use Wsmallnews\Support\Models\SupportModel;
 class Comment extends SupportModel
 {
     use SoftDeletes;
+    use \Wsmallnews\Preference\Models\Concerns\Preferenceable\Likeable;
+    use \Wsmallnews\Preference\Models\Concerns\Preferenceable;
 
     protected $table = 'sn_comments';
 

@@ -37,13 +37,16 @@ class Comment extends Base implements HasActions, HasSchemas
         $this->loadChildren = false;
     }
 
-    // public function toggleLike()
-    // {
-    //     $this->comment->increment('like_num');
-    //     $this->comment->refresh();
+    public function toggleLike()
+    {
+        // 喜欢评论
+        $this->getUser()->like($this->comment);
 
-    //     return $this->comment->like_num;
-    // }
+        $this->comment->increment('like_num');
+        $this->comment->refresh();
+
+        return $this->comment->like_num;
+    }
 
     public function render()
     {

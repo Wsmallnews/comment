@@ -52,11 +52,13 @@
                             </span>
                         @endif
                     </div>
-                    {{-- <div class="flex items-center text-sm" @click="like_num = await $wire.toggleLike()" x-data="{
+                    <div class="sn-tip-text flex items-center gap-2" wire:click="toggleLike" x-data="{
                         like_num: {{ $comment->like_num }}
                     }" >
-                        <x-heroicon-o-heart class="size-4 inline mr-1" /> <span x-text="like_num"><span>
-                    </div> --}}
+                        <x-filament::icon icon="heroicon-o-heart" class="size-4" />
+                        <span>{{ $comment->like_num }}</span>
+                        {{-- <span x-text="like_num"><span> --}}
+                    </div>
                 </div>
             </div>
 
