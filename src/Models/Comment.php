@@ -7,13 +7,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Wsmallnews\Comment\Enums\CommentStatus;
+use Wsmallnews\Preference\Models\Concerns\Preferenceable;
+use Wsmallnews\Preference\Models\Concerns\Preferenceable\Likeable;
 use Wsmallnews\Support\Models\SupportModel;
 
 class Comment extends SupportModel
 {
+    use Likeable;
+    use Preferenceable;
     use SoftDeletes;
-    use \Wsmallnews\Preference\Models\Concerns\Preferenceable\Likeable;
-    use \Wsmallnews\Preference\Models\Concerns\Preferenceable;
 
     protected $table = 'sn_comments';
 
