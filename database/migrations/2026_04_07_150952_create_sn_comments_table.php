@@ -26,16 +26,15 @@ return new class extends Migration
             $table->string('commenter_name')->nullable()->comment('评论者昵称');
             $table->string('commenter_avatar_url')->nullable()->comment('评论者头像');
 
-            $table->string('be_replyer_type')->nullable()->comment('被回复者类型');
-            $table->unsignedBigInteger('be_replyer_id')->default(0)->comment('被回复者ID');
+            $table->nullableMorphs('be_replyer');
             $table->string('be_replyer_name')->nullable()->comment('被回复者昵称');
             $table->string('be_replyer_avatar_url')->nullable()->comment('被回复者头像');
 
             $table->string('content', 2048)->nullable()->comment('评论内容');
             $table->json('images')->nullable()->comment('评论图片');
 
-            $table->unsignedInteger('like_num')->default(0)->comment('喜欢数量');
-            $table->unsignedInteger('comment_num')->default(0)->comment('评论数量');
+            $table->unsignedBigInteger('like_num')->default(0)->comment('喜欢数量');
+            $table->unsignedBigInteger('comment_num')->default(0)->comment('评论数量');
             $table->string('from_district', 60)->nullable()->comment('来源区域');
             $table->string('status', 20)->comment('状态');
             $table->json('options')->nullable()->comment('选项');
