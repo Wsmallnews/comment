@@ -41,11 +41,12 @@ class Comment extends Base implements HasActions, HasSchemas
 
     public function toggleLike()
     {
-        if (!$this->hasAuthUser()) {
+        if (! $this->hasAuthUser()) {
             Notification::make()
                 ->title('喜欢失败')
-                ->body('请先登录在操作') 
+                ->body('请先登录在操作')
                 ->danger()->send();
+
             return;
         }
         // 喜欢评论
