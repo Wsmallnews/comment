@@ -62,6 +62,8 @@ class Comments extends Base implements HasActions, HasSchemas
         // 分页
         $this->comments = $this->withPagination($query);
 
+        $this->getUser()->attachLikeStatus($this->comments);
+
         return view('sn-comment::livewire.components.comments', [
             'paginatorLink' => $this->links,
         ]);

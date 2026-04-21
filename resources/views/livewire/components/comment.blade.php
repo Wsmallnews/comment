@@ -52,12 +52,14 @@
                             </span>
                         @endif
                     </div>
-                    <div class="sn-tip-text flex items-center gap-2" wire:click="toggleLike" x-data="{
-                        like_num: {{ $comment->like_num }}
-                    }" >
-                        <x-filament::icon icon="heroicon-o-heart" class="size-4" />
+                    <div class="sn-tip-text flex items-center gap-1">
+                        <x-filament::loading-indicator class="size-4" wire:loading wire:target="toggleLike" />
+                        @if ($comment->has_liked)
+                            <x-filament::icon icon="heroicon-m-heart" class="size-4 text-red-500 cursor-pointer" wire:click="toggleLike" wire:loading.remove wire:target="toggleLike" />
+                        @else
+                            <x-filament::icon icon="heroicon-o-heart" class="size-4 cursor-pointer" wire:click="toggleLike" wire:loading.remove wire:target="toggleLike" />
+                        @endif
                         <span>{{ $comment->like_num }}</span>
-                        {{-- <span x-text="like_num"><span> --}}
                     </div>
                 </div>
             </div>

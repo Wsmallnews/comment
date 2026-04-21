@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
 use Wsmallnews\Comment\Models\Comment as CommentModel;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
+use Wsmallnews\Preference\Models\Preference as PreferenceModel;
 
 class Comment extends Base implements HasActions, HasSchemas
 {
@@ -40,12 +41,18 @@ class Comment extends Base implements HasActions, HasSchemas
     public function toggleLike()
     {
         // 喜欢评论
-        $this->getUser()->like($this->comment);
+        $likePreference = $this->getUser()->toggleLike($this->comment);
+        if (is_bool($likePreference)) {
+            // 取消点赞
+            $this->comment->decrement('like_num');
+        } else if ($likePreference instanceof PreferenceModel) {
+            // 点赞
+            $this->comment->increment('like_num');
+        }
 
-        $this->comment->increment('like_num');
         $this->comment->refresh();
-
-        return $this->comment->like_num;
+        // 附加喜欢状态
+        $this->getUser()->attachLikeStatus($this->comment);
     }
 
     public function render()
