@@ -9,8 +9,8 @@ use Filament\Schemas\Contracts\HasSchemas;
 use Illuminate\Database\Eloquent\Model;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
 use Wsmallnews\Comment\Models\Comment as CommentModel;
-use Wsmallnews\Support\Livewire\Concerns\HasAuth;
 use Wsmallnews\Preference\Models\Preference as PreferenceModel;
+use Wsmallnews\Support\Livewire\Concerns\HasAuth;
 
 class Comment extends Base implements HasActions, HasSchemas
 {
@@ -45,7 +45,7 @@ class Comment extends Base implements HasActions, HasSchemas
         if (is_bool($likePreference)) {
             // 取消点赞
             $this->comment->decrement('like_num');
-        } else if ($likePreference instanceof PreferenceModel) {
+        } elseif ($likePreference instanceof PreferenceModel) {
             // 点赞
             $this->comment->increment('like_num');
         }
