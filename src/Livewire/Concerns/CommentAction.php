@@ -70,7 +70,7 @@ trait CommentAction
                 ];
             })
             ->using(function (array $data, array $arguments): Model {
-                $user = $this->getUser();
+                $user = $this->getAuthUser();
 
                 $parentCommentId = $arguments['id'] ?? null;
                 $parentComment = $parentCommentId ? Utils::getCommentModel()::find($parentCommentId) : null;
@@ -115,7 +115,7 @@ trait CommentAction
                 return $comment;
             })
             ->model(Utils::getCommentModel())       // 当前保存主表模型
-            ->visible($this->hasUser())
+            ->visible($this->hasAuthUser())
             ->stickyModalHeader()
             ->stickyModalFooter()
             ->modalWidth(Width::Large)

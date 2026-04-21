@@ -69,12 +69,12 @@
                 @if (!$loadChildren)
                     <div class="sn-tip-text w-full flex items-center gap-2 relative">
                         <div class="w-8 inline-block">
-                            <div class="h-[1px] w-8 border-b border-gray-400 absolute top-1/2"></div>
+                            <div class="h-0.25 w-8 border-b border-gray-400 absolute top-1/2"></div>
                         </div>
                         <div class="flex justify-center items-center gap-2" wire:loading.flex wire:target="startLoadChildren">
-                            <x-filament::loading-indicator class="h-4 w-4 inline-block" />正在加载更多
+                            <x-filament::loading-indicator class="size-4 inline-block" />正在加载更多
                         </div>
-                        <div class="inline-block" wire:loading.remove wire:target="startLoadChildren" wire:click="startLoadChildren">展开 {{ $comment->comment_num }} 条回复</div>
+                        <div class="inline-block cursor-pointer" wire:loading.remove wire:target="startLoadChildren" wire:click="startLoadChildren">展开 {{ $comment->comment_num }} 条回复</div>
                     </div>
                 @else
                     <div class="w-full" @hidden="$wire.hiddenChildren">

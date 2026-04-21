@@ -21,7 +21,7 @@
                 @endforeach
             </x-sn-support::paginators.container>
         @else
-            @if($contained)
+            @if($this->parentId === 0)
                 <x-filament::empty-state
                     :contained="false"
                     icon="heroicon-m-document-text"
@@ -32,7 +32,7 @@
                     </x-slot>
 
                     <x-slot name="description">
-                        暂无评论。
+                        优质评论更容易获得他人回复。
                     </x-slot>
                 </x-filament::empty-state>
             @endif
