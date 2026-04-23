@@ -109,7 +109,7 @@ trait CommentAction
                     // 确定上级，如果有 parent_id，就查上级，否者自己就是上级
                     $parent = $parentComment->parent_id ? $parentComment->parent : $parentComment;
                     // 增加评论数 （不更新时间戳）
-                    Model::withoutTimestamps(fn () => $parent?->increment('comment_num'));
+                    $parent && $parent->whereKey($parent->getKey())->incrementJson('counter->comment_num');
                 }
 
                 return $comment;

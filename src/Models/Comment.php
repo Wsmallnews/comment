@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Preference\Models\Concerns\Preferenceable;
 use Wsmallnews\Preference\Models\Concerns\Preferenceable\Likeable;
+use Wsmallnews\Support\Casts\CounterCast;
 use Wsmallnews\Support\Models\SupportModel;
 
 class Comment extends SupportModel
@@ -20,6 +21,7 @@ class Comment extends SupportModel
     protected $table = 'sn_comments';
 
     protected $casts = [
+        'counter' => CounterCast::class,
         'images' => 'array',
         'options' => 'array',
         'status' => CommentStatus::class,

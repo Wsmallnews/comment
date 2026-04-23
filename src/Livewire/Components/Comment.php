@@ -50,16 +50,11 @@ class Comment extends Base implements HasActions, HasSchemas
             return;
         }
         // 喜欢评论
-        $likePreference = $this->getAuthUser()->toggleLike($this->comment);
-        if (is_bool($likePreference)) {
-            // 取消点赞
-            $this->comment->decrement('like_num');
-        } elseif ($likePreference instanceof PreferenceModel) {
-            // 点赞
-            $this->comment->increment('like_num');
-        }
+        $this->getAuthUser()->toggleLike($this->comment);
 
+        // 刷新 model
         $this->comment->refresh();
+
         // 附加喜欢状态
         $this->getAuthUser()->attachLikeStatus($this->comment);
     }

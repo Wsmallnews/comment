@@ -33,8 +33,7 @@ return new class extends Migration
             $table->string('content', 2048)->nullable()->comment('评论内容');
             $table->json('images')->nullable()->comment('评论图片');
 
-            $table->unsignedBigInteger('like_num')->default(0)->comment('喜欢数量');
-            $table->unsignedBigInteger('comment_num')->default(0)->comment('评论数量');
+            $table->json('counter')->nullable()->comment('计数器:like_num, comment_num等');
             $table->string('from_district', 60)->nullable()->comment('来源区域');
             $table->string('status', 20)->comment('状态');
             $table->json('options')->nullable()->comment('选项');

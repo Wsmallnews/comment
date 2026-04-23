@@ -59,13 +59,13 @@
                         @else
                             <x-filament::icon icon="heroicon-o-heart" class="size-4 cursor-pointer" wire:click="toggleLike" wire:loading.remove wire:target="toggleLike" />
                         @endif
-                        <span>{{ $comment->like_num }}</span>
+                        <span>{{ $comment->counter['like_num'] }}</span>
                     </div>
                 </div>
             </div>
 
             {{-- 子评论列表 --}}
-            @if ($comment->comment_num > 0)
+            @if ($comment->counter['comment_num'] > 0)
                 @if (!$loadChildren)
                     <div class="sn-tip-text w-full flex items-center gap-2 relative">
                         <div class="w-8 inline-block">
@@ -74,7 +74,7 @@
                         <div class="flex justify-center items-center gap-2" wire:loading.flex wire:target="startLoadChildren">
                             <x-filament::loading-indicator class="size-4 inline-block" />正在加载更多
                         </div>
-                        <div class="inline-block cursor-pointer" wire:loading.remove wire:target="startLoadChildren" wire:click="startLoadChildren">展开 {{ $comment->comment_num }} 条回复</div>
+                        <div class="inline-block cursor-pointer" wire:loading.remove wire:target="startLoadChildren" wire:click="startLoadChildren">展开 {{ $comment->counter['comment_num'] }} 条回复</div>
                     </div>
                 @else
                     <div class="w-full" @hidden="$wire.hiddenChildren">
