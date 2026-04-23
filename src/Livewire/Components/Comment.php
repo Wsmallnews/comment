@@ -10,7 +10,6 @@ use Filament\Schemas\Contracts\HasSchemas;
 use Illuminate\Database\Eloquent\Model;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
 use Wsmallnews\Comment\Models\Comment as CommentModel;
-use Wsmallnews\Preference\Models\Preference as PreferenceModel;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
 
 class Comment extends Base implements HasActions, HasSchemas
