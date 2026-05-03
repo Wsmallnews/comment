@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Wsmallnews\Comment\Enums\CommentStatus;
-use Wsmallnews\Support\Enums\EditorType;
-use Wsmallnews\Comment\Support\Utils as Utils;
+use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Preference\Models\Concerns\Preferenceable;
 use Wsmallnews\Preference\Models\Concerns\Preferenceable\Likeable;
 use Wsmallnews\Support\Casts\CounterCast;
+use Wsmallnews\Support\Enums\EditorType;
 use Wsmallnews\Support\Models\SupportModel;
 
 class Comment extends SupportModel

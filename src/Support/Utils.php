@@ -105,7 +105,6 @@ class Utils
         return self::getModel('comment');
     }
 
-
     /**
      * Get Comment Content model class.
      *

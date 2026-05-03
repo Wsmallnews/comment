@@ -111,20 +111,21 @@ trait CommentAction
                 if ($this->isFormattedEditor()) {
                     return Width::ThreeExtraLarge;
                 }
+
                 return Width::Large;
             })
             ->closeModalByClickingAway(false)
             ->createAnother(false);
     }
 
-
     /**
      * 文本域组件
      *
-     * @param Comment|null $parentComment 上级评论
+     * @param  Comment|null  $parentComment  上级评论
      * @return array
      */
-    protected function getTextareaComponents($parentComment) {
+    protected function getTextareaComponents($parentComment)
+    {
         return [
             Forms\Components\Textarea::make('content')
                 ->label('评论内容')
@@ -149,11 +150,10 @@ trait CommentAction
         ];
     }
 
-
     /**
      * 富文本编辑器组件
      *
-     * @param Comment|null $parentComment 上级评论
+     * @param  Comment|null  $parentComment  上级评论
      * @return array
      */
     protected function getRichEditorComponents($parentComment)
@@ -179,11 +179,10 @@ trait CommentAction
         ];
     }
 
-
     /**
      * Markdown编辑器组件
      *
-     * @param Comment|null $parentComment 上级评论
+     * @param  Comment|null  $parentComment  上级评论
      * @return array
      */
     protected function getMarkdownEditorComponents($parentComment)
