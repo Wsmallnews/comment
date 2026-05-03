@@ -14,6 +14,7 @@ use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\CanPagination;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
+use Wsmallnews\Support\Livewire\Concerns\HasEditorType;
 
 class Comments extends Base implements HasActions, HasSchemas
 {
@@ -21,6 +22,7 @@ class Comments extends Base implements HasActions, HasSchemas
     use CanPagination;
     use CommentAction;
     use HasAuth;
+    use HasEditorType;
     use InteractsWithActions;
     use InteractsWithSchemas;
     use WithoutUrlPagination;
@@ -56,6 +58,9 @@ class Comments extends Base implements HasActions, HasSchemas
     {
         // 查询图文
         $query = Utils::getCommentModel()::snScope(...$this->getScopeable())->normal()
+            ->when($this->isFormattedEditor(), function ($query) {
+                $query->with('commentContent');
+            })
             ->where('parent_id', $this->parentId)
             ->orderBy('id', 'desc');
 

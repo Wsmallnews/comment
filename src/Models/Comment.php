@@ -4,9 +4,12 @@ namespace Wsmallnews\Comment\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Wsmallnews\Comment\Enums\CommentStatus;
+use Wsmallnews\Support\Enums\EditorType;
+use Wsmallnews\Comment\Support\Utils as Utils;
 use Wsmallnews\Preference\Models\Concerns\Preferenceable;
 use Wsmallnews\Preference\Models\Concerns\Preferenceable\Likeable;
 use Wsmallnews\Support\Casts\CounterCast;
@@ -25,6 +28,7 @@ class Comment extends SupportModel
         'images' => 'array',
         'options' => 'array',
         'status' => CommentStatus::class,
+        'editor_type' => EditorType::class,
     ];
 
     public function scopeNormal($query)
@@ -65,5 +69,10 @@ class Comment extends SupportModel
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function commentContent(): MorphOne
+    {
+        return $this->morphOne(Utils::getCommentContentModel(), 'contentable');
     }
 }

@@ -23,9 +23,16 @@
                 </div>
 
                 <div class="w-full flex flex-col gap-2">
-                    <div class="sn-content-text">
-                        {{ $comment->content }}
-                    </div>
+                    @if ($this->isFormattedEditor() && $comment->commentContent)
+                        <x-sn-support::collapse-content
+                            :content-type="$comment->commentContent->content_type"
+                            :content="$comment->commentContent->content"
+                        />
+                    @else
+                        <div class="sn-content-text">
+                            {{ $comment->content }}
+                        </div>
+                    @endif
                     @if ($comment->images)
                         @php
                             $galleries = Arr::map($comment->images, function ($gallery) {
@@ -78,13 +85,14 @@
                     </div>
                 @else
                     <div class="w-full" @hidden="$wire.hiddenChildren">
-                        <livewire:sn-comment-components-comments 
-                            key="children-{{$comment->id}}" 
+                        <livewire:sn-comment-components-comments
+                            key="children-{{$comment->id}}"
                             :scope-type="$scopeType" :scope-id="$scopeId"
                             :parent-id="$comment->id" :commentable="$commentable" :user="$user"
-                            :page-name="$childPageName" 
-                            page-type="manual" 
-                            :load-children="false" 
+                            :editor-type="$editorType"
+                            :page-name="$childPageName"
+                            page-type="manual"
+                            :load-children="false"
                             :contained="false"
                         />
                     </div>

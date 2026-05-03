@@ -142,6 +142,7 @@ class CommentServiceProvider extends PackageServiceProvider
     {
         return [
             '2026_04_07_150952_create_sn_comments_table',
+            '2026_04_30_000000_create_sn_comment_contents_table',
         ];
     }
 }

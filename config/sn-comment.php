@@ -16,6 +16,7 @@ return [
      */
     'models' => [
         'comment' => Models\Comment::class,
+        'comment_content' => Models\CommentContent::class,
     ],
 
     /**

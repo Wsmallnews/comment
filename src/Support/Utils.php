@@ -105,6 +105,17 @@ class Utils
         return self::getModel('comment');
     }
 
+
+    /**
+     * Get Comment Content model class.
+     *
+     * @return string Models\CommentContent
+     */
+    public static function getCommentContentModel(): string
+    {
+        return self::getModel('comment_content');
+    }
+
     /**
      * Get file directory path with optional type and date.
      *

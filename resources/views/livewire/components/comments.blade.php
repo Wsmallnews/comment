@@ -12,11 +12,12 @@
         @if ($comments->isNotEmpty())
             <x-sn-support::paginators.container class="flex flex-col gap-4" :page-type="$pageType" :page-info="$pageInfo" :paginator-link="$paginatorLink" :page-name="$pageName">
                 @foreach($comments as $comment)
-                    <livewire:sn-comment-components-comment 
-                        key="comment-{{$comment->id}}" 
-                        :scope-type="$scopeType" :scope-id="$scopeId" 
+                    <livewire:sn-comment-components-comment
+                        key="comment-{{$comment->id}}"
+                        :scope-type="$scopeType" :scope-id="$scopeId"
                         :commentable="$commentable" :comment="$comment" :user="$user"
-                        :load-children="$loadChildren" 
+                        :editor-type="$editorType"
+                        :load-children="$loadChildren"
                     />
                 @endforeach
             </x-sn-support::paginators.container>
