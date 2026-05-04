@@ -173,7 +173,7 @@ trait CommentAction
                             'attachFiles',
                         ]),
                     Forms\Components\Hidden::make('content_type')
-                        ->default('html'),
+                        ->default('richtext'),
                 ])
                 ->columns(1),
         ];

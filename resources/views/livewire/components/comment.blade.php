@@ -29,9 +29,9 @@
                             :content="$comment->commentContent->content"
                         />
                     @else
-                        <div class="sn-content-text">
-                            {{ $comment->content }}
-                        </div>
+                        <x-sn-support::collapse-content
+                            :content="$comment->content"
+                        />
                     @endif
                     @if ($comment->images)
                         @php
