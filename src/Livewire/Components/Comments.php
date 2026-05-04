@@ -56,8 +56,8 @@ class Comments extends Base implements HasActions, HasSchemas
 
     public function render()
     {
-        // 查询图文
-        $query = Utils::getCommentModel()::snScope(...$this->getScopeable())->normal()
+        // 查询 $this->commentable 的评论
+        $query = $this->commentable->comments()->snScope(...$this->getScopeable())->normal()
             ->when($this->isFormattedEditor(), function ($query) {
                 $query->with('commentContent');
             })
