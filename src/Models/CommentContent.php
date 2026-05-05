@@ -4,8 +4,8 @@ namespace Wsmallnews\Comment\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Wsmallnews\Support\Models\SupportModel;
 use Wsmallnews\Support\Enums\ContentType;
+use Wsmallnews\Support\Models\SupportModel;
 use Wsmallnews\Support\Support\Utils as SupportUtils;
 
 class CommentContent extends SupportModel
