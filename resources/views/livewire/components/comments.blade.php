@@ -16,7 +16,7 @@
                         key="comment-{{$comment->id}}"
                         :scope-type="$scopeType" :scope-id="$scopeId"
                         :commentable="$commentable" :comment="$comment" :user="$user"
-                        :editor-type="$editorType"
+                        :content-type="$contentType"
                         :load-children="$loadChildren"
                     />
                 @endforeach

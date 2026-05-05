@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('content', 2048)->nullable()->comment('评论内容');
             $table->json('images')->nullable()->comment('评论图片');
 
-            $table->string('editor_type', 20)->default('textarea')->comment('编辑器类型: textarea, rich_editor, markdown_editor');
+            $table->string('content_type', 20)->default('textarea')->comment('内容类型: textarea, richtext, markdown');
 
             $table->json('counter')->nullable()->comment('计数器:like_num, comment_num等');
             $table->string('from_district', 60)->nullable()->comment('来源区域');

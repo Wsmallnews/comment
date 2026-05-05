@@ -5,13 +5,16 @@ namespace Wsmallnews\Comment\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Wsmallnews\Support\Models\SupportModel;
+use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Support\Utils as SupportUtils;
 
 class CommentContent extends SupportModel
 {
     protected $table = 'sn_comment_contents';
 
-    protected $casts = [];
+    protected $casts = [
+        'content_type' => ContentType::class,
+    ];
 
     /**
      * Boot the model and apply default scope attributes.

@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="w-full flex flex-col gap-2">
-                    @if ($this->isFormattedEditor() && $comment->commentContent)
+                    @if ($this->isFormattedContent() && $comment->commentContent)
                         <x-sn-support::collapse-content
                             :content-type="$comment->commentContent->content_type"
                             :content="$comment->commentContent->content"
@@ -89,7 +89,7 @@
                             key="children-{{$comment->id}}"
                             :scope-type="$scopeType" :scope-id="$scopeId"
                             :parent-id="$comment->id" :commentable="$commentable" :user="$user"
-                            :editor-type="$editorType"
+                            :content-type="$contentType"
                             :page-name="$childPageName"
                             page-type="manual"
                             :load-children="false"

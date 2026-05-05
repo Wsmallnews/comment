@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Model;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
 use Wsmallnews\Comment\Models\Comment as CommentModel;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
-use Wsmallnews\Support\Livewire\Concerns\HasEditorType;
+use Wsmallnews\Support\Livewire\Concerns\HasContentType;
 
 class Comment extends Base implements HasActions, HasSchemas
 {
     use CommentAction;
     use HasAuth;
-    use HasEditorType;
+    use HasContentType;
     use InteractsWithActions;
     use InteractsWithSchemas;
 

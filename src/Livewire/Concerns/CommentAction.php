@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Models\Comment;
 use Wsmallnews\Comment\Support\Utils;
-use Wsmallnews\Support\Enums\EditorType;
+use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Support\Utils as SupportUtils;
 
 trait CommentAction
@@ -49,9 +49,9 @@ trait CommentAction
                 $parentCommentId = $arguments['id'] ?? null;
                 $parentComment = $parentCommentId ? Utils::getCommentModel()::find($parentCommentId) : null;
 
-                $schemas = match ($this->editorType) {
-                    EditorType::RichEditor => $this->getRichEditorComponents($parentComment),
-                    EditorType::MarkdownEditor => $this->getMarkdownEditorComponents($parentComment),
+                $schemas = match ($this->contentType) {
+                    ContentType::Richtext => $this->getRichtextComponents($parentComment),
+                    ContentType::Markdown => $this->getMarkdownComponents($parentComment),
                     default => $this->getTextareaComponents($parentComment),
                 };
 
@@ -89,7 +89,7 @@ trait CommentAction
                 $data['commenter_name'] = $user->getFilamentName();
                 $data['commenter_avatar_url'] = $user->getFilamentAvatarUrl();
                 $data['status'] = CommentStatus::Normal;
-                $data['editor_type'] = $this->editorType;
+                $data['content_type'] = $this->contentType;
 
                 $comment->fill($data)->save();
 
@@ -108,7 +108,7 @@ trait CommentAction
             ->stickyModalHeader()
             ->stickyModalFooter()
             ->modalWidth(function () {
-                if ($this->isFormattedEditor()) {
+                if ($this->isFormattedContent()) {
                     return Width::ThreeExtraLarge;
                 }
 
@@ -156,7 +156,7 @@ trait CommentAction
      * @param  Comment|null  $parentComment  上级评论
      * @return array
      */
-    protected function getRichEditorComponents($parentComment)
+    protected function getRichtextComponents($parentComment)
     {
         return [
             Schemas\Components\Group::make()
@@ -173,7 +173,7 @@ trait CommentAction
                             'attachFiles',
                         ]),
                     Forms\Components\Hidden::make('content_type')
-                        ->default('richtext'),
+                        ->default(ContentType::Richtext),
                 ])
                 ->columns(1),
         ];
@@ -185,7 +185,7 @@ trait CommentAction
      * @param  Comment|null  $parentComment  上级评论
      * @return array
      */
-    protected function getMarkdownEditorComponents($parentComment)
+    protected function getMarkdownComponents($parentComment)
     {
         return [
             Schemas\Components\Group::make()
@@ -202,7 +202,7 @@ trait CommentAction
                             'attachFiles',
                         ]),
                     Forms\Components\Hidden::make('content_type')
-                        ->default('markdown'),
+                        ->default(ContentType::Markdown),
                 ])
                 ->columns(1),
         ];

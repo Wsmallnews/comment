@@ -13,7 +13,7 @@ use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
 use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\CanPagination;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
-use Wsmallnews\Support\Livewire\Concerns\HasEditorType;
+use Wsmallnews\Support\Livewire\Concerns\HasContentType;
 
 class Comments extends Base implements HasActions, HasSchemas
 {
@@ -21,7 +21,7 @@ class Comments extends Base implements HasActions, HasSchemas
     use CanPagination;
     use CommentAction;
     use HasAuth;
-    use HasEditorType;
+    use HasContentType;
     use InteractsWithActions;
     use InteractsWithSchemas;
     use WithoutUrlPagination;
@@ -57,7 +57,7 @@ class Comments extends Base implements HasActions, HasSchemas
     {
         // 查询 $this->commentable 的评论
         $query = $this->commentable->comments()->snScope(...$this->getScopeable())->normal()
-            ->when($this->isFormattedEditor(), function ($query) {
+            ->when($this->isFormattedContent(), function ($query) {
                 $query->with('commentContent');
             })
             ->where('parent_id', $this->parentId)

@@ -12,7 +12,7 @@ use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Preference\Models\Concerns\Preferenceable;
 use Wsmallnews\Preference\Models\Concerns\Preferenceable\Likeable;
 use Wsmallnews\Support\Casts\CounterCast;
-use Wsmallnews\Support\Enums\EditorType;
+use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Models\SupportModel;
 
 class Comment extends SupportModel
@@ -28,7 +28,7 @@ class Comment extends SupportModel
         'images' => 'array',
         'options' => 'array',
         'status' => CommentStatus::class,
-        'editor_type' => EditorType::class,
+        'content_type' => ContentType::class,
     ];
 
     public function scopeNormal($query)
