@@ -12,7 +12,7 @@ use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Models\Comment;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Enums\ContentType;
-use Wsmallnews\Support\Support\Utils as SupportUtils;
+use Wsmallnews\Support\Filament\Forms\FormComponents;
 
 trait CommentAction
 {
@@ -133,20 +133,12 @@ trait CommentAction
                     return $parentComment ? '回复 @' . $parentComment->commenter_name : '请输入您的评论';
                 })
                 ->required(),
-            Forms\Components\FileUpload::make('images')
+            FormComponents::localImageUpload('images')
                 ->label('评论图片')
-                ->image()
-                ->disk(SupportUtils::getFilesystemDisk())
                 ->directory(Utils::getFileDirectory('comments'))
-                ->visibility('public')
                 ->multiple()
-                ->openable()
-                ->downloadable()
-                ->reorderable()
-                ->appendFiles()
                 ->maxFiles(9)
-                ->uploadingMessage('评论图片上传中...')
-                ->imagePreviewHeight('100'),
+                ->uploadingMessage('评论图片上传中...'),
         ];
     }
 
@@ -162,16 +154,13 @@ trait CommentAction
             Schemas\Components\Group::make()
                 ->relationship('commentContent')
                 ->schema([
-                    Forms\Components\RichEditor::make('content')
+                    FormComponents::richEditor('content')
                         ->label('评论内容')
                         ->placeholder(function () use ($parentComment) {
                             return $parentComment ? '回复 @' . $parentComment->commenter_name : '请输入您的评论';
                         })
                         ->fileAttachmentsDirectory(Utils::getFileDirectory('comment_contents'))
-                        ->required()
-                        ->disableToolbarButtons([
-                            'attachFiles',
-                        ]),
+                        ->required(),
                     Forms\Components\Hidden::make('content_type')
                         ->default(ContentType::Richtext),
                 ])
@@ -191,16 +180,13 @@ trait CommentAction
             Schemas\Components\Group::make()
                 ->relationship('commentContent')
                 ->schema([
-                    Forms\Components\MarkdownEditor::make('content')
+                    FormComponents::markdownEditor('content')
                         ->label('评论内容')
                         ->placeholder(function () use ($parentComment) {
                             return $parentComment ? '回复 @' . $parentComment->commenter_name : '请输入您的评论（支持Markdown）';
                         })
                         ->fileAttachmentsDirectory(Utils::getFileDirectory('comment_contents'))
-                        ->required()
-                        ->disableToolbarButtons([
-                            'attachFiles',
-                        ]),
+                        ->required(),
                     Forms\Components\Hidden::make('content_type')
                         ->default(ContentType::Markdown),
                 ])
