@@ -23,9 +23,9 @@ enum CommentStatus: string implements HasColor, HasIcon, HasLabel
     public function getLabel(): string | Htmlable | null
     {
         return match ($this) {
-            self::Normal => '正常',
-            self::Unaudited => '未审核',
-            self::Hidden => '已隐藏',
+            self::Normal => __('sn-comment::comment.comment_status.normal'),
+            self::Unaudited => __('sn-comment::comment.comment_status.unaudited'),
+            self::Hidden => __('sn-comment::comment.comment_status.hidden'),
         };
     }
 

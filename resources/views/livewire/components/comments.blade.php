@@ -29,11 +29,11 @@
                     icon-color="gray"
                 >
                     <x-slot name="heading">
-                        暂无评论
+                        {{ __('sn-comment::comment.no_comments') }}
                     </x-slot>
 
                     <x-slot name="description">
-                        优质评论更容易获得他人回复。
+                        {{ __('sn-comment::comment.comment_tip') }}
                     </x-slot>
                 </x-filament::empty-state>
             @endif

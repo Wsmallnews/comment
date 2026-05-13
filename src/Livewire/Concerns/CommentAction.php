@@ -20,8 +20,8 @@ trait CommentAction
     {
         return $this->configureAction(
             CreateAction::make('comment')
-                ->label('添加评论')
-                ->modalHeading('添加评论')
+                ->label(__('sn-comment::comment.add_comment'))
+                ->modalHeading(__('sn-comment::comment.add_comment_heading'))
         );
     }
 
@@ -29,8 +29,8 @@ trait CommentAction
     {
         return $this->configureAction(
             CreateAction::make('reply')
-                ->label('回复')
-                ->modalHeading('回复评论')
+                ->label(__('sn-comment::comment.reply_comment'))
+                ->modalHeading(__('sn-comment::comment.reply_comment_heading'))
                 ->link(),
             'reply'
         );
@@ -44,7 +44,7 @@ trait CommentAction
         $this->skipRender();        // 跳过渲染
 
         return $action
-            ->modalDescription('温馨提示：优质评论更容易获得他人回复。')
+            ->modalDescription(__('sn-comment::comment.comment_tip'))
             ->schema(function (array $arguments) {
                 $parentCommentId = $arguments['id'] ?? null;
                 $parentComment = $parentCommentId ? Utils::getCommentModel()::find($parentCommentId) : null;
@@ -128,17 +128,17 @@ trait CommentAction
     {
         return [
             Forms\Components\Textarea::make('content')
-                ->label('评论内容')
+                ->label(__('sn-comment::comment.comment_content'))
                 ->placeholder(function () use ($parentComment) {
-                    return $parentComment ? '回复 @' . $parentComment->commenter_name : '请输入您的评论';
+                    return $parentComment ? __('sn-comment::comment.reply') . ' @' . $parentComment->commenter_name : __('sn-comment::comment.comment_placeholder');
                 })
                 ->required(),
             FormComponents::localImageUpload('images')
-                ->label('评论图片')
+                ->label(__('sn-comment::comment.comment_image'))
                 ->directory(Utils::getFileDirectory('comments'))
                 ->multiple()
                 ->maxFiles(9)
-                ->uploadingMessage('评论图片上传中...'),
+                ->uploadingMessage(__('sn-comment::comment.comment_image_uploading')),
         ];
     }
 
@@ -155,9 +155,9 @@ trait CommentAction
                 ->relationship('commentContent')
                 ->schema([
                     FormComponents::richEditor('content')
-                        ->label('评论内容')
+                        ->label(__('sn-comment::comment.comment_content'))
                         ->placeholder(function () use ($parentComment) {
-                            return $parentComment ? '回复 @' . $parentComment->commenter_name : '请输入您的评论';
+                            return $parentComment ? __('sn-comment::comment.reply_to') . ' @' . $parentComment->commenter_name : __('sn-comment::comment.comment_placeholder');
                         })
                         ->fileAttachmentsDirectory(Utils::getFileDirectory('comment_contents'))
                         ->required(),
@@ -181,9 +181,9 @@ trait CommentAction
                 ->relationship('commentContent')
                 ->schema([
                     FormComponents::markdownEditor('content')
-                        ->label('评论内容')
+                        ->label(__('sn-comment::comment.comment_content'))
                         ->placeholder(function () use ($parentComment) {
-                            return $parentComment ? '回复 @' . $parentComment->commenter_name : '请输入您的评论（支持Markdown）';
+                            return $parentComment ? __('sn-comment::comment.reply_to') . ' @' . $parentComment->commenter_name : __('sn-comment::comment.comment_markdown_placeholder');
                         })
                         ->fileAttachmentsDirectory(Utils::getFileDirectory('comment_contents'))
                         ->required(),

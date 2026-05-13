@@ -44,8 +44,8 @@ class Comment extends Base implements HasActions, HasSchemas
     {
         if (! $this->hasAuthUser()) {
             Notification::make()
-                ->title('喜欢失败')
-                ->body('请先登录在操作')
+                ->title(__('sn-comment::comment.like_failed'))
+                ->body(__('sn-comment::comment.login_required'))
                 ->danger()->send();
 
             return;

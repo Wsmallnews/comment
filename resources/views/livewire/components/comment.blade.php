@@ -55,7 +55,7 @@
                         @if ($this->replyAction->isVisible())
                             <span class="sn-tip-text sn-hover flex items-center cursor-pointer" wire:click="mountAction('reply', { id: {{ $comment->id }} })">
                                 <x-filament::loading-indicator class="h-4 w-4 mr-2 inline-block" wire:loading wire:target="mountAction('reply', { id: {{ $comment->id }} })"/>
-                                回复
+                                {{ __('sn-comment::comment.reply') }}
                             </span>
                         @endif
                     </div>
@@ -79,9 +79,9 @@
                             <div class="h-0.25 w-8 border-b border-gray-400 absolute top-1/2"></div>
                         </div>
                         <div class="flex justify-center items-center gap-2" wire:loading.flex wire:target="startLoadChildren">
-                            <x-filament::loading-indicator class="size-4 inline-block" />正在加载更多
+                            <x-filament::loading-indicator class="size-4 inline-block" />{{ __('sn-comment::comment.loading_more') }}
                         </div>
-                        <div class="inline-block cursor-pointer" wire:loading.remove wire:target="startLoadChildren" wire:click="startLoadChildren">展开 {{ $comment->counter['comment_num'] }} 条回复</div>
+                        <div class="inline-block cursor-pointer" wire:loading.remove wire:target="startLoadChildren" wire:click="startLoadChildren">{{ __('sn-comment::comment.expand_replies', ['count' => $comment->counter['comment_num']]) }}</div>
                     </div>
                 @else
                     <div class="w-full" @hidden="$wire.hiddenChildren">

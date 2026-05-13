@@ -16,7 +16,7 @@
     <livewire:sn-comment-card :comment="$record" />
 
     @if ($record->children_num)
-        展开{{$record->children_num}}条评论
+        {{ __('sn-comment::comment.expand_replies', ['count' => $record->children_num]) }}
         <div class="flex">
             <livewire:sn-comment-list :parent_id="$record->id" />
         </div>
