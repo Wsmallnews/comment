@@ -15,6 +15,8 @@ use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Wsmallnews\Comment\Commands\CommentCommand;
+use Wsmallnews\Comment\Filament\Pages\Comment\Components\Comments;
+use Wsmallnews\Comment\Filament\Pages\Comment\Components\Comment;
 use Wsmallnews\Comment\Livewire\Components\Comment as ComponentsComment;
 use Wsmallnews\Comment\Livewire\Components\Comments as ComponentsComments;
 use Wsmallnews\Comment\Support\Utils;
@@ -78,10 +80,13 @@ class CommentServiceProvider extends PackageServiceProvider
             }
         }
 
+        // 注册 filament panel 组件
+        Livewire::component('sn-comment-fi-comments', Comments::class);
+        Livewire::component('sn-comment-fi-comment', Comment::class);
+
         // 注册 livewire 组件
         Livewire::component('sn-comment-components-comments', ComponentsComments::class);
         Livewire::component('sn-comment-components-comment', ComponentsComment::class);
-
     }
 
     protected function getAssetPackageName(): ?string

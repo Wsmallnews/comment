@@ -1,6 +1,7 @@
 <?php
 
 use Wsmallnews\Comment\Models;
+use Wsmallnews\Support\Enums\ContentType;
 
 return [
     /**
@@ -10,6 +11,11 @@ return [
         'scope_type' => 'sn-comment',
         'scope_id' => 0,
     ],
+
+    /**
+     * Default comment contentType
+     */
+    'default_content_type' => ContentType::Textarea,
 
     /**
      * Custom models

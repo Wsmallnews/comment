@@ -14,6 +14,7 @@ return [
     'comment_image_uploading' => '评论图片上传中...',
     'reply_to' => '回复',
     'no_comments' => '暂无评论',
+    'no_comments_description' => '留下您的精彩评论吧',
     'loading_more' => '正在加载更多',
     'expand_replies' => '展开 :count 条回复',
     'like_failed' => '喜欢失败',
@@ -23,4 +24,16 @@ return [
         'unaudited' => '未审核',
         'hidden' => '已隐藏',
     ],
+
+    'filament' => [
+        'comment' => [
+            'model_label' => '评论',
+            'plural_model_label' => '评论',
+            'title' => '评论管理',
+            'navigation_label' => '评论管理',
+            'navigation_group' => '评论管理',
+            'no_comments' => '暂无评论',
+            'no_comments_description' => '评论列表是空的',
+        ]
+    ]
 ];

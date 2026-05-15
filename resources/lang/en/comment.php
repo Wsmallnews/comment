@@ -14,6 +14,7 @@ return [
     'comment_image_uploading' => 'Uploading comment image...',
     'reply_to' => 'Reply to',
     'no_comments' => 'No comments yet',
+    'no_comments_description' => 'Leave your comment here',
     'loading_more' => 'Loading more',
     'expand_replies' => 'Expand :count replies',
     'like_failed' => 'Like Failed',
@@ -23,4 +24,16 @@ return [
         'unaudited' => 'Unaudited',
         'hidden' => 'Hidden',
     ],
+
+    'filament' => [
+        'comment' => [
+            'model_label' => 'Comment',
+            'plural_model_label' => 'Comments',
+            'title' => 'Comment Management',
+            'navigation_label' => 'Comment Management',
+            'navigation_group' => 'Comment Management',
+            'no_comments' => 'No comments yet',
+            'no_comments_description' => 'No comments yet',
+        ]
+    ]
 ];

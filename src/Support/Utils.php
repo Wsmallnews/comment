@@ -6,6 +6,7 @@ namespace Wsmallnews\Comment\Support;
 
 use Wsmallnews\Comment\Exceptions\CommentException;
 use Wsmallnews\Support\Data\ScopeableContext;
+use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Exceptions\InvalidScopeException;
 use Wsmallnews\Support\Support\Utils as SupportUtils;
 
@@ -75,6 +76,18 @@ class Utils
     {
         return self::getScopeableContext()->scopeId;
     }
+
+    /**
+     * Get default contentType.
+     *
+     * @return ContentType
+     */
+    public static function getDefaultContentType(): ContentType
+    {
+        return self::getConfig('default_content_type') ?? ContentType::Textarea;
+    }
+
+
 
     /**
      * Get model class by name.
