@@ -34,6 +34,6 @@ return [
             'navigation_group' => 'Comment Management',
             'no_comments' => 'No comments yet',
             'no_comments_description' => 'No comments yet',
-        ]
-    ]
+        ],
+    ],
 ];

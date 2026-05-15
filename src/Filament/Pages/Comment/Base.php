@@ -7,8 +7,8 @@ use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 use UnitEnum;
-use Wsmallnews\Support\Filament\Pages\Concerns\Scopeable;
 use Wsmallnews\Support\Enums\ContentType;
+use Wsmallnews\Support\Filament\Pages\Concerns\Scopeable;
 
 abstract class Base extends Page
 {

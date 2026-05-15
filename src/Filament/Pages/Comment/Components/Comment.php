@@ -6,8 +6,8 @@ use Filament\Facades\Filament;
 use Filament\Pages\BasePage;
 use Illuminate\Database\Eloquent\Model;
 use Wsmallnews\Comment\Models\Comment as CommentModel;
-use Wsmallnews\Support\Livewire\Concerns\Scopeable;
 use Wsmallnews\Support\Livewire\Concerns\HasContentType;
+use Wsmallnews\Support\Livewire\Concerns\Scopeable;
 
 class Comment extends BasePage
 {
@@ -34,7 +34,6 @@ class Comment extends BasePage
     {
         $this->loadChildren = false;
     }
-
 
     public function toggleLike()
     {

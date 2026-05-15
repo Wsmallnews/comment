@@ -34,6 +34,6 @@ return [
             'navigation_group' => '评论管理',
             'no_comments' => '暂无评论',
             'no_comments_description' => '评论列表是空的',
-        ]
-    ]
+        ],
+    ],
 ];

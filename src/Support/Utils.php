@@ -79,15 +79,11 @@ class Utils
 
     /**
      * Get default contentType.
-     *
-     * @return ContentType
      */
     public static function getDefaultContentType(): ContentType
     {
         return self::getConfig('default_content_type') ?? ContentType::Textarea;
     }
-
-
 
     /**
      * Get model class by name.

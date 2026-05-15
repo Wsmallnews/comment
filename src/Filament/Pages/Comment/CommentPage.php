@@ -5,8 +5,8 @@ namespace Wsmallnews\Comment\Filament\Pages\Comment;
 use BezhanSalleh\PluginEssentials\Concerns;
 use Wsmallnews\Comment\CommentPlugin;
 use Wsmallnews\Comment\Support\Utils;
-use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Concerns\Resource\HasCustomProperties;
+use Wsmallnews\Support\Enums\ContentType;
 
 final class CommentPage extends Base
 {

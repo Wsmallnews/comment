@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Livewire\WithoutUrlPagination;
 use Wsmallnews\Comment\Support\Utils;
-use Wsmallnews\Support\Livewire\Concerns\Scopeable;
 use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\CanPagination;
 use Wsmallnews\Support\Livewire\Concerns\HasContentType;
+use Wsmallnews\Support\Livewire\Concerns\Scopeable;
 
 class Comments extends BasePage
 {
@@ -25,26 +25,32 @@ class Comments extends BasePage
      * 组件属性配置
      */
     public ?array $properties = [];
+
     /**
      * 父级评论 id
      */
     public int $parentId = 0;
+
     /**
      * 是否直接加载子集评论
      */
     public bool $loadChildren = false;
+
     /**
      * 评论关联模型
      */
     public ?Model $commentable = null;
+
     /**
      * 评论者
      */
     public ?Model $commenter = null;
+
     /**
      * 被回复者
      */
     public ?Model $beReplyer = null;
+
     /**
      * 评论列表
      */
@@ -52,28 +58,25 @@ class Comments extends BasePage
 
     protected string $view = 'sn-comment::filament.pages.comment.components.comments';
 
-
     public function mount()
     {
         $this->comments = $this->comments ?? collect([]);
     }
 
-
     public function getEmptyLabel(): ?string
     {
         return (isset($this->properties['emptyLabel']) && filled($this->properties['emptyLabel'])) ? $this->properties['emptyLabel'] : __('sn-comment::comment.filament.comment.no_comments');
     }
+
     public function getEmptyTipLabel(): ?string
     {
         return (isset($this->properties['emptyTipLabel']) && filled($this->properties['emptyTipLabel'])) ? $this->properties['emptyTipLabel'] : __('sn-comment::comment.filament.comment.no_comments_description');
     }
 
-
     protected function getCurrents()
     {
         return $this->comments;
     }
-
 
     public function getViewData(): array
     {
