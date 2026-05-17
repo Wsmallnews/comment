@@ -7,7 +7,7 @@ use Wsmallnews\Comment\Support\Utils;
 
 trait BeReplyer
 {
-    public function comments(): MorphMany
+    public function beReplyerComments(): MorphMany
     {
         return $this->morphMany(Utils::getCommentModel(), 'beReplyer');
     }

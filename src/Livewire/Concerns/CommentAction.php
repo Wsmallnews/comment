@@ -16,6 +16,28 @@ use Wsmallnews\Support\Filament\Forms\FormComponents;
 
 trait CommentAction
 {
+
+    public function filamentCommentAction(): Action
+    {
+        return $this->configureAction(
+            CreateAction::make('comment')
+                ->label(__('sn-comment::comment.add_comment'))
+                ->modalHeading(__('sn-comment::comment.add_comment_heading'))
+        );
+    }
+
+    public function filamentReplyAction(): Action
+    {
+        return $this->configureAction(
+            CreateAction::make('reply')
+                ->label(__('sn-comment::comment.reply_comment'))
+                ->modalHeading(__('sn-comment::comment.reply_comment_heading'))
+                ->link(),
+            'reply'
+        );
+    }
+
+
     public function commentAction(): Action
     {
         return $this->configureAction(
@@ -104,7 +126,7 @@ trait CommentAction
                 return $comment;
             })
             ->model(Utils::getCommentModel())       // 当前保存主表模型
-            ->visible($this->hasAuthUser())
+            ->visible($this->canAddComment && $this->hasAuthUser() && $this->commentable)       // 可以添加评论， 并且用户已经登录，并且 存在评论主体
             ->stickyModalHeader()
             ->stickyModalFooter()
             ->modalWidth(function () {

@@ -3,12 +3,11 @@
         'sn-container px-4 py-8' => $contained,
         'w-full flex flex-col gap-4',
     ])>
-        {{-- @if ($this->parentId === 0 && $this->commentAction->isVisible())
+        @if ($this->parentId === 0 && $this->filamentCommentAction->isVisible())
             <div class="w-full flex justify-end">
-                {{ $this->commentAction }}
+                {{ $this->filamentCommentAction }}
             </div>
-            评论啊
-        @endif --}}
+        @endif
 
         @if ($comments->isNotEmpty())
             <x-sn-support::paginators.container class="flex flex-col gap-4" :page-type="$pageType" :page-info="$pageInfo" :paginator-link="$paginatorLink" :page-name="$pageName">
@@ -17,7 +16,7 @@
                         key="comment-{{$comment->id}}"
                         :scope-type="$scopeType" :scope-id="$scopeId"
                         :commenter="$commenter" :be-replyer="$beReplyer"
-                        :commentable="$commentable" :comment="$comment"
+                        :commentable="$commentable" :comment="$comment" :user="$user"
                         :content-type="$contentType"
                         :load-children="$loadChildren"
                     />

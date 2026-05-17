@@ -7,16 +7,22 @@ use Filament\Pages\BasePage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Livewire\WithoutUrlPagination;
+use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
+use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\CanPagination;
+use Wsmallnews\Support\Livewire\Concerns\HasAuth;
 use Wsmallnews\Support\Livewire\Concerns\HasContentType;
 use Wsmallnews\Support\Livewire\Concerns\Scopeable;
 
 class Comments extends BasePage
 {
+    use CanAddComment;
     use CanBeContained;
     use CanPagination;
+    use CommentAction;
+    use HasAuth;
     use HasContentType;
     use Scopeable;
     use WithoutUrlPagination;
@@ -60,6 +66,8 @@ class Comments extends BasePage
 
     public function mount()
     {
+        // 设置当前认证用户
+        $this->hasAuthUser() || $this->authUser(Filament::auth()->user());
         $this->comments = $this->comments ?? collect([]);
     }
 
@@ -80,14 +88,11 @@ class Comments extends BasePage
 
     public function getViewData(): array
     {
-        // 当前登录用户
-        $user = Filament::auth()->user();
-
         $query = null;
         $query = match (true) {
             $this->commentable => $this->commentable->comments(),           // 通过当前评论的主体查询
             $this->commenter => $this->commenter->comments(),               // 通过评论者查询
-            $this->beReplyer => $this->beReplyer->comments(),               // 通过被评论者查询
+            $this->beReplyer => $this->beReplyer->beReplyComments(),               // 通过被回复者查询 （没有意义，作为普通查询条件也无法处理 whereHasMorph 因为不确定 beReplyer_type 所属model[后续可以做成一个配置，或者参数，传入要筛选的 beReplyer_type 模型]）
             default => Utils::getCommentModel()::query(),                   // 查询 scopeable 下所有评论
         };
 
@@ -102,7 +107,7 @@ class Comments extends BasePage
         $this->comments = $this->withPagination($query);
 
         // 附加喜欢状态
-        $user->attachLikeStatus($this->comments);
+        $this->hasAuthUser() && $this->getAuthUser()->attachLikeStatus($this->comments);
 
         return [
             'paginatorLink' => $this->links,

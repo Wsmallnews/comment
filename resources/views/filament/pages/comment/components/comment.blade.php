@@ -52,9 +52,9 @@
                             <span>{{ $comment->from_district }}</span>
                         @endif
 
-                        @if ($this->replyAction->isVisible())
-                            <span class="sn-tip-text sn-hover flex items-center cursor-pointer" wire:click="mountAction('reply', { id: {{ $comment->id }} })">
-                                <x-filament::loading-indicator class="h-4 w-4 mr-2 inline-block" wire:loading wire:target="mountAction('reply', { id: {{ $comment->id }} })"/>
+                        @if ($this->filamentReplyAction->isVisible())
+                            <span class="sn-tip-text sn-hover flex items-center cursor-pointer" wire:click="mountAction('filamentReply', { id: {{ $comment->id }} })">
+                                <x-filament::loading-indicator class="h-4 w-4 mr-2 inline-block" wire:loading wire:target="mountAction('filamentReply', { id: {{ $comment->id }} })"/>
                                 {{ __('sn-comment::comment.reply') }}
                             </span>
                         @endif
@@ -88,9 +88,9 @@
                         <livewire:sn-comment-fi-comments
                             key="children-{{$comment->id}}"
                             :scope-type="$scopeType" :scope-id="$scopeId"
-                            :parent-id="$comment->id" 
+                            :parent-id="$comment->id"
                             :commenter="$commenter" :be-replyer="$beReplyer"
-                            :commentable="$commentable"
+                            :commentable="$commentable" :user="$user"
                             :content-type="$contentType"
                             :page-name="$childPageName"
                             page-type="manual"

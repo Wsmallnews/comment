@@ -8,6 +8,7 @@ use Filament\Notifications\Notification;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
 use Illuminate\Database\Eloquent\Model;
+use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
 use Wsmallnews\Comment\Models\Comment as CommentModel;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
@@ -15,6 +16,7 @@ use Wsmallnews\Support\Livewire\Concerns\HasContentType;
 
 class Comment extends Base implements HasActions, HasSchemas
 {
+    use CanAddComment;
     use CommentAction;
     use HasAuth;
     use HasContentType;

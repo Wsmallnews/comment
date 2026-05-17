@@ -9,6 +9,7 @@ use Filament\Schemas\Contracts\HasSchemas;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Livewire\WithoutUrlPagination;
+use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
 use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\CanPagination;
@@ -17,6 +18,7 @@ use Wsmallnews\Support\Livewire\Concerns\HasContentType;
 
 class Comments extends Base implements HasActions, HasSchemas
 {
+    use CanAddComment;
     use CanBeContained;
     use CanPagination;
     use CommentAction;
