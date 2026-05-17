@@ -16,7 +16,6 @@ use Wsmallnews\Support\Filament\Forms\FormComponents;
 
 trait CommentAction
 {
-
     public function filamentCommentAction(): Action
     {
         return $this->configureAction(
@@ -36,7 +35,6 @@ trait CommentAction
             'reply'
         );
     }
-
 
     public function commentAction(): Action
     {

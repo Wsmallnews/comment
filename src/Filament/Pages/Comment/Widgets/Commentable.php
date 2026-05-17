@@ -3,8 +3,8 @@
 namespace Wsmallnews\Comment\Filament\Pages\Comment\Widgets;
 
 use Filament\Widgets\Widget;
-use Livewire\Attributes\Reactive;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Attributes\Reactive;
 use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
 use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\HasContentType;
