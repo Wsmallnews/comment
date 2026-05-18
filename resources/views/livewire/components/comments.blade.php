@@ -13,11 +13,11 @@
             <x-sn-support::paginators.container class="flex flex-col gap-4" :page-type="$pageType" :page-info="$pageInfo" :paginator-link="$paginatorLink" :page-name="$pageName">
                 @foreach($comments as $comment)
                     <livewire:sn-comment-components-comment
-                        key="comment-{{$comment->id}}"
                         :scope-type="$scopeType" :scope-id="$scopeId"
                         :commentable="$commentable" :comment="$comment" :user="$user"
                         :content-type="$contentType"
                         :load-children="$loadChildren"
+                        :key="'components-sn-comment:' . $comment->id"
                     />
                 @endforeach
             </x-sn-support::paginators.container>

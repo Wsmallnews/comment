@@ -86,7 +86,6 @@
                 @else
                     <div class="w-full" @hidden="$wire.hiddenChildren">
                         <livewire:sn-comment-components-comments
-                            key="children-{{$comment->id}}"
                             :scope-type="$scopeType" :scope-id="$scopeId"
                             :parent-id="$comment->id" :commentable="$commentable" :user="$user"
                             :content-type="$contentType"
@@ -94,6 +93,7 @@
                             page-type="manual"
                             :load-children="false"
                             :contained="false"
+                            :key="'components-sn-comment-children:' . $comment->id"
                         />
                     </div>
                 @endif

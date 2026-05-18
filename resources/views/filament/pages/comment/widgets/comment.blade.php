@@ -9,5 +9,6 @@
         page-name="comment-page"
         page-type="paginator"
         :load-children="false"
-        :contained="$contained" />
+        :contained="$contained" 
+        :key="$key" />
 </x-filament-widgets::widget>

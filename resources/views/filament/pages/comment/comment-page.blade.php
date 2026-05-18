@@ -13,5 +13,6 @@
         page-type="paginator"
         :load-children="false"
         :contained="true"
+        :key="'fi-components-sn-comments:' . $record->id"
     />
 </x-filament-panels::page>
