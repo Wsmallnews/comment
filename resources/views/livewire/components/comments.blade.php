@@ -15,7 +15,7 @@
                     <livewire:sn-comment-components-comment
                         :scope-type="$scopeType" :scope-id="$scopeId"
                         :commentable="$commentable" :comment="$comment" :user="$user"
-                        :content-type="$contentType"
+                        :content-type="$contentType" :comment-status="$commentStatus"
                         :load-children="$loadChildren"
                         :key="'components-sn-comment:' . $comment->id"
                     />

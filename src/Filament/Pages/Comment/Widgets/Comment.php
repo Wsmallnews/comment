@@ -6,6 +6,7 @@ use Filament\Widgets\Widget;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Attributes\Reactive;
 use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
+use Wsmallnews\Comment\Livewire\Concerns\HasCommentStatus;
 use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\HasContentType;
 use Wsmallnews\Support\Livewire\Concerns\HasProperties;
@@ -15,6 +16,7 @@ class Comment extends Widget
 {
     use CanAddComment;
     use CanBeContained;
+    use HasCommentStatus;
     use HasContentType;
     use HasProperties;
     use Scopeable;
@@ -27,7 +29,7 @@ class Comment extends Widget
      *
      * @var string
      */
-    public string $widget_type = 'commentable';
+    public string $widgetType = 'commentable';
 
     protected int | string | array $columnSpan = 'full';
 
@@ -36,8 +38,8 @@ class Comment extends Widget
     public function getViewData(): array
     {
         return [
-            'commentable' => $this->widget_type == 'commentable' ? $this->record : null,
-            'commenter' => $this->widget_type == 'commenter' ? $this->record : null,
+            'commentable' => $this->widgetType == 'commentable' ? $this->record : null,
+            'commenter' => $this->widgetType == 'commenter' ? $this->record : null,
         ];
     }
 }

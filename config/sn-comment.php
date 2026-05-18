@@ -1,5 +1,6 @@
 <?php
 
+use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Models;
 use Wsmallnews\Support\Enums\ContentType;
 
@@ -16,6 +17,11 @@ return [
      * Default comment contentType
      */
     'default_content_type' => ContentType::Textarea,
+
+    /**
+     * Default comment status
+     */
+    'default_status' => CommentStatus::Normal,
 
     /**
      * Custom models

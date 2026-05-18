@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Livewire\WithoutUrlPagination;
 use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
+use Wsmallnews\Comment\Livewire\Concerns\HasCommentStatus;
 use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\CanPagination;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
@@ -24,6 +25,7 @@ class Comments extends Base implements HasActions, HasSchemas
     use CanPagination;
     use CommentAction;
     use HasAuth;
+    use HasCommentStatus;
     use HasContentType;
     use HasProperties;
     use InteractsWithActions;

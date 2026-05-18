@@ -7,6 +7,7 @@ use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 use UnitEnum;
+use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Filament\Pages\Concerns\Scopeable;
 
@@ -31,6 +32,8 @@ abstract class Base extends Page
     protected static ?string $emptyTipLabel = null;
 
     protected static ContentType $contentType = ContentType::Textarea;
+
+    protected static ?CommentStatus $commentStatus = null;
 
     protected string $view = 'sn-comment::filament.pages.comment.comment-page';
 
@@ -62,6 +65,11 @@ abstract class Base extends Page
     public static function getContentType(): ContentType
     {
         return static::$contentType ?? ContentType::Textarea;
+    }
+
+    public static function getCommentStatus(): CommentStatus
+    {
+        return static::$commentStatus;
     }
 
     public static function getEmptyLabel(): ?string

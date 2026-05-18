@@ -5,10 +5,10 @@
         :can-add-comment="$canAddComment"
         :commentable="$commentable"
         :commenter="$commenter"
-        :content-type="$contentType"
+        :content-type="$contentType" :comment-status="$commentStatus"
         page-name="comment-page"
-        page-type="paginator"
+        page-type="scroll"
         :load-children="false"
-        :contained="$contained" 
-        :key="$key" />
+        :contained="$contained"
+        :key="'fi-components-sn-comments:' . $widgetType . ':' . $record->id" />
 </x-filament-widgets::widget>

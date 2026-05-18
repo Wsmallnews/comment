@@ -4,6 +4,7 @@ namespace Wsmallnews\Comment\Filament\Pages\Comment;
 
 use BezhanSalleh\PluginEssentials\Concerns;
 use Wsmallnews\Comment\CommentPlugin;
+use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Concerns\Resource\HasCustomProperties;
 use Wsmallnews\Support\Enums\ContentType;
@@ -30,6 +31,11 @@ final class CommentPage extends Base
     public static function getContentType(): ContentType
     {
         return self::getCustomProperty('contentType') ?? Utils::getDefaultContentType();
+    }
+
+    public static function getCommentStatus(): CommentStatus
+    {
+        return self::getCustomProperty('commentStatus');
     }
 
     public static function getEmptyLabel(): ?string

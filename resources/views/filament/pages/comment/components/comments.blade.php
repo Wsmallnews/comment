@@ -16,7 +16,7 @@
                         :scope-type="$scopeType" :scope-id="$scopeId"
                         :commenter="$commenter" :be-replyer="$beReplyer"
                         :commentable="$commentable" :comment="$comment" :user="$user"
-                        :content-type="$contentType"
+                        :content-type="$contentType" :comment-status="$commentStatus"
                         :load-children="$loadChildren"
                         :key="'fi-components-sn-comment:' . $comment->id"
                     />

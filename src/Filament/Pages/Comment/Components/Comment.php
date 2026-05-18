@@ -9,6 +9,7 @@ use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
 use Wsmallnews\Comment\Models\Comment as CommentModel;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
+use Wsmallnews\Comment\Livewire\Concerns\HasCommentStatus;
 use Wsmallnews\Support\Livewire\Concerns\HasContentType;
 use Wsmallnews\Support\Livewire\Concerns\Scopeable;
 
@@ -17,6 +18,7 @@ class Comment extends BasePage
     use CanAddComment;
     use CommentAction;
     use HasAuth;
+    use HasCommentStatus;
     use HasContentType;
     use Scopeable;
 

@@ -8,7 +8,6 @@ use Filament\Forms;
 use Filament\Schemas;
 use Filament\Support\Enums\Width;
 use Illuminate\Database\Eloquent\Model;
-use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Models\Comment;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Enums\ContentType;
@@ -108,7 +107,7 @@ trait CommentAction
                 // 额外 评论者字段
                 $data['commenter_name'] = $user->getFilamentName();
                 $data['commenter_avatar_url'] = $user->getFilamentAvatarUrl();
-                $data['status'] = CommentStatus::Normal;
+                $data['status'] = $this->commentStatus ?? Utils::getDefaultCommentStatus();
                 $data['content_type'] = $this->contentType;
 
                 $comment->fill($data)->save();

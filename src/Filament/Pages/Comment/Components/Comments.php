@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Livewire\WithoutUrlPagination;
 use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
+use Wsmallnews\Comment\Livewire\Concerns\HasCommentStatus;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\CanPagination;
@@ -24,6 +25,7 @@ class Comments extends BasePage
     use CanPagination;
     use CommentAction;
     use HasAuth;
+    use HasCommentStatus;
     use HasContentType;
     use HasProperties;
     use Scopeable;
@@ -93,7 +95,7 @@ class Comments extends BasePage
             default => Utils::getCommentModel()::query(),                   // 查询 scopeable 下所有评论
         };
 
-        $query = $query->snScope(...$this->getScopeable())->normal()
+        $query = $query->snScope(...$this->getScopeable())
             ->when($this->isFormattedContent(), function ($query) {
                 $query->with('commentContent');
             })

@@ -90,7 +90,7 @@
                             :parent-id="$comment->id"
                             :commenter="$commenter" :be-replyer="$beReplyer"
                             :commentable="$commentable" :user="$user"
-                            :content-type="$contentType"
+                            :content-type="$contentType" :comment-status="$commentStatus"
                             :page-name="$childPageName"
                             page-type="manual"
                             :load-children="false"
