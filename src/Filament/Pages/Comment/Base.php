@@ -67,7 +67,7 @@ abstract class Base extends Page
         return static::$contentType ?? ContentType::Textarea;
     }
 
-    public static function getCommentStatus(): CommentStatus
+    public static function getCommentStatus(): ?CommentStatus
     {
         return static::$commentStatus;
     }

@@ -33,7 +33,7 @@ final class CommentPage extends Base
         return self::getCustomProperty('contentType') ?? Utils::getDefaultContentType();
     }
 
-    public static function getCommentStatus(): CommentStatus
+    public static function getCommentStatus(): ?CommentStatus
     {
         return self::getCustomProperty('commentStatus');
     }
