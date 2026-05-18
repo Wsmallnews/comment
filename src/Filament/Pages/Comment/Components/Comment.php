@@ -7,9 +7,9 @@ use Filament\Pages\BasePage;
 use Illuminate\Database\Eloquent\Model;
 use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
+use Wsmallnews\Comment\Livewire\Concerns\HasCommentStatus;
 use Wsmallnews\Comment\Models\Comment as CommentModel;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
-use Wsmallnews\Comment\Livewire\Concerns\HasCommentStatus;
 use Wsmallnews\Support\Livewire\Concerns\HasContentType;
 use Wsmallnews\Support\Livewire\Concerns\Scopeable;
 

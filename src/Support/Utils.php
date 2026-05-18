@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Wsmallnews\Comment\Support;
 
+use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Exceptions\CommentException;
 use Wsmallnews\Support\Data\ScopeableContext;
-use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Exceptions\InvalidScopeException;
 use Wsmallnews\Support\Support\Utils as SupportUtils;
