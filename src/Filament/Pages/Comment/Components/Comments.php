@@ -14,6 +14,7 @@ use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\CanPagination;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
 use Wsmallnews\Support\Livewire\Concerns\HasContentType;
+use Wsmallnews\Support\Livewire\Concerns\HasProperties;
 use Wsmallnews\Support\Livewire\Concerns\Scopeable;
 
 class Comments extends BasePage
@@ -24,13 +25,9 @@ class Comments extends BasePage
     use CommentAction;
     use HasAuth;
     use HasContentType;
+    use HasProperties;
     use Scopeable;
     use WithoutUrlPagination;
-
-    /**
-     * 组件属性配置
-     */
-    public ?array $properties = [];
 
     /**
      * 父级评论 id
@@ -73,12 +70,12 @@ class Comments extends BasePage
 
     public function getEmptyLabel(): ?string
     {
-        return (isset($this->properties['emptyLabel']) && filled($this->properties['emptyLabel'])) ? $this->properties['emptyLabel'] : __('sn-comment::comment.filament.comment.no_comments');
+        return $this->getProperty('emptyLabel', __('sn-comment::comment.filament.comment.no_comments'));
     }
 
     public function getEmptyTipLabel(): ?string
     {
-        return (isset($this->properties['emptyTipLabel']) && filled($this->properties['emptyTipLabel'])) ? $this->properties['emptyTipLabel'] : __('sn-comment::comment.filament.comment.no_comments_description');
+        return $this->getProperty('emptyTipLabel', __('sn-comment::comment.filament.comment.no_comments_description'));
     }
 
     protected function getCurrents()

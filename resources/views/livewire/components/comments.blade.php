@@ -29,11 +29,11 @@
                     icon-color="gray"
                 >
                     <x-slot name="heading">
-                        {{ __('sn-comment::comment.no_comments') }}
+                        {{ $this->getEmptyLabel() }}
                     </x-slot>
 
                     <x-slot name="description">
-                        {{ __('sn-comment::comment.comment_tip') }}
+                        {{ $this->getEmptyTipLabel() }}
                     </x-slot>
                 </x-filament::empty-state>
             @endif

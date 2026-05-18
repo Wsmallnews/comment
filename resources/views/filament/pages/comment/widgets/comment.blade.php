@@ -1,9 +1,10 @@
 <x-filament-widgets::widget>
     <livewire:sn-comment-fi-comments
-        :properties="$properties"
+        :properties="$this->getProperties()"
         :scope-type="$scopeType" :scope-id="$scopeId"
         :can-add-comment="$canAddComment"
-        :commentable="$record"
+        :commentable="$commentable"
+        :commenter="$commenter"
         :content-type="$contentType"
         page-name="comment-page"
         page-type="paginator"

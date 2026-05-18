@@ -15,6 +15,7 @@ use Wsmallnews\Support\Livewire\Concerns\CanBeContained;
 use Wsmallnews\Support\Livewire\Concerns\CanPagination;
 use Wsmallnews\Support\Livewire\Concerns\HasAuth;
 use Wsmallnews\Support\Livewire\Concerns\HasContentType;
+use Wsmallnews\Support\Livewire\Concerns\HasProperties;
 
 class Comments extends Base implements HasActions, HasSchemas
 {
@@ -24,6 +25,7 @@ class Comments extends Base implements HasActions, HasSchemas
     use CommentAction;
     use HasAuth;
     use HasContentType;
+    use HasProperties;
     use InteractsWithActions;
     use InteractsWithSchemas;
     use WithoutUrlPagination;
@@ -48,6 +50,16 @@ class Comments extends Base implements HasActions, HasSchemas
     public function mount()
     {
         $this->comments = $this->comments ?? collect([]);
+    }
+
+    public function getEmptyLabel(): ?string
+    {
+        return $this->getProperty('emptyLabel', __('sn-comment::comment.no_comments'));
+    }
+
+    public function getEmptyTipLabel(): ?string
+    {
+        return $this->getProperty('emptyTipLabel', __('sn-comment::comment.no_comments_description'));
     }
 
     protected function getCurrents()
