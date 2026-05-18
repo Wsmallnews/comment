@@ -26,8 +26,6 @@ class Comment extends Widget
 
     /**
      * commentable = 评论主体小部件 | commenter = 评论者小部件
-     *
-     * @var string
      */
     public string $widgetType = 'commentable';
 
