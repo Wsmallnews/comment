@@ -41,5 +41,5 @@ return [
         'audit_status_action' => '审核',
         'audit_status_action_heading' => '审核评论状态',
         'audit_status_action_success_notification_title' => '审核成功',
-    ]
+    ],
 ];

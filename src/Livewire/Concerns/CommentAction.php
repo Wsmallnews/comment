@@ -49,13 +49,13 @@ trait CommentAction
 
                 if (! $result) {
                     $action->failure();
+
                     return;
                 }
 
                 $action->success();
             });
     }
-
 
     public function filamentStatusAction(): Action
     {
