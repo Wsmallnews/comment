@@ -8,9 +8,11 @@ use Filament\Forms;
 use Filament\Schemas;
 use Filament\Support\Enums\Width;
 use Illuminate\Database\Eloquent\Model;
+use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Models\Comment;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Enums\ContentType;
+use Wsmallnews\Support\Filament\Actions\ActionComponents;
 use Wsmallnews\Support\Filament\Forms\FormComponents;
 
 trait CommentAction
@@ -18,7 +20,7 @@ trait CommentAction
     public function filamentCommentAction(): Action
     {
         return $this->configureAction(
-            CreateAction::make('comment')
+            CreateAction::make('filamentComment')
                 ->label(__('sn-comment::comment.add_comment'))
                 ->modalHeading(__('sn-comment::comment.add_comment_heading'))
         );
@@ -27,12 +29,64 @@ trait CommentAction
     public function filamentReplyAction(): Action
     {
         return $this->configureAction(
-            CreateAction::make('reply')
+            CreateAction::make('filamentReply')
                 ->label(__('sn-comment::comment.reply_comment'))
                 ->modalHeading(__('sn-comment::comment.reply_comment_heading'))
                 ->link(),
             'reply'
         );
+    }
+
+    public function filamentDeleteAction(): Action
+    {
+        return ActionComponents::deleteAction('filamentDelete')
+            ->action(function (Action $action, array $arguments): void {
+                $key = $arguments['key'] ?? null;
+                $result = false;
+                $key && $result = Utils::getCommentModel()::snScope($this->getScopeType(), $this->getScopeId())
+                    ->where((new (Utils::getCommentModel()))->getKeyName(), $key)
+                    ->delete();
+
+                if (! $result) {
+                    $action->failure();
+                    return;
+                }
+
+                $action->success();
+            });
+    }
+
+
+    public function filamentStatusAction(): Action
+    {
+        return Action::make('filamentStatus')
+            ->label(__('sn-comment::comment.action.audit_status_action'))
+            ->modalHeading(__('sn-comment::comment.action.audit_status_action_heading'))
+            ->successNotificationTitle(__('sn-comment::comment.action.audit_status_action_success_notification_title'))
+            ->defaultColor('info')
+            ->schema(function (array $arguments) {
+                $key = $arguments['key'] ?? null;
+                $comment = null;
+                $key && $comment = Utils::getCommentModel()::snScope($this->getScopeType(), $this->getScopeId())->find($key);
+
+                return [
+                    Forms\Components\Radio::make('status')
+                        ->label(__('sn-comment::comment.status'))
+                        ->options(CommentStatus::class)
+                        ->default($comment?->status ?? CommentStatus::Normal)
+                        ->inline()
+                        ->required(),
+                ];
+            })
+            ->action(function (Action $action, array $arguments, array $data): void {
+                $key = $arguments['key'] ?? null;
+                $comment = null;
+                $key && $comment = Utils::getCommentModel()::snScope($this->getScopeType(), $this->getScopeId())->find($key);
+
+                $comment && $comment->update(['status' => ($data['status'] ?? CommentStatus::Normal)]);
+
+                $action->success();
+            });
     }
 
     public function commentAction(): Action
@@ -123,7 +177,7 @@ trait CommentAction
                 return $comment;
             })
             ->model(Utils::getCommentModel())       // 当前保存主表模型
-            ->visible($this->canAddComment && $this->hasAuthUser() && $this->commentable)       // 可以添加评论， 并且用户已经登录，并且 存在评论主体
+            ->visible($this->canAddComment && $this->hasAuthUser() && isset($this->commentable) && $this->commentable)       // 可以添加评论， 并且用户已经登录，并且 存在评论主体
             ->stickyModalHeader()
             ->stickyModalFooter()
             ->modalWidth(function () {

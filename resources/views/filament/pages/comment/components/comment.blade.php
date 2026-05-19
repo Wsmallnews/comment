@@ -13,13 +13,30 @@
 
         <div class="flex flex-col gap-4 grow">
             <div class="w-full flex flex-col gap-2 grow">
-                <div class="flex items-center gap-2">
-                    <div class="sn-tip-text inline-block">{{ $comment->commenter_name }}</div>
-
-                    @if ($comment->be_replyer_id)
-                        <x-filament::icon icon="heroicon-m-play" class="sn-tip-text w-3 h-3" />
-                        <div class="sn-tip-text inline-block">{{ $comment->be_replyer_name }}</div>
-                    @endif
+                <div class="flex items-center gap-2 justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="sn-tip-text inline-block">{{ $comment->commenter_name }}</div>
+    
+                        @if ($comment->be_replyer_id)
+                            <x-filament::icon icon="heroicon-m-play" class="sn-tip-text w-3 h-3" />
+                            <div class="sn-tip-text inline-block">{{ $comment->be_replyer_name }}</div>
+                        @endif
+                    </div>
+                    
+                    <div class="flex items-center gap-2">
+                        @if ($this->filamentDeleteAction->isVisible())
+                            <span class="sn-tip-text text-danger-500 flex items-center cursor-pointer" wire:click="mountAction('filamentDelete', { key: {{ $comment->getKey() }} })">
+                                <x-filament::loading-indicator class="h-4 w-4 mr-2 inline-block" wire:loading wire:target="mountAction('filamentDelete', { key: {{ $comment->getKey() }} })"/>
+                                {{ __('filament-actions::delete.single.label') }}
+                            </span>
+                        @endif
+                        @if ($this->filamentStatusAction->isVisible())
+                            <span class="sn-tip-text text-info-500 flex items-center cursor-pointer" wire:click="mountAction('filamentStatus', { key: {{ $comment->getKey() }} })">
+                                <x-filament::loading-indicator class="h-4 w-4 mr-2 inline-block" wire:loading wire:target="mountAction('filamentStatus', { key: {{ $comment->getKey() }} })"/>
+                                {{ __('sn-comment::comment.action.audit_status_action') }}
+                            </span>
+                        @endif
+                    </div>
                 </div>
 
                 <div class="w-full flex flex-col gap-2">

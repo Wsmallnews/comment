@@ -19,6 +19,7 @@ return [
     'expand_replies' => '展开 :count 条回复',
     'like_failed' => '喜欢失败',
     'login_required' => '请先登录再操作',
+    'status' => '状态',
     'comment_status' => [
         'normal' => '正常',
         'unaudited' => '未审核',
@@ -36,4 +37,9 @@ return [
             'no_comments_description' => '评论列表是空的',
         ],
     ],
+    'action' => [
+        'audit_status_action' => '审核',
+        'audit_status_action_heading' => '审核评论状态',
+        'audit_status_action_success_notification_title' => '审核成功',
+    ]
 ];

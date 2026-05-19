@@ -19,6 +19,7 @@ return [
     'expand_replies' => 'Expand :count replies',
     'like_failed' => 'Like Failed',
     'login_required' => 'Please login first',
+    'status' => 'Status',
     'comment_status' => [
         'normal' => 'Normal',
         'unaudited' => 'Unaudited',
@@ -36,4 +37,9 @@ return [
             'no_comments_description' => 'No comments yet',
         ],
     ],
+    'action' => [
+        'audit_status_action' => 'Audit',
+        'audit_status_action_heading' => 'Audit Comment Status',
+        'audit_status_action_success_notification_title' => 'Audit Success',
+    ]
 ];
