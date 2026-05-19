@@ -41,5 +41,5 @@ return [
         'audit_status_action' => 'Audit',
         'audit_status_action_heading' => 'Audit Comment Status',
         'audit_status_action_success_notification_title' => 'Audit Success',
-    ]
+    ],
 ];
