@@ -25,13 +25,13 @@
                     
                     <div class="flex items-center gap-2">
                         @if ($this->filamentDeleteAction->isVisible())
-                            <span class="sn-tip-text text-danger-500 flex items-center cursor-pointer" wire:click="mountAction('filamentDelete', { key: {{ $comment->getKey() }} })">
+                            <span class="sn-tip-text sn-danger-text flex items-center cursor-pointer" wire:click="mountAction('filamentDelete', { key: {{ $comment->getKey() }} })">
                                 <x-filament::loading-indicator class="h-4 w-4 mr-2 inline-block" wire:loading wire:target="mountAction('filamentDelete', { key: {{ $comment->getKey() }} })"/>
                                 {{ __('filament-actions::delete.single.label') }}
                             </span>
                         @endif
                         @if ($this->filamentStatusAction->isVisible())
-                            <span class="sn-tip-text text-info-500 flex items-center cursor-pointer" wire:click="mountAction('filamentStatus', { key: {{ $comment->getKey() }} })">
+                            <span class="sn-tip-text sn-info-text flex items-center cursor-pointer" wire:click="mountAction('filamentStatus', { key: {{ $comment->getKey() }} })">
                                 <x-filament::loading-indicator class="h-4 w-4 mr-2 inline-block" wire:loading wire:target="mountAction('filamentStatus', { key: {{ $comment->getKey() }} })"/>
                                 {{ __('sn-comment::comment.action.audit_status_action') }}
                             </span>
