@@ -2,6 +2,7 @@
 
 use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Models;
+use Wsmallnews\Comment\Filament\Pages\Comment\CommentPage;
 use Wsmallnews\Support\Enums\ContentType;
 
 return [
@@ -32,7 +33,16 @@ return [
     ],
 
     /**
-     * 文件基础目录，会自动拼接当前年月日 (仅用于 filament 默认上传组件 (Forms\Components\FileUpload))
+     * Panel register
+     */
+    'panel_register' => [
+        'pages' => [
+            CommentPage::class,
+        ]
+    ],
+
+    /**
+     * File base directory (only used by filament default upload component (Forms\Components\FileUpload))
      */
     'file_directory' => 'sn/comment/',
 ];

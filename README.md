@@ -1,93 +1,107 @@
-# Comment
+# A versatile commenting system built on Laravel + Filament
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/wsmallnews/comment.svg?style=flat-square)](https://packagist.org/packages/wsmallnews/comment)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/wsmallnews/comment/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/wsmallnews/comment/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/wsmallnews/comment/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/wsmallnews/comment/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/wsmallnews/comment.svg?style=flat-square)](https://packagist.org/packages/wsmallnews/comment)
 
-基于 Laravel + Filament 的通用评论系统。支持多租户、多范围隔离、嵌套回复、点赞、富文本内容，开箱即用的前端 Livewire 组件和 Filament 管理后台。
+A versatile commenting system built on Laravel + Filament. It supports multi-tenancy, multi-scope isolation, nested replies, likes, rich text content, out-of-the-box front-end Livewire components, and Filament admin panel.
 
-## 功能特性
+## Overview
 
-- **多态评论**：任意 Eloquent 模型均可作为评论主体（Commentable）
-- **多态评论者**：支持任意模型作为评论者（Commenter）
-- **嵌套回复**：支持二层回复，自动关联被回复者（BeReplyer）
-- **范围隔离**：通过 scope_type + scope_id 实现多范围数据隔离
-- **多租户支持**：自动关联团队 team_id
-- **内容类型**：支持纯文本、富文本（Richtext）、Markdown 三种内容类型
-- **评论状态**：正常、待审核、已隐藏三种状态管理
-- **点赞功能**：基于 preference 扩展包的点赞系统
-- **Filament 后台管理**：完整的评论管理页面
-- **前端组件**：开箱即用的 Livewire 评论列表和评论输入组件
-- **高度可配置**：支持自定义模型、默认状态、内容类型等
+- **Polymorphic Comments**：Any Eloquent model can be a comment subject (Commentable)
+- **Polymorphic Commenters**：Support any model as a commenter (Commenter)
+- **Nested Replies**：Support two-level replies, automatically associate with the replied-to (BeReplyer)
+- **Scope Isolation**：Through scope_type + scope_id, multi-scope data isolation is achieved
+- **Multi-Tenantancy Support**：Automatically associate with team team_id
+- **Content Types**：Support plain text, rich text (Richtext), and Markdown content types
+- **Comment Status**：Support normal, pending, and hidden comment statuses
+- **Like Function**：Based on [Wsmallnews/preference](https://github.com/wsmallnews/preference) extension
+- **Filament Admin Panel**：Full comment management page
+- **Front-end Livewire Components**：开箱即用的 Livewire comment list and comment input components
+- **Highly Configurable**：Support custom models, default status, content types, etc
+- **Register the CommentPlugin**：Based on [bezhansalleh/filament-plugin-essentials](https://github.com/bezhansalleh/filament-plugin-essentials) extension
 
-## 安装
+## Installation
 
-通过 Composer 安装：
+You can install the package via composer:
 
 ```bash
-composer require wsmallnews/comment
+composer require wsmallnews/comment:^1.0
 ```
 
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="comment-migrations"
+php artisan vendor:publish --tag="sn-comment-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="comment-config"
-```
-
-发布语言文件（可选）：
-
-```bash
-php artisan vendor:publish --tag="comment-translations"
+php artisan vendor:publish --tag="sn-comment-config"
 ```
 
 Optionally, you can publish the views using:
 
 ```bash
-php artisan vendor:publish --tag="comment-views"
+php artisan vendor:publish --tag="sn-comment-views"
 ```
 
-## 配置
+Multi language support, you can publish the language files using
+
+```bash
+php artisan vendor:publish --tag="sn-comment-translations"
+```
 
 This is the contents of the published config file:
 
 ```php
+
+use Wsmallnews\Comment\Enums\CommentStatus;
+use Wsmallnews\Comment\Models;
+use Wsmallnews\Support\Enums\ContentType;
+
 return [
-    // 默认范围配置
+    /**
+     * Default scopeable
+     */
     'scopeable' => [
         'scope_type' => 'sn-comment',
         'scope_id' => 0,
     ],
 
-    // 默认评论内容类型：textarea / richtext / markdown
+    /**
+     * Default comment contentType
+     */
     'default_content_type' => ContentType::Textarea,
 
-    // 默认评论状态：normal / unaudited / hidden
+    /**
+     * Default comment status
+     */
     'default_status' => CommentStatus::Normal,
 
-    // 自定义模型
+    /**
+     * Custom models
+     */
     'models' => [
         'comment' => Models\Comment::class,
         'comment_content' => Models\CommentContent::class,
     ],
 
-    // 文件上传目录
+    /**
+     * File base directory (only used by filament default upload component (Forms\Components\FileUpload))
+     */
     'file_directory' => 'sn/comment/',
 ];
 ```
 
-## 快速开始
+## Quick Start
 
-### 1. 为模型添加评论能力
+### 1. Add comment capability to your models
 
-让你的模型拥有评论功能，只需引入对应的 Trait：
+Give your models comment capability by adding the corresponding Traits:
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -97,25 +111,54 @@ use Wsmallnews\Comment\Models\Concerns\BeReplyer;
 
 class Post extends Model
 {
-    // 作为评论主体（被评论的对象）
+    // As commentable (the object being commented on)
     use Commentable;
 }
 
 class User extends Model
 {
-    // 作为评论者
+    // As commenter (the user commenting on the object)
     use Commenter;
 
-    // 作为被回复者
+    // As be replyer
     use BeReplyer;
 }
 ```
 
-## Filament 后台集成
+### 2. Use the Livewire component
 
-### 注册插件
+Use the Livewire component in your Blade view:
 
-在 Panel 配置中注册 CommentPlugin：
+```php
+<livewire:sn-comment-components-comments
+    scopeType="default"
+    :scopeId="0"
+    :commentable="$post"
+    :properties="[
+        'emptyLabel' => 'No comments',
+        'emptyTipLabel' => 'Add your first comment'
+    ]"
+    :contentType="\Wsmallnews\Support\Enums\ContentType::Textarea"
+    page-name="cp"
+/>
+```
+
+### 3. Custom theme
+
+You should use a [filament custom theme](https://filamentphp.com/docs/5.x/styling/overview#creating-a-custom-theme)
+
+You should add the following code to your custom theme file. If you custom theme file is `/resources/css/filament/admin/theme.css`
+
+```css
+@import '../../../../vendor/wsmallnews/support/resources/css/index.css';
+@import '../../../../vendor/wsmallnews/comment/resources/css/index.css';
+```
+
+## Filament Integration
+
+### Register the CommentPlugin
+
+Register the CommentPlugin in your Panel configuration:
 
 ```php
 use Wsmallnews\Comment\CommentPlugin;
@@ -125,111 +168,173 @@ public function panel(Panel $panel): Panel
     return $panel
         ->plugins([
             CommentPlugin::make()
-                ->scopeable([
-                    'scope_type' => 'blog',
-                    'scope_id' => 1,
-                ])
+                ->forResource(CommentPage::class)
+                ->navigationLabel('Comment manage')
+                ->navigationGroup('Website manage')
+                ->navigationIcon(Heroicon::OutlinedChatBubbleLeft)
+                ->activeNavigationIcon(Heroicon::ChatBubbleLeft)
+                ->navigationSort(10)
+                ->modelLabel('Comment')
+                ->pluralModelLabel('Comments')
                 ->customProperties([
                     'contentType' => ContentType::Textarea,
                     'commentStatus' => CommentStatus::Normal,
-                    'emptyLabel' => '暂无评论',
-                    'emptyTipLabel' => '快来发表第一条评论吧',
+                    'emptyLabel' => 'No comments',
+                    'emptyTipLabel' => 'Add your first comment',
                 ]),
         ]);
 }
 ```
 
-### 可用属性
+#### Available Properties
 
-通过 `customProperties()` 方法可以自定义以下属性：
+You can use the `customProperties()` method to customize the following properties:
 
-| 属性            | 说明             | 默认值                  |
-| --------------- | ---------------- | ----------------------- |
-| `contentType`   | 内容类型枚举     | `ContentType::Textarea` |
-| `commentStatus` | 评论状态枚举     | `null`                  |
-| `emptyLabel`    | 空评论提示文本   | 语言包默认值            |
-| `emptyTipLabel` | 空评论提示副文本 | 语言包默认值            |
+| Property        | Description             | Default                  |
+| --------------- | ----------------------- | ------------------------ |
+| `contentType`   | Content type enum       | `ContentType::Textarea`  |
+| `commentStatus` | Comment status enum     | `CommentStatus::Normal`  |
+| `emptyLabel`    | Empty comment label     | Language package default |
+| `emptyTipLabel` | Empty comment tip label | Language package default |
 
-### 后台页面
+### Backend Page
 
-注册后可在 Filament 后台左侧导航「评论管理」中查看所有评论，支持：
+After registration, you can view all comments in the Filament backend navigation:
 
-- 按评论内容、评论者、被回复者筛选
-- 状态筛选（正常 / 待审核 / 已隐藏）
-- 批量删除、批量强制删除、批量恢复
-- 软删除支持
+#### Custom comment page
 
-## 前端 Livewire 组件
+To customize the comment page, you can extend `Wsmallnews\Comment\Filament\Pages\Comment\Base` class in your own namespace:
 
-### 评论列表组件
+```php
+<?php
 
-```blade
-<livewire:sn-comment-components-comments
-    :commentable="$post"
-    :scopeType="'blog'"
-    :scopeId="1"
-    :properties="[
-        'emptyLabel' => '暂无评论',
-        'emptyTipLabel' => '快来发表第一条评论吧'
-    ]"
-    :contentType="'textarea'"
-    wire:key="comments-{{ $post->id }}"
-/>
+namespace App\Filament\Pages\Comment;
+
+use Wsmallnews\Comment\Filament\Pages\Comment\Base;
+
+class CommentPage extends Base
+{
+
+}
+
 ```
 
-组件会自动处理：
+### Widget
 
-- 评论分页加载
-- 嵌套回复展开/收起
-- 点赞数显示
-- 评论者头像和昵称展示
-
-### Widget 方式（Filament 页面内嵌）
-
-在 Filament 的 Page 或 EditRecord 中使用评论 Widget：
+To use the comment widget in your Filament page comment page:
 
 ```php
 use Wsmallnews\Comment\Filament\Pages\Comment\Widgets\Comment as CommentWidget;
 
-class PostEdit extends EditRecord
+class ViewPost extends ViewRecord
 {
     protected function getFooterWidgets(): array
     {
         return [
             CommentWidget::make([
-                'scopeable' => ['scope_type' => 'blog', 'scope_id' => 1],
-                'widget_type' => 'commentable',  // commentable = 评论主体 | commenter = 评论者
+                'scopeType' => 'default',
+                'scopeId' => 0,
+                'widgetType' => 'commentable',  // commentable = Commentable | commenter = Commenter
+                'canAddComment' => true,
             ]),
         ];
     }
 }
 ```
 
-## 依赖
+To use the comment widget in your Filament page comment page for a commenter:
 
-- PHP ^8.2
-- Laravel（通过 Filament 依赖）
-- Filament ^4.0 || ^5.0
-- [wsmallnews/support](https://github.com/wsmallnews/support) - 基础支持包
-- [wsmallnews/preference](https://github.com/wsmallnews/preference) - 偏好/点赞系统
+```php
+use Wsmallnews\Comment\Filament\Pages\Comment\Widgets\Comment as CommentWidget;
 
-## 更新日志
+class ViewUser extends ViewRecord
+{
+    protected function getFooterWidgets(): array
+    {
+        return [
+            CommentWidget::make([
+                'scopeType' => 'default',
+                'scopeId' => 0,
+                'widgetType' => 'commenter',  // commentable = Commentable | commenter = Commenter
+                'canAddComment' => true,
+            ]),
+        ];
+    }
+}
+```
 
-请查看 [CHANGELOG](CHANGELOG.md) 了解版本变更详情。
+#### Widget Properties
 
-## 贡献
+| Property        | Description                           | Default                 |
+| --------------- | ------------------------------------- | ----------------------- | ------------- |
+| `scopeType`     | Scope type                            | `default`               |
+| `scopeId`       | Scope ID                              | `0`                     |
+| `widgetType`    | Widget type commentable = Commentable | commenter = Commenter   | `commentable` |
+| `canAddComment` | Whether to allow adding comments      | `false`                 |
+| `contained`     | Whether to contain the widget         | `true`                  |
+| `commentStatus` | Comment status enum                   | `CommentStatus::Normal` |
+| `contentType`   | Content type enum                     | `ContentType::Textarea` |
+| `properties`    | Properties array                      | []                      |
 
-请查看 [CONTRIBUTING](.github/CONTRIBUTING.md) 了解贡献方式。
+## Livewire Component
 
-## 安全漏洞
+### Comment List Component
 
-请查阅[安全策略](../../security/policy)了解如何报告安全漏洞。
+```php
+<livewire:sn-comment-components-comments
+    scopeType="default"
+    :scopeId="0"
+    :commentable="$post"
+    :properties="[
+        'emptyLabel' => 'No comments',
+        'emptyTipLabel' => 'Add your first comment'
+    ]"
+    :contentType="\Wsmallnews\Support\Enums\ContentType::Textarea"
+    page-name="cp"
+/>
+```
 
-## 作者
+| Property        | Description                                               | Default                 |
+| --------------- | --------------------------------------------------------- | ----------------------- |
+| `scopeType`     | Scope type                                                | `default`               |
+| `scopeId`       | Scope ID                                                  | `0`                     |
+| `canAddComment` | Whether to allow adding comments                          | `false`                 |
+| `contained`     | Whether to contain the widget                             | `true`                  |
+| `pageType`      | Page type scroll:Scroll,paginator:Paginator,manual:Manual | `scroll`                |
+| `pageName`      | Page name                                                 | `page`                  |
+| `perPage`       | Per page comments count                                   | `10`                    |
+| `user`          | user instance                                             | `null`                  |
+| `commentStatus` | Comment status enum                                       | `CommentStatus::Normal` |
+| `contentType`   | Content type enum                                         | `ContentType::Textarea` |
+| `properties`    | Properties array                                          | []                      |
+
+The component will automatically handle:
+
+- Comment pagination
+- Nested reply expand/collapse
+- Like count display
+- Commenter avatar and nickname display
+
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## Contributing
+
+Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
+
+## Security Vulnerabilities
+
+Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+
+## Credits
 
 - [smallnews](https://github.com/Wsmallnews)
-- [所有贡献者](../../contributors)
+- [Wsmallnews/preference](https://github.com/wsmallnews/preference)
+- [Wsmallnews/support](https://github.com/wsmallnews/support)
+- [bezhansalleh/filament-plugin-essentials](https://github.com/bezhansalleh/filament-plugin-essentials)
+- [All Contributors](../../contributors)
 
 ## License
 
-The MIT License (MIT). 请查看 [License File](LICENSE.md) 获取更多信息。
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

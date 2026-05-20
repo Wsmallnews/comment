@@ -8,6 +8,7 @@ use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\Support\Icons\Heroicon;
 use Wsmallnews\Comment\Filament\Pages\Comment\CommentPage;
+use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Concerns\Plugin\HasCustomProperties;
 
 class CommentPlugin implements Plugin
@@ -29,9 +30,11 @@ class CommentPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        $panel->pages([
-            CommentPage::class,
-        ]);
+        if (Utils::getPanelRegister('pages')) {
+            $panel->pages([
+                ...Utils::getPanelRegister('pages'),
+            ]);
+        }
     }
 
     public function boot(Panel $panel): void

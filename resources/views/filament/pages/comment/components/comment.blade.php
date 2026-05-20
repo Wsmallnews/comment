@@ -1,15 +1,20 @@
 @php
+    use Filament\Support\Icons\Heroicon;
     use Illuminate\Support\Arr;
     $childPageName = 'ccp_' . $comment->id . '_children';
 @endphp
 
 <div class="w-full">
     <div class="w-full flex gap-4 grow">
-        <x-filament::avatar
-            :src="files_url($comment->commenter_avatar_url)"
-            :alt="$comment->commenter_name"
-            size="lg"
-        />
+        @if ($comment->commenter_avatar_url)
+            <x-filament::avatar
+                :src="files_url($comment->commenter_avatar_url)"
+                :alt="$comment->commenter_name"
+                size="lg"
+            />
+        @else
+            <x-filament::icon :icon="Heroicon::UserCircle" class="w-10 h-10" aria-hidden="true" />
+        @endif
 
         <div class="flex flex-col gap-4 grow">
             <div class="w-full flex flex-col gap-2 grow">

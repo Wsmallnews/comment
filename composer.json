@@ -1,6 +1,6 @@
 {
     "name": "wsmallnews/comment",
-    "description": "This is my package comment",
+    "description": "Wsmallnews system comment modules",
     "keywords": [
         "Wsmallnews",
         "laravel",

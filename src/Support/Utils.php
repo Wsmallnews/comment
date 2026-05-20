@@ -94,6 +94,11 @@ class Utils
         return self::getConfig('default_status') ?? CommentStatus::Normal;
     }
 
+    public static function getPanelRegister($type = 'pages'): array
+    {
+        return self::getConfig("panel_register.$type", []);
+    }
+
     /**
      * Get model class by name.
      *
