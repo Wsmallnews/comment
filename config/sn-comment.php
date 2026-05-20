@@ -1,8 +1,8 @@
 <?php
 
 use Wsmallnews\Comment\Enums\CommentStatus;
-use Wsmallnews\Comment\Models;
 use Wsmallnews\Comment\Filament\Pages\Comment\CommentPage;
+use Wsmallnews\Comment\Models;
 use Wsmallnews\Support\Enums\ContentType;
 
 return [
@@ -38,7 +38,7 @@ return [
     'panel_register' => [
         'pages' => [
             CommentPage::class,
-        ]
+        ],
     ],
 
     /**
