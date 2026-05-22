@@ -11,9 +11,9 @@ use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Livewire;
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Wsmallnews\Comment\Commands\CommentInstallCommand;
 use Wsmallnews\Comment\Filament\Pages\Comment\Components\Comment;
 use Wsmallnews\Comment\Filament\Pages\Comment\Components\Comments;
 use Wsmallnews\Comment\Livewire\Components\Comment as ComponentsComment;
@@ -33,14 +33,7 @@ class CommentServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasMigrations($this->getMigrations())
             ->hasTranslations()
-            ->hasViews(static::$viewNamespace)
-            ->hasInstallCommand(function (InstallCommand $command) {
-                $command
-                    ->publishConfigFile()
-                    ->publishMigrations()
-                    ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub('wsmallnews/comment');
-            });
+            ->hasViews(static::$viewNamespace);
     }
 
     public function packageRegistered(): void {}
@@ -106,7 +99,9 @@ class CommentServiceProvider extends PackageServiceProvider
      */
     protected function getCommands(): array
     {
-        return [];
+        return [
+            CommentInstallCommand::class,
+        ];
     }
 
     /**
