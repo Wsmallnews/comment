@@ -14,7 +14,6 @@ use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Wsmallnews\Comment\Commands\CommentCommand;
 use Wsmallnews\Comment\Filament\Pages\Comment\Components\Comment;
 use Wsmallnews\Comment\Filament\Pages\Comment\Components\Comments;
 use Wsmallnews\Comment\Livewire\Components\Comment as ComponentsComment;
@@ -32,6 +31,7 @@ class CommentServiceProvider extends PackageServiceProvider
         $package->name(static::$name)
             ->hasCommands($this->getCommands())
             ->hasConfigFile()
+            ->hasMigrations($this->getMigrations())
             ->hasTranslations()
             ->hasViews(static::$viewNamespace)
             ->hasInstallCommand(function (InstallCommand $command) {
@@ -41,11 +41,6 @@ class CommentServiceProvider extends PackageServiceProvider
                     ->askToRunMigrations()
                     ->askToStarRepoOnGitHub('wsmallnews/comment');
             });
-
-        if (file_exists($package->basePath('/../database/migrations'))) {
-            $package->hasMigrations($this->getMigrations());
-            $package->runsMigrations();
-        }
     }
 
     public function packageRegistered(): void {}
@@ -111,9 +106,7 @@ class CommentServiceProvider extends PackageServiceProvider
      */
     protected function getCommands(): array
     {
-        return [
-            CommentCommand::class,
-        ];
+        return [];
     }
 
     /**
@@ -146,8 +139,8 @@ class CommentServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            '2026_04_07_150952_create_sn_comments_table',
-            '2026_04_30_000000_create_sn_comment_contents_table',
+            'create_sn_comments_table',
+            'create_sn_comment_contents_table',
         ];
     }
 }

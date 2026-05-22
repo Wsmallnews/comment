@@ -30,29 +30,35 @@ You can install the package via composer:
 composer require wsmallnews/comment:^1.0
 ```
 
-You can publish and run the migrations with:
+Installing this package will publish the configuration files and migration files of both the third-party dependency package and the current package:
+
+```bash
+php artisan sn-comment:install
+```
+
+You can publish only the config file individually:
+
+```bash
+php artisan vendor:publish --tag="sn-comment-config"
+```
+
+Publish and run only the migrations individually:
 
 ```bash
 php artisan vendor:publish --tag="sn-comment-migrations"
 php artisan migrate
 ```
 
-You can publish the config file with:
+Multi language support, you can publish the language files using
 
 ```bash
-php artisan vendor:publish --tag="sn-comment-config"
+php artisan vendor:publish --tag="sn-comment-translations"
 ```
 
 Optionally, you can publish the views using:
 
 ```bash
 php artisan vendor:publish --tag="sn-comment-views"
-```
-
-Multi language support, you can publish the language files using
-
-```bash
-php artisan vendor:publish --tag="sn-comment-translations"
 ```
 
 This is the contents of the published config file:
@@ -265,16 +271,16 @@ class ViewUser extends ViewRecord
 
 #### Widget Properties
 
-| Property        | Description                           | Default                 |
-| --------------- | ------------------------------------- | ----------------------- | ------------- |
-| `scopeType`     | Scope type                            | `default`               |
-| `scopeId`       | Scope ID                              | `0`                     |
-| `widgetType`    | Widget type commentable = Commentable | commenter = Commenter   | `commentable` |
-| `canAddComment` | Whether to allow adding comments      | `false`                 |
-| `contained`     | Whether to contain the widget         | `true`                  |
-| `commentStatus` | Comment status enum                   | `CommentStatus::Normal` |
-| `contentType`   | Content type enum                     | `ContentType::Textarea` |
-| `properties`    | Properties array                      | []                      |
+| Property        | Description                                                  | Default                 |
+| --------------- | ------------------------------------------------------------ | ----------------------- |
+| `scopeType`     | Scope type                                                   | `default`               |
+| `scopeId`       | Scope ID                                                     | `0`                     |
+| `widgetType`    | Widget type commentable = Commentable ,commenter = Commenter | `commentable`           |
+| `canAddComment` | Whether to allow adding comments                             | `false`                 |
+| `contained`     | Whether to contain the widget                                | `true`                  |
+| `commentStatus` | Comment status enum                                          | `CommentStatus::Normal` |
+| `contentType`   | Content type enum                                            | `ContentType::Textarea` |
+| `properties`    | Properties array                                             | []                      |
 
 ## Livewire Component
 
@@ -330,9 +336,10 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [smallnews](https://github.com/Wsmallnews)
+- [bezhansalleh/filament-plugin-essentials](https://github.com/bezhansalleh/filament-plugin-essentials)
+- [filament/filament](https://github.com/filamentphp/filament)
 - [Wsmallnews/preference](https://github.com/wsmallnews/preference)
 - [Wsmallnews/support](https://github.com/wsmallnews/support)
-- [bezhansalleh/filament-plugin-essentials](https://github.com/bezhansalleh/filament-plugin-essentials)
 - [All Contributors](../../contributors)
 
 ## License
