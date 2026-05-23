@@ -160,7 +160,7 @@ trait CommentAction
 
                 // 额外 评论者字段
                 $data['commenter_name'] = $user->getFilamentName();
-                $data['commenter_avatar_url'] = $user->getFilamentAvatarUrl();
+                $data['commenter_avatar_url'] = $user->avatar_url;
                 $data['status'] = $this->commentStatus ?? Utils::getDefaultCommentStatus();
                 $data['content_type'] = $this->contentType;
 
