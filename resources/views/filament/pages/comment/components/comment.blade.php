@@ -13,7 +13,7 @@
                 size="lg"
             />
         @else
-            <x-filament::icon :icon="Heroicon::UserCircle" class="w-10 h-10" aria-hidden="true" />
+            <x-filament::icon :icon="Heroicon::User" class="w-10 h-10" aria-hidden="true" />
         @endif
 
         <div class="flex flex-col gap-4 grow">
