@@ -6,15 +6,19 @@
 
 <div class="w-full">
     <div class="w-full flex gap-4 grow">
-        @if ($comment->commenter_avatar_url)
-            <x-filament::avatar
-                :src="files_url($comment->commenter_avatar_url)"
-                :alt="$comment->commenter_name"
-                size="lg"
-            />
-        @else
-            <x-filament::icon :icon="Heroicon::User" class="w-10 h-10" aria-hidden="true" />
-        @endif
+        <div class="w-10 h-10 shrink-0 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+            @if ($comment->commenter_avatar_url)
+                <x-filament::avatar
+                    :src="files_url($comment->commenter_avatar_url)"
+                    :alt="$comment->commenter_name"
+                    size="lg"
+                />
+            @else
+                <div class="sn-image-placeholder sn-motion-scale">
+                    <x-filament::icon :icon="Heroicon::User" class="w-10 h-10" aria-hidden="true" />
+                </div>
+            @endif
+        </div>
 
         <div class="flex flex-col gap-4 grow">
             <div class="w-full flex flex-col gap-2 grow">
