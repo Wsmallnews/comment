@@ -94,6 +94,12 @@ class Utils
         return self::getConfig('default_status') ?? CommentStatus::Normal;
     }
 
+    /**
+     * Get panel register.
+     *
+     * @param  string  $type  Register type (pages or resources)
+     * @return array
+     */
     public static function getPanelRegister($type = 'pages'): array
     {
         return self::getConfig("panel_register.$type", []);
