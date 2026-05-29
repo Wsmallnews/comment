@@ -98,7 +98,6 @@ class Utils
      * Get panel register.
      *
      * @param  string  $type  Register type (pages or resources)
-     * @return array
      */
     public static function getPanelRegister($type = 'pages'): array
     {
