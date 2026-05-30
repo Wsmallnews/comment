@@ -17,9 +17,9 @@ abstract class Base extends Page
 
     protected static ?string $pluralModelLabel = null;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeft;
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedChatBubbleLeft;
 
-    protected static string|BackedEnum|null $activeNavigationIcon = Heroicon::ChatBubbleLeft;
+    protected static string | BackedEnum | null $activeNavigationIcon = Heroicon::ChatBubbleLeft;
 
     protected static ?string $slug = 'comments';
 
@@ -47,7 +47,7 @@ abstract class Base extends Page
         return static::$pluralModelLabel ?? __('sn-comment::comment.comment_page.plural_model_label');
     }
 
-    public function getTitle(): string|Htmlable
+    public function getTitle(): string | Htmlable
     {
         return static::$title ?? __('sn-comment::comment.comment_page.title');
     }
@@ -57,7 +57,7 @@ abstract class Base extends Page
         return static::$navigationLabel ?? static::$title ?? __('sn-comment::comment.comment_page.navigation_label');
     }
 
-    public static function getNavigationGroup(): string|UnitEnum|null
+    public static function getNavigationGroup(): string | UnitEnum | null
     {
         return static::$navigationGroup ?? __('sn-comment::comment.global_default.navigation_group');
     }
