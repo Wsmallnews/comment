@@ -72,12 +72,12 @@ class Comments extends BasePage
 
     public function getEmptyLabel(): ?string
     {
-        return $this->getProperty('emptyLabel', __('sn-comment::comment.filament.comment.no_comments'));
+        return $this->getProperty('emptyLabel', __('sn-comment::comment.comment_page.no_comments'));
     }
 
     public function getEmptyTipLabel(): ?string
     {
-        return $this->getProperty('emptyTipLabel', __('sn-comment::comment.filament.comment.no_comments_description'));
+        return $this->getProperty('emptyTipLabel', __('sn-comment::comment.comment_page.no_comments_description'));
     }
 
     protected function getCurrents()

@@ -61,34 +61,19 @@ class CommentPlugin implements Plugin
     protected function getPluginDefaults(): array
     {
         return [
+            'navigationGroup' => fn () => __('sn-comment::comment.global_default.navigation_group'),
+            'globallySearchable' => false,
+            'globalSearchResultsLimit' => 25,
+
             'resources' => [
                 CommentPage::class => [
-                    // hasLabels
-                    'modelLabel' => __('sn-comment::comment.filament.comment.model_label'),
-                    'pluralModelLabel' => __('sn-comment::comment.filament.comment.plural_model_label'),
+                    'modelLabel' => fn () => __('sn-comment::comment.comment_page.model_label'),
+                    'pluralModelLabel' => fn () => __('sn-comment::comment.comment_page.plural_model_label'),
 
-                    // hasNavigation
-                    'navigationLabel' => __('sn-comment::comment.filament.comment.navigation_label'),
+                    'navigationLabel' => fn () => __('sn-comment::comment.comment_page.navigation_label'),
                     'navigationIcon' => Heroicon::OutlinedChatBubbleLeft,
                     'activeNavigationIcon' => Heroicon::ChatBubbleLeft,
-                    'navigationGroup' => __('sn-comment::comment.filament.comment.navigation_group'),
                     'navigationSort' => 1,
-                    'navigationBadge' => null,
-                    'navigationBadgeColor' => null,
-                    'navigationParentItem' => null,
-                    'registerNavigation' => true,
-
-                    // hasGlobalSearch
-                    'globallySearchable' => false,
-                    'globalSearchResultsLimit' => 50,
-                    'forceGlobalSearchCaseInsensitive' => null,
-                    'splitGlobalSearchTerms' => false,
-
-                    // belongsToParent
-                    'parentResource' => null,
-
-                    // HasCustomProperties
-                    'customProperties' => [],
                 ],
             ],
         ];

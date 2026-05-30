@@ -25,17 +25,16 @@ return [
         'unaudited' => 'Unaudited',
         'hidden' => 'Hidden',
     ],
-
-    'filament' => [
-        'comment' => [
-            'model_label' => 'Comment',
-            'plural_model_label' => 'Comments',
-            'title' => 'Comment Management',
-            'navigation_label' => 'Comment Management',
-            'navigation_group' => 'Comment Management',
-            'no_comments' => 'No comments yet',
-            'no_comments_description' => 'No comments yet',
-        ],
+    'global_default' => [
+        'navigation_group' => 'Comment Management',
+    ],
+    'comment_page' => [
+        'model_label' => 'Comment',
+        'plural_model_label' => 'Comments',
+        'title' => 'Comment Management',
+        'navigation_label' => 'Comment Management',
+        'no_comments' => 'No comments yet',
+        'no_comments_description' => 'No comments yet',
     ],
     'action' => [
         'audit_status_action' => 'Audit',

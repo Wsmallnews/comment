@@ -17,9 +17,9 @@ abstract class Base extends Page
 
     protected static ?string $pluralModelLabel = null;
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedChatBubbleLeft;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeft;
 
-    protected static string | BackedEnum | null $activeNavigationIcon = Heroicon::ChatBubbleLeft;
+    protected static string|BackedEnum|null $activeNavigationIcon = Heroicon::ChatBubbleLeft;
 
     protected static ?string $slug = 'comments';
 
@@ -39,27 +39,27 @@ abstract class Base extends Page
 
     public static function getModelLabel(): string
     {
-        return static::$modelLabel ?? __('sn-comment::comment.filament.comment.model_label');
+        return static::$modelLabel ?? __('sn-comment::comment.comment_page.model_label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return static::$pluralModelLabel ?? __('sn-comment::comment.filament.comment.plural_model_label');
+        return static::$pluralModelLabel ?? __('sn-comment::comment.comment_page.plural_model_label');
     }
 
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
-        return static::$title ?? __('sn-comment::comment.filament.comment.title');
+        return static::$title ?? __('sn-comment::comment.comment_page.title');
     }
 
     public static function getNavigationLabel(): string
     {
-        return static::$navigationLabel ?? static::$title ?? __('sn-comment::comment.filament.comment.navigation_label');
+        return static::$navigationLabel ?? static::$title ?? __('sn-comment::comment.comment_page.navigation_label');
     }
 
-    public static function getNavigationGroup(): string | UnitEnum | null
+    public static function getNavigationGroup(): string|UnitEnum|null
     {
-        return static::$navigationGroup ?? __('sn-comment::comment.filament.comment.navigation_group');
+        return static::$navigationGroup ?? __('sn-comment::comment.global_default.navigation_group');
     }
 
     public static function getContentType(): ContentType
@@ -74,12 +74,12 @@ abstract class Base extends Page
 
     public static function getEmptyLabel(): ?string
     {
-        return static::$emptyLabel ?? __('sn-comment::comment.filament.comment.no_comments');
+        return static::$emptyLabel ?? __('sn-comment::comment.comment_page.no_comments');
     }
 
     public static function getEmptyTipLabel(): ?string
     {
-        return static::$emptyTipLabel ?? __('sn-comment::comment.filament.comment.no_comments_description');
+        return static::$emptyTipLabel ?? __('sn-comment::comment.comment_page.no_comments_description');
     }
 
     public static function getProperties(): array

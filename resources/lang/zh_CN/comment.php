@@ -25,17 +25,16 @@ return [
         'unaudited' => '未审核',
         'hidden' => '已隐藏',
     ],
-
-    'filament' => [
-        'comment' => [
-            'model_label' => '评论',
-            'plural_model_label' => '评论',
-            'title' => '评论管理',
-            'navigation_label' => '评论管理',
-            'navigation_group' => '评论管理',
-            'no_comments' => '暂无评论',
-            'no_comments_description' => '评论列表是空的',
-        ],
+    'global_default' => [
+        'navigation_group' => '评论管理',
+    ],
+    'comment_page' => [
+        'model_label' => '评论',
+        'plural_model_label' => '评论',
+        'title' => '评论管理',
+        'navigation_label' => '评论管理',
+        'no_comments' => '暂无评论',
+        'no_comments_description' => '评论列表是空的',
     ],
     'action' => [
         'audit_status_action' => '审核',
