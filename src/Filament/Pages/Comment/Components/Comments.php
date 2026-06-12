@@ -111,7 +111,6 @@ class Comments extends BasePage
         ];
     }
 
-
     protected function getFingerprint(): string
     {
         return md5(serialize([

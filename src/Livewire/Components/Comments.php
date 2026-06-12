@@ -108,7 +108,6 @@ class Comments extends Base implements HasActions, HasSchemas
         ]);
     }
 
-
     protected function getFingerprint(): string
     {
         return md5(serialize([
