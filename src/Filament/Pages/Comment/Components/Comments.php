@@ -87,7 +87,6 @@ class Comments extends BasePage
 
     public function getViewData(): array
     {
-        $query = null;
         $query = match (true) {
             $this->commentable => $this->commentable->comments(),           // 通过当前评论的主体查询
             $this->commenter => $this->commenter->comments(),               // 通过评论者查询
@@ -102,8 +101,7 @@ class Comments extends BasePage
             ->where('parent_id', $this->parentId)
             ->orderBy('id', 'desc');
 
-        // 分页
-        $this->comments = $this->withPagination($query);
+        $this->comments = $this->withPagination($query, $this->getFingerprint());
 
         // 附加喜欢状态
         $this->hasAuthUser() && $this->getAuthUser()->attachLikeStatus($this->comments);
@@ -111,5 +109,17 @@ class Comments extends BasePage
         return [
             'paginatorLink' => $this->links,
         ];
+    }
+
+
+    protected function getFingerprint(): string
+    {
+        return md5(serialize([
+            'parentId' => $this->parentId,
+            'commentable' => $this->commentable?->getKey(),
+            'commenter' => $this->commenter?->getKey(),
+            'beReplyer' => $this->beReplyer?->getKey(),
+            ...$this->getScopeable(),
+        ]));
     }
 }
