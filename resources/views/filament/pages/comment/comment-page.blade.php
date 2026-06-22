@@ -7,7 +7,7 @@
 @endphp
 
 <x-filament-panels::page>
-    <livewire:sn-comment-fi-comments
+    <livewire:sn-comment-fi-comment-components::comments
         :properties="$properties"
         :scope-type="$scopeType" :scope-id="$scopeId"
         :content-type="$contentType" :comment-status="$commentStatus"

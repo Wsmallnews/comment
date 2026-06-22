@@ -94,7 +94,7 @@
                     </div>
                 @else
                     <div class="w-full" @hidden="$wire.hiddenChildren">
-                        <livewire:sn-comment-components-comments
+                        <livewire:sn-comment::components.comments
                             :scope-type="$scopeType" :scope-id="$scopeId"
                             :parent-id="$comment->id" :commentable="$commentable" :user="$user"
                             :content-type="$contentType" :comment-status="$commentStatus"

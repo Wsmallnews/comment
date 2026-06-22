@@ -12,7 +12,7 @@
         @if ($comments->isNotEmpty())
             <x-sn-support::paginators.container class="flex flex-col gap-4" :page-type="$pageType" :page-info="$pageInfo" :paginator-link="$paginatorLink" :page-name="$pageName">
                 @foreach($comments as $comment)
-                    <livewire:sn-comment-fi-comment
+                    <livewire:sn-comment-fi-comment-components::comment
                         :scope-type="$scopeType" :scope-id="$scopeId"
                         :commenter="$commenter" :be-replyer="$beReplyer"
                         :commentable="$commentable" :comment="$comment" :user="$user"

@@ -14,10 +14,6 @@ use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Wsmallnews\Comment\Commands\CommentInstallCommand;
-use Wsmallnews\Comment\Filament\Pages\Comment\Components\Comment;
-use Wsmallnews\Comment\Filament\Pages\Comment\Components\Comments;
-use Wsmallnews\Comment\Livewire\Components\Comment as ComponentsComment;
-use Wsmallnews\Comment\Livewire\Components\Comments as ComponentsComments;
 use Wsmallnews\Comment\Support\Utils;
 
 class CommentServiceProvider extends PackageServiceProvider
@@ -68,13 +64,16 @@ class CommentServiceProvider extends PackageServiceProvider
             }
         }
 
-        // 注册 filament panel 组件
-        Livewire::component('sn-comment-fi-comments', Comments::class);
-        Livewire::component('sn-comment-fi-comment', Comment::class);
-
-        // 注册 livewire 组件
-        Livewire::component('sn-comment-components-comments', ComponentsComments::class);
-        Livewire::component('sn-comment-components-comment', ComponentsComment::class);
+        // 注册 livewire 命名空间（自动发现 src/Livewire/ 下的组件）
+        Livewire::addNamespace(
+            namespace: 'sn-comment',
+            classNamespace: 'Wsmallnews\\Comment\\Livewire'
+        );
+        // 注册 Filament 命名空间下 comment 组件（自动发现 src/Filament/Pages/comment/Components/ 下的组件）
+        Livewire::addNamespace(
+            namespace: 'sn-comment-fi-comment-components',
+            classNamespace: 'Wsmallnews\\Comment\\Filament\\Pages\\Comment\\Components'
+        );
     }
 
     protected function getAssetPackageName(): ?string

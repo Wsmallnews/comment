@@ -1,5 +1,5 @@
 <x-filament-widgets::widget>
-    <livewire:sn-comment-fi-comments
+    <livewire:sn-comment-fi-comment-components::comments
         :properties="$this->getProperties()"
         :scope-type="$scopeType" :scope-id="$scopeId"
         :can-add-comment="$canAddComment"
