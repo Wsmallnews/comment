@@ -8,6 +8,7 @@ use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Livewire\Attributes\On;
 use Livewire\WithoutUrlPagination;
 use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
@@ -78,6 +79,14 @@ class Comments extends Base implements HasActions, HasSchemas
         return $this->getProperty('emptyTipLabel', __('sn-comment::comment.no_comments_description'));
     }
 
+
+    #[On('sn-comment-created')]
+    public function refreshComments($data)
+    {
+        $type = $data['type'];
+        $this->resetPagination();
+    }
+
     protected function getCurrents()
     {
         return $this->comments;
@@ -86,9 +95,9 @@ class Comments extends Base implements HasActions, HasSchemas
     public function render()
     {
         $query = match (true) {
-            $this->commentable => $this->commentable->comments(),           // 通过当前评论的主体查询
-            $this->commenter => $this->commenter->comments(),               // 通过评论者查询
-            $this->beReplyer => $this->beReplyer->beReplyComments(),               // 通过被回复者查询 （没有意义，作为普通查询条件也无法处理 whereHasMorph 因为不确定 beReplyer_type 所属model[后续可以做成一个配置，或者参数，传入要筛选的 beReplyer_type 模型]）
+            filled($this->commentable) => $this->commentable->comments(),           // 通过当前评论的主体查询
+            filled($this->commenter) => $this->commenter->comments(),               // 通过评论者查询
+            filled($this->beReplyer) => $this->beReplyer->beReplyComments(),               // 通过被回复者查询 （没有意义，作为普通查询条件也无法处理 whereHasMorph 因为不确定 beReplyer_type 所属model[后续可以做成一个配置，或者参数，传入要筛选的 beReplyer_type 模型]）
             default => Utils::getCommentModel()::query(),                   // 查询 scopeable 下所有评论
         };
 

@@ -22,7 +22,8 @@ trait CommentAction
         return $this->configureAction(
             CreateAction::make('filamentComment')
                 ->label(__('sn-comment::comment.add_comment'))
-                ->modalHeading(__('sn-comment::comment.add_comment_heading'))
+                ->modalHeading(__('sn-comment::comment.add_comment_heading')),
+            'filament-create'
         );
     }
 
@@ -33,7 +34,7 @@ trait CommentAction
                 ->label(__('sn-comment::comment.reply_comment'))
                 ->modalHeading(__('sn-comment::comment.reply_comment_heading'))
                 ->link(),
-            'reply'
+            'filament-reply'
         );
     }
 
@@ -42,16 +43,25 @@ trait CommentAction
         return ActionComponents::deleteAction('filamentDelete')
             ->action(function (Action $action, array $arguments): void {
                 $key = $arguments['key'] ?? null;
-                $result = false;
-                $key && $result = Utils::getCommentModel()::snScope($this->getScopeType(), $this->getScopeId())
-                    ->where((new (Utils::getCommentModel()))->getKeyName(), $key)
-                    ->delete();
-
-                if (! $result) {
+                $comment = $key ? Utils::getCommentModel()::snScope($this->getScopeType(), $this->getScopeId())->find($key) : null;
+                $parentId = $comment?->parent_id;
+                
+                if (! $comment || ! $comment->delete()) {
                     $action->failure();
 
                     return;
                 }
+
+                // 递减父评论的子评论计数
+                if ($parentId) {
+                    $parent = Utils::getCommentModel()::find($parentId);
+                    $parent && $parent->whereKey($parent->getKey())->decrementJson('counter->comment_num');
+                }
+
+                $this->dispatch('sn-comment-deleted', data: [
+                    'commentId' => $comment->getKey(),
+                    'parentId' => $parentId,
+                ]);
 
                 $action->success();
             });
@@ -85,6 +95,10 @@ trait CommentAction
 
                 $comment && $comment->update(['status' => ($data['status'] ?? CommentStatus::Normal)]);
 
+                $this->dispatch('sn-comment-status-changed', data: [
+                    'commentId' => $comment?->getKey(),
+                ]);
+
                 $action->success();
             });
     }
@@ -114,8 +128,6 @@ trait CommentAction
      */
     private function configureAction(CreateAction $action, $type = 'create'): Action
     {
-        $this->skipRender();        // 跳过渲染
-
         return $action
             ->modalDescription(__('sn-comment::comment.comment_tip'))
             ->schema(function (array $arguments) {
@@ -130,7 +142,7 @@ trait CommentAction
 
                 return $schemas;
             })
-            ->using(function (array $data, array $arguments): Model {
+            ->using(function (array $data, array $arguments) use ($type): Model {
                 $user = $this->getAuthUser();
 
                 $parentCommentId = $arguments['id'] ?? null;
@@ -172,6 +184,19 @@ trait CommentAction
                     $parent = $parentComment->parent_id ? $parentComment->parent : $parentComment;
                     // 增加评论数 （不更新时间戳）
                     $parent && $parent->whereKey($parent->getKey())->incrementJson('counter->comment_num');
+                }
+
+                // 根据操作类型触发不同事件
+                if (str($type)->contains('reply')) {
+                    $this->dispatch('sn-comment-replied', data: [
+                        'comment' => $comment,
+                        'parentId' => $comment->parent_id,
+                    ]);
+                } else {
+                    $this->dispatch('sn-comment-created', data: [
+                        'comment' => $comment,
+                        'type' => $type,
+                    ]);
                 }
 
                 return $comment;

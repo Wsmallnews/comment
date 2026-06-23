@@ -8,6 +8,7 @@ use Filament\Notifications\Notification;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Attributes\On;
 use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
 use Wsmallnews\Comment\Livewire\Concerns\HasCommentStatus;
@@ -42,6 +43,16 @@ class Comment extends Base implements HasActions, HasSchemas
     public function hiddenChildren()
     {
         $this->loadChildren = false;
+    }
+
+    #[On('sn-comment-created')]
+    public function refreshComments($data)
+    {
+        // 刷新 model
+        $this->comment->refresh();
+
+        // 展开子评论
+        $this->startLoadChildren();
     }
 
     public function toggleLike()

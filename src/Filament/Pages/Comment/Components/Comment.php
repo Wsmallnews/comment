@@ -49,6 +49,16 @@ class Comment extends BasePage
         $this->loadChildren = false;
     }
 
+    #[On('sn-comment-created')]
+    public function refreshComments($data)
+    {
+        // 刷新 model
+        $this->comment->refresh();
+
+        // 展开子评论
+        $this->startLoadChildren();
+    }
+
     public function toggleLike()
     {
         // 喜欢评论
