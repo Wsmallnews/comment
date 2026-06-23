@@ -45,14 +45,32 @@ class Comment extends Base implements HasActions, HasSchemas
         $this->loadChildren = false;
     }
 
-    #[On('sn-comment-created')]
-    public function refreshComments($data)
+    #[On('sn-comment-replied-{comment.id}')]
+    public function onCommentReplied()
     {
         // 刷新 model
         $this->comment->refresh();
 
         // 展开子评论
         $this->startLoadChildren();
+    }
+
+    #[On('sn-comment-deleted-{comment.id}')]
+    public function onCommentDeleted()
+    {
+        // 刷新 model
+        $this->comment->refresh();
+
+        // 子评论全部删除时，收起子评论列表
+        if ($this->comment->counter['comment_num'] <= 0) {
+            $this->loadChildren = false;
+        }
+    }
+
+    #[On('sn-comment-status-changed-{comment.id}')]
+    public function onStatusChanged()
+    {
+        $this->comment->refresh();
     }
 
     public function toggleLike()

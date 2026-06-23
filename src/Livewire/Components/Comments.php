@@ -81,9 +81,14 @@ class Comments extends Base implements HasActions, HasSchemas
 
 
     #[On('sn-comment-created')]
-    public function refreshComments($data)
+    public function refreshComments()
     {
-        $type = $data['type'];
+        $this->resetPagination();
+    }
+
+    #[On('sn-comment-deleted')]
+    public function onCommentDeleted()
+    {
         $this->resetPagination();
     }
 

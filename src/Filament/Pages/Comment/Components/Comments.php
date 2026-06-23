@@ -82,9 +82,20 @@ class Comments extends BasePage
     }
 
     #[On('sn-comment-created')]
-    public function refreshComments($data)
+    public function refreshComments()
     {
-        $type = $data['type'];
+        $this->resetPagination();
+    }
+
+    #[On('sn-comment-replied-{parentId}')]
+    public function onCommentReplied()
+    {
+        $this->resetPagination();
+    }
+
+    #[On('sn-comment-deleted')]
+    public function onCommentDeleted()
+    {
         $this->resetPagination();
     }
 

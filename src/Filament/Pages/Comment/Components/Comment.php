@@ -5,6 +5,7 @@ namespace Wsmallnews\Comment\Filament\Pages\Comment\Components;
 use Filament\Facades\Filament;
 use Filament\Pages\BasePage;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Attributes\On;
 use Wsmallnews\Comment\Livewire\Concerns\CanAddComment;
 use Wsmallnews\Comment\Livewire\Concerns\CommentAction;
 use Wsmallnews\Comment\Livewire\Concerns\HasCommentStatus;
@@ -26,6 +27,16 @@ class Comment extends BasePage
      * 评论关联模型
      */
     public ?Model $commentable;
+
+    /**
+     * 评论者
+     */
+    public ?Model $commenter = null;
+
+    /**
+     * 被回复者
+     */
+    public ?Model $beReplyer = null;
 
     public CommentModel $comment;
 
@@ -49,14 +60,23 @@ class Comment extends BasePage
         $this->loadChildren = false;
     }
 
-    #[On('sn-comment-created')]
-    public function refreshComments($data)
+
+    #[On('sn-comment-deleted-{comment.id}')]
+    public function onCommentDeleted()
     {
         // 刷新 model
         $this->comment->refresh();
 
-        // 展开子评论
-        $this->startLoadChildren();
+        // 子评论全部删除时，收起子评论列表
+        if ($this->comment->counter['comment_num'] <= 0) {
+            $this->loadChildren = false;
+        }
+    }
+
+    #[On('sn-comment-status-changed-{comment.id}')]
+    public function onStatusChanged()
+    {
+        $this->comment->refresh();
     }
 
     public function toggleLike()

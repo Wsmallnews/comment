@@ -58,10 +58,10 @@ trait CommentAction
                     $parent && $parent->whereKey($parent->getKey())->decrementJson('counter->comment_num');
                 }
 
-                $this->dispatch('sn-comment-deleted', data: [
-                    'commentId' => $comment->getKey(),
-                    'parentId' => $parentId,
-                ]);
+                // 有父评论时，通知父评论刷新 counter
+                if ($parentId) {
+                    $this->dispatch('sn-comment-deleted-' . ($parentId ?? 0), data: ['commentId' => $comment->getKey()]);
+                }
 
                 $action->success();
             });
@@ -90,14 +90,11 @@ trait CommentAction
             })
             ->action(function (Action $action, array $arguments, array $data): void {
                 $key = $arguments['key'] ?? null;
-                $comment = null;
-                $key && $comment = Utils::getCommentModel()::snScope($this->getScopeType(), $this->getScopeId())->find($key);
+                $comment = $key ? Utils::getCommentModel()::snScope($this->getScopeType(), $this->getScopeId())->find($key) : null;
 
                 $comment && $comment->update(['status' => ($data['status'] ?? CommentStatus::Normal)]);
 
-                $this->dispatch('sn-comment-status-changed', data: [
-                    'commentId' => $comment?->getKey(),
-                ]);
+                $comment?->getKey() && $this->dispatch('sn-comment-status-changed-' . $comment->getKey());
 
                 $action->success();
             });
@@ -188,15 +185,9 @@ trait CommentAction
 
                 // 根据操作类型触发不同事件
                 if (str($type)->contains('reply')) {
-                    $this->dispatch('sn-comment-replied', data: [
-                        'comment' => $comment,
-                        'parentId' => $comment->parent_id,
-                    ]);
+                    $this->dispatch('sn-comment-replied-' . ($comment->parent_id ?? 0), data: ['comment' => $comment]);
                 } else {
-                    $this->dispatch('sn-comment-created', data: [
-                        'comment' => $comment,
-                        'type' => $type,
-                    ]);
+                    $this->dispatch('sn-comment-created', data: ['comment' => $comment, 'type' => $type]);
                 }
 
                 return $comment;
