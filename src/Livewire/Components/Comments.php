@@ -79,7 +79,6 @@ class Comments extends Base implements HasActions, HasSchemas
         return $this->getProperty('emptyTipLabel', __('sn-comment::comment.no_comments_description'));
     }
 
-
     #[On('sn-comment-created')]
     public function refreshComments()
     {

@@ -45,7 +45,7 @@ trait CommentAction
                 $key = $arguments['key'] ?? null;
                 $comment = $key ? Utils::getCommentModel()::snScope($this->getScopeType(), $this->getScopeId())->find($key) : null;
                 $parentId = $comment?->parent_id;
-                
+
                 if (! $comment || ! $comment->delete()) {
                     $action->failure();
 

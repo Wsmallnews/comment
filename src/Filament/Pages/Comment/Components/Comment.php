@@ -60,7 +60,6 @@ class Comment extends BasePage
         $this->loadChildren = false;
     }
 
-
     #[On('sn-comment-deleted-{comment.id}')]
     public function onCommentDeleted()
     {
