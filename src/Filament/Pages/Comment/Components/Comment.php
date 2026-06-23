@@ -60,6 +60,17 @@ class Comment extends BasePage
         $this->loadChildren = false;
     }
 
+    #[On('sn-comment-replied-{comment.id}')]
+    public function onCommentReplied()
+    {
+        // 有新的子评论时，此事件可以刷新当前模型， 更新子评论数量，并默认展开子评论
+        // 刷新 model
+        $this->comment->refresh();
+
+        // 展开子评论
+        $this->startLoadChildren();
+    }
+
     #[On('sn-comment-deleted-{comment.id}')]
     public function onCommentDeleted()
     {
@@ -68,7 +79,7 @@ class Comment extends BasePage
 
         // 子评论全部删除时，收起子评论列表
         if ($this->comment->counter['comment_num'] <= 0) {
-            $this->loadChildren = false;
+            $this->hiddenChildren();
         }
     }
 

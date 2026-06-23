@@ -31,6 +31,16 @@ class Comment extends Base implements HasActions, HasSchemas
      */
     public Model $commentable;
 
+    /**
+     * 评论者
+     */
+    public ?Model $commenter = null;
+
+    /**
+     * 被回复者
+     */
+    public ?Model $beReplyer = null;
+
     public CommentModel $comment;
 
     public bool $loadChildren = false;
@@ -48,6 +58,7 @@ class Comment extends Base implements HasActions, HasSchemas
     #[On('sn-comment-replied-{comment.id}')]
     public function onCommentReplied()
     {
+        // 有新的子评论时，此事件可以刷新当前模型， 更新子评论数量，并默认展开子评论
         // 刷新 model
         $this->comment->refresh();
 
@@ -63,7 +74,7 @@ class Comment extends Base implements HasActions, HasSchemas
 
         // 子评论全部删除时，收起子评论列表
         if ($this->comment->counter['comment_num'] <= 0) {
-            $this->loadChildren = false;
+            $this->hiddenChildren();
         }
     }
 

@@ -80,12 +80,18 @@ class Comments extends Base implements HasActions, HasSchemas
     }
 
     #[On('sn-comment-created')]
-    public function refreshComments()
+    public function onCommentCreated()
     {
         $this->resetPagination();
     }
 
-    #[On('sn-comment-deleted')]
+    #[On('sn-comment-replied-{parentId}')]
+    public function onCommentReplied()
+    {
+        $this->resetPagination();
+    }
+
+    #[On('sn-comment-deleted-{parentId}')]
     public function onCommentDeleted()
     {
         $this->resetPagination();

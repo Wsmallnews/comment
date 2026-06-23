@@ -82,7 +82,7 @@ class Comments extends BasePage
     }
 
     #[On('sn-comment-created')]
-    public function refreshComments()
+    public function onCommentCreated()
     {
         $this->resetPagination();
     }
@@ -93,7 +93,7 @@ class Comments extends BasePage
         $this->resetPagination();
     }
 
-    #[On('sn-comment-deleted')]
+    #[On('sn-comment-deleted-{parentId}')]
     public function onCommentDeleted()
     {
         $this->resetPagination();

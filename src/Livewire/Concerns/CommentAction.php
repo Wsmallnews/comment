@@ -59,9 +59,7 @@ trait CommentAction
                 }
 
                 // 有父评论时，通知父评论刷新 counter
-                if ($parentId) {
-                    $this->dispatch('sn-comment-deleted-' . ($parentId ?? 0), data: ['commentId' => $comment->getKey()]);
-                }
+                $this->dispatch('sn-comment-deleted-' . ($parentId ?? 0), data: ['commentId' => $comment->getKey()]);
 
                 $action->success();
             });
