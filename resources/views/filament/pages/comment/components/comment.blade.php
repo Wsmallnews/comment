@@ -98,7 +98,7 @@
             </div>
 
             {{-- 子评论列表 --}}
-            @if ($comment->counter['comment_num'] > 0)
+            @if ($comment->counter['total_comment_num'] > 0)
                 @if (!$loadChildren)
                     <div class="sn-tip-text w-full flex items-center gap-2 relative">
                         <div class="w-8 inline-block">
@@ -107,7 +107,9 @@
                         <div class="flex justify-center items-center gap-2" wire:loading.flex wire:target="startLoadChildren">
                             <x-filament::loading-indicator class="size-4 inline-block" />{{ __('sn-comment::comment.loading_more') }}
                         </div>
-                        <div class="inline-block cursor-pointer" wire:loading.remove wire:target="startLoadChildren" wire:click="startLoadChildren">{{ __('sn-comment::comment.expand_replies', ['count' => $comment->counter['comment_num']]) }}</div>
+                        <div class="inline-block cursor-pointer" wire:loading.remove wire:target="startLoadChildren" wire:click="startLoadChildren">
+                            {{ __('sn-comment::comment.expand_replies', ['count' => $comment->counter['total_comment_num']]) }}
+                        </div>
                     </div>
                 @else
                     <div class="w-full" @hidden="$wire.hiddenChildren">

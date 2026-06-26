@@ -77,8 +77,8 @@ class Comment extends BasePage
         // 刷新 model
         $this->comment->refresh();
 
-        // 子评论全部删除时，收起子评论列表
-        if ($this->comment->counter['comment_num'] <= 0) {
+        // 子评论全部删除时，收起子评论列表（后端用全部评论数判断）
+        if ($this->comment->counter['total_comment_num'] <= 0) {
             $this->hiddenChildren();
         }
     }

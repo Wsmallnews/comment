@@ -13,8 +13,11 @@ use Illuminate\Filesystem\Filesystem;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Illuminate\Console\Scheduling\Schedule;
+use Wsmallnews\Comment\Commands\AutoAuditCommentsCommand;
 use Wsmallnews\Comment\Commands\CommentInstallCommand;
 use Wsmallnews\Comment\Support\Utils;
+use Wsmallnews\Support\Helpers\ScheduleHelper;
 
 class CommentServiceProvider extends PackageServiceProvider
 {
@@ -74,6 +77,15 @@ class CommentServiceProvider extends PackageServiceProvider
             namespace: 'sn-comment-fi-comment-components',
             classNamespace: 'Wsmallnews\\Comment\\Filament\\Pages\\Comment\\Components'
         );
+
+        // 自动审核定时任务（需在配置中开启）
+        $auditConfig = Utils::getConfig('schedule_auto_audit');
+        if (is_array($auditConfig) && ($auditConfig['enabled'] ?? false)) {
+            $this->callAfterResolving(Schedule::class, function (Schedule $schedule) use ($auditConfig) {
+                $task = $schedule->command('sn-comment:auto-audit');
+                ScheduleHelper::configure($task, $auditConfig);
+            });
+        }
     }
 
     protected function getAssetPackageName(): ?string
@@ -99,6 +111,7 @@ class CommentServiceProvider extends PackageServiceProvider
     protected function getCommands(): array
     {
         return [
+            AutoAuditCommentsCommand::class,
             CommentInstallCommand::class,
         ];
     }

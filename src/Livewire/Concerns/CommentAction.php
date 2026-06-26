@@ -10,6 +10,7 @@ use Filament\Support\Enums\Width;
 use Illuminate\Database\Eloquent\Model;
 use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Models\Comment;
+use Wsmallnews\Comment\Services\CommentCounterService;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Filament\Actions\ActionComponents;
@@ -44,21 +45,21 @@ trait CommentAction
             ->action(function (Action $action, array $arguments): void {
                 $key = $arguments['key'] ?? null;
                 $comment = $key ? Utils::getCommentModel()::snScope($this->getScopeType(), $this->getScopeId())->find($key) : null;
-                $parentId = $comment?->parent_id;
 
-                if (! $comment || ! $comment->delete()) {
+                if (! $comment) {
                     $action->failure();
 
                     return;
                 }
 
-                // 递减父评论的子评论计数
-                if ($parentId) {
-                    $parent = Utils::getCommentModel()::find($parentId);
-                    $parent && $parent->whereKey($parent->getKey())->decrementJson('counter->comment_num');
-                }
+                $parentId = $comment->parent_id;
 
-                // 有父评论时，通知父评论刷新 counter
+                // 更新计数器（在删除前调用，以便获取 status 和 commentable）
+                CommentCounterService::afterCommentDeleted($comment);
+
+                $comment->delete();
+
+                // 通知评论列表和父评论刷新
                 $this->dispatch('sn-comment-deleted-' . ($parentId ?? 0), data: ['commentId' => $comment->getKey()]);
 
                 $action->success();
@@ -90,9 +91,16 @@ trait CommentAction
                 $key = $arguments['key'] ?? null;
                 $comment = $key ? Utils::getCommentModel()::snScope($this->getScopeType(), $this->getScopeId())->find($key) : null;
 
-                $comment && $comment->update(['status' => ($data['status'] ?? CommentStatus::Normal)]);
+                if ($comment) {
+                    $oldStatus = $comment->status;
+                    $comment->update(['status' => ($data['status'] ?? CommentStatus::Normal)]);
 
-                $comment?->getKey() && $this->dispatch('sn-comment-status-changed-' . $comment->getKey());
+                    // 更新评论数量
+                    CommentCounterService::afterStatusChanged($comment, $oldStatus, $comment->status);
+
+                    // 触发事件
+                    $this->dispatch('sn-comment-status-changed-' . $comment->getKey());
+                }
 
                 $action->success();
             });
@@ -173,13 +181,8 @@ trait CommentAction
 
                 $comment->fill($data)->save();
 
-                // 增加上级评论子评论数量
-                if ($parentComment) {
-                    // 确定上级，如果有 parent_id，就查上级，否者自己就是上级
-                    $parent = $parentComment->parent_id ? $parentComment->parent : $parentComment;
-                    // 增加评论数 （不更新时间戳）
-                    $parent && $parent->whereKey($parent->getKey())->incrementJson('counter->comment_num');
-                }
+                // 更新计数器
+                CommentCounterService::afterCommentCreated($comment, $parentComment, $this->commentable);
 
                 // 根据操作类型触发不同事件
                 if (str($type)->contains('reply')) {
