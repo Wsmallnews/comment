@@ -98,7 +98,7 @@ class CommentCounterService
         if ($comment->parent_id) {
             $parent = Utils::getCommentModel()::find($comment->parent_id);
             if ($parent) {
-                $isVisible 
+                $isVisible
                     ? $parent->whereKey($parent->getKey())->incrementJson('counter->comment_num')
                     : $parent->whereKey($parent->getKey())->decrementJson('counter->comment_num');
             }
