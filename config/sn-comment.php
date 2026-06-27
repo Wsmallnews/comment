@@ -57,14 +57,14 @@ return [
         /**
          * Auto-audit comments frequency
          * Support all Laravel schedule frequency methods, like:
-         * 'everyMinute', 'everyFiveMinutes', 'everyTenMinutes', 
+         * 'everyMinute', 'everyFiveMinutes', 'everyTenMinutes',
          * 'everyThirtyMinutes', 'hourly', 'daily', 'weekly'
-         * 
+         *
          * Parameter format:
          * dailyAt:13:00 => dailyAt('13:00') | monthlyOn:4,15:00 => monthlyOn(4, '15:00')
          */
         'frequency' => 'everyFiveMinutes',
-        
+
         /**
          * Enable without overlapping tasks
          */
