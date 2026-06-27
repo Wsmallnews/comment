@@ -8,6 +8,7 @@ use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\Support\Icons\Heroicon;
 use Wsmallnews\Comment\Filament\Pages\Comment\CommentPage;
+use Wsmallnews\Comment\Filament\Resources\Comments\CommentResource;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Concerns\Plugin\HasCustomProperties;
 
@@ -30,6 +31,12 @@ class CommentPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
+        if (Utils::getPanelRegister('resources')) {
+            $panel->resources([
+                ...Utils::getPanelRegister('resources'),
+            ]);
+        }
+
         if (Utils::getPanelRegister('pages')) {
             $panel->pages([
                 ...Utils::getPanelRegister('pages'),
@@ -66,10 +73,17 @@ class CommentPlugin implements Plugin
             'globalSearchResultsLimit' => 25,
 
             'resources' => [
+                CommentResource::class => [
+                    'modelLabel' => fn () => __('sn-comment::comment.comment_resource.model_label'),
+                    'pluralModelLabel' => fn () => __('sn-comment::comment.comment_resource.plural_model_label'),
+                    'navigationLabel' => fn () => __('sn-comment::comment.comment_resource.navigation_label'),
+                    'navigationIcon' => Heroicon::OutlinedChatBubbleLeft,
+                    'activeNavigationIcon' => Heroicon::ChatBubbleLeft,
+                    'navigationSort' => 2,
+                ],
                 CommentPage::class => [
                     'modelLabel' => fn () => __('sn-comment::comment.comment_page.model_label'),
                     'pluralModelLabel' => fn () => __('sn-comment::comment.comment_page.plural_model_label'),
-
                     'navigationLabel' => fn () => __('sn-comment::comment.comment_page.navigation_label'),
                     'navigationIcon' => Heroicon::OutlinedChatBubbleLeft,
                     'activeNavigationIcon' => Heroicon::ChatBubbleLeft,

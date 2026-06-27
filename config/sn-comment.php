@@ -2,6 +2,7 @@
 
 use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Filament\Pages\Comment\CommentPage;
+use Wsmallnews\Comment\Filament\Resources\Comments\CommentResource;
 use Wsmallnews\Comment\Models;
 use Wsmallnews\Support\Enums\ContentType;
 
@@ -36,6 +37,9 @@ return [
      * Panel register
      */
     'panel_register' => [
+        'resources' => [
+            CommentResource::class,
+        ],
         'pages' => [
             CommentPage::class,
         ],

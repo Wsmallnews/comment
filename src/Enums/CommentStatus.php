@@ -20,12 +20,15 @@ enum CommentStatus: string implements HasColor, HasIcon, HasLabel
 
     case Hidden = 'hidden';
 
+    case Rejected = 'rejected';
+
     public function getLabel(): string | Htmlable | null
     {
         return match ($this) {
             self::Normal => __('sn-comment::comment.comment_status.normal'),
             self::Unaudited => __('sn-comment::comment.comment_status.unaudited'),
             self::Hidden => __('sn-comment::comment.comment_status.hidden'),
+            self::Rejected => __('sn-comment::comment.comment_status.rejected'),
         };
     }
 
@@ -35,6 +38,7 @@ enum CommentStatus: string implements HasColor, HasIcon, HasLabel
             self::Normal => 'success',
             self::Unaudited => 'warning',
             self::Hidden => 'gray',
+            self::Rejected => 'danger',
         };
     }
 
@@ -44,6 +48,7 @@ enum CommentStatus: string implements HasColor, HasIcon, HasLabel
             self::Normal => Heroicon::Eye,
             self::Unaudited => Heroicon::DocumentCheck,
             self::Hidden => Heroicon::EyeSlash,
+            self::Rejected => Heroicon::ShieldExclamation,
         };
     }
 }

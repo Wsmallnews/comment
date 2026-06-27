@@ -58,6 +58,12 @@ class Comments extends BasePage
     public ?Model $beReplyer = null;
 
     /**
+     * 指定查询的评论 ID（顶级评论）。
+     * 非空时只查询 id 在此列表中的评论。
+     */
+    public array $ids = [];
+
+    /**
      * 评论列表
      */
     public Collection $comments;
@@ -117,6 +123,9 @@ class Comments extends BasePage
             ->when($this->isFormattedContent(), function ($query) {
                 $query->with('commentContent');
             })
+            ->when(! empty($this->ids), function ($query) {
+                $query->whereIn('id', $this->ids);
+            })
             ->where('parent_id', $this->parentId)
             ->orderBy('id', 'desc');
 
@@ -134,6 +143,7 @@ class Comments extends BasePage
     {
         return md5(serialize([
             'parentId' => $this->parentId,
+            'ids' => $this->ids,
             'commentable' => $this->commentable?->getKey(),
             'commenter' => $this->commenter?->getKey(),
             'beReplyer' => $this->beReplyer?->getKey(),

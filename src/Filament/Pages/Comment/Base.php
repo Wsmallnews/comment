@@ -21,7 +21,7 @@ abstract class Base extends Page
 
     protected static string | BackedEnum | null $activeNavigationIcon = Heroicon::ChatBubbleLeft;
 
-    protected static ?string $slug = 'comments';
+    protected static ?string $slug = 'page-comments';
 
     protected static string $recordTitleAttribute = 'content';
 
