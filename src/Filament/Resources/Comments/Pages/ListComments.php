@@ -2,8 +2,8 @@
 
 namespace Wsmallnews\Comment\Filament\Resources\Comments\Pages;
 
-use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
 use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Filament\Resources\Comments\CommentResource;
 use Wsmallnews\Comment\Support\Utils;

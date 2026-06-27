@@ -118,6 +118,7 @@ class CommentTable
             ->sortable()
             ->toggleable();
     }
+
     protected static function updateAtColumn(): Tables\Columns\TextColumn
     {
         return Tables\Columns\TextColumn::make('updated_at')
