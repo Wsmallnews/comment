@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>评论详情 — Filament Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e' },
+                        success: { 50:'#f0fdf4',100:'#dcfce7',200:'#bbf7d0',500:'#22c55e',600:'#16a34a',700:'#15803d',800:'#166534' },
+                        warning: { 50:'#fffbeb',100:'#fef3c7',200:'#fde68a',500:'#f59e0b',600:'#d97706',700:'#b45309',800:'#92400e' },
+                        danger: { 50:'#fef2f2',100:'#fee2e2',200:'#fecaca',500:'#ef4444',600:'#dc2626',700:'#b91c1c',800:'#991b1b' },
+                        gray: { 50:'#f9fafb',100:'#f3f4f6',200:'#e5e7eb',300:'#d1d5db',400:'#9ca3af',500:'#6b7280',600:'#4b5563',700:'#374151',800:'#1f2937',900:'#111827',950:'#030712' },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+        * { font-family: 'DM Sans', system-ui, sans-serif; }
+        body { background: #f3f4f6; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; }
+        .card { background:#fff; border-radius:0.75rem; box-shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04); overflow:hidden; max-width:800px; width:100%; }
+        .badge { display:inline-flex; align-items:center; gap:0.375rem; padding:0.125rem 0.625rem; border-radius:9999px; font-size:0.75rem; font-weight:600; line-height:1.25rem; }
+        .stat-ring { width:2.75rem; height:2.75rem; border-radius:9999px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.875rem; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+
+    <!-- ===== Header ===== -->
+    <div class="bg-gray-900 px-6 py-5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+            <span class="text-gray-300 text-sm font-medium">评论 #</span>
+            <span class="text-white text-lg font-bold">1,284</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <!-- 状态切换：点击可切换查看不同状态效果 -->
+            <span class="badge bg-green-100 text-green-800" id="status-badge">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                Normal
+            </span>
+            <button class="text-gray-400 hover:text-white transition text-xs font-medium px-2 py-1 rounded border border-gray-700 hover:border-gray-500" onclick="cycleStatus()">切换状态</button>
+        </div>
+    </div>
+
+    <!-- ===== Content Body ===== -->
+    <div class="p-6 space-y-6">
+
+        <!-- Commenter -->
+        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+            <div class="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center overflow-hidden border-2 border-white shadow-sm">
+                <span class="text-primary-700 font-bold text-lg">张</span>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="font-semibold text-gray-900 text-base">张三</div>
+                <div class="text-sm text-gray-500">zhangsan@example.com</div>
+            </div>
+            <div class="text-xs text-gray-400 bg-white px-3 py-1.5 rounded-full border border-gray-100">
+                评论者
+            </div>
+        </div>
+
+        <!-- Be Replyer (if reply) -->
+        <div class="flex items-center gap-3 px-4 py-3 bg-amber-50 border border-amber-100 rounded-xl">
+            <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+            <span class="text-sm text-gray-600">回复给</span>
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-amber-200 flex items-center justify-center text-xs font-bold text-amber-700">李</div>
+                <span class="text-sm font-medium text-gray-800">李四</span>
+            </div>
+            <span class="text-xs text-amber-500 ml-auto">被回复者</span>
+        </div>
+
+        <!-- Comment Content -->
+        <div>
+            <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">评论内容</h4>
+            <div class="prose prose-sm max-w-none text-gray-800 bg-white border border-gray-100 rounded-xl p-5 leading-relaxed">
+                这家店的服务真的很棒！菜品新鲜，环境也很舒适。下次还会再来光顾的。特别喜欢他们家的招牌菜，推荐大家都来试试看。<br><br>补充一点：停车也很方便，就在楼下有地下车库。
+            </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="grid grid-cols-3 gap-3">
+            <div class="flex items-center gap-3 bg-blue-50 border border-blue-100 rounded-xl p-4">
+                <div class="stat-ring bg-blue-100 text-blue-700">5</div>
+                <div>
+                    <div class="text-xl font-bold text-blue-800">5</div>
+                    <div class="text-xs text-blue-500">可见回复</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-xl p-4">
+                <div class="stat-ring bg-gray-200 text-gray-600">7</div>
+                <div>
+                    <div class="text-xl font-bold text-gray-700">7</div>
+                    <div class="text-xs text-gray-400">总回复</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 bg-red-50 border border-red-100 rounded-xl p-4">
+                <div class="stat-ring bg-red-100 text-red-500">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                </div>
+                <div>
+                    <div class="text-xl font-bold text-red-700">12</div>
+                    <div class="text-xs text-red-400">点赞</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meta Info -->
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-gray-50 border border-gray-100 rounded-xl p-4">
+                <div class="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">创建时间</div>
+                <div class="text-sm font-medium text-gray-800">2026-06-27 14:30:00</div>
+                <div class="text-xs text-gray-400 mt-0.5">3 小时前</div>
+            </div>
+            <div class="bg-gray-50 border border-gray-100 rounded-xl p-4">
+                <div class="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">作用域</div>
+                <div class="flex items-center gap-2">
+                    <code class="text-xs bg-white border border-gray-200 rounded px-2 py-0.5 text-gray-600">sn-cms</code>
+                    <span class="text-gray-300">·</span>
+                    <code class="text-xs bg-white border border-gray-200 rounded px-2 py-0.5 text-gray-600">0</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Commentable -->
+        <div>
+            <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">评论主体</h4>
+            <a href="#" class="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-xl p-4 hover:bg-gray-100 transition group">
+                <svg class="w-5 h-5 text-gray-400 group-hover:text-primary-500 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium text-gray-800 group-hover:text-primary-600 transition">Post</div>
+                    <div class="text-xs text-gray-400">#42 — 这是一篇示例文章的标题</div>
+                </div>
+                <svg class="w-4 h-4 text-gray-300 group-hover:text-primary-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+        </div>
+
+        <!-- Parent Comment -->
+        <div>
+            <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">父级评论</h4>
+            <div class="bg-gray-50 border border-gray-100 rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center text-xs font-bold text-primary-600">王</div>
+                    <span class="text-sm font-medium text-gray-700">王五</span>
+                    <span class="text-xs text-gray-400">#1,280</span>
+                </div>
+                <div class="text-sm text-gray-600 line-clamp-2 pl-8">
+                    这个评价很中肯，我也觉得这家店不错...
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== Footer Actions ===== -->
+    <div class="border-t border-gray-100 px-6 py-3 flex items-center justify-end gap-2 bg-gray-50/50">
+        <button class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition">返回列表</button>
+        <button class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition">审核通过</button>
+        <button class="px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded-lg hover:bg-gray-700 transition">隐藏</button>
+        <button class="px-4 py-2 text-sm font-medium text-white bg-danger-600 rounded-lg hover:bg-danger-700 transition">拒绝</button>
+    </div>
+
+</div>
+
+<!-- ===== Status Cycle Demo ===== -->
+<script>
+const statuses = [
+    { name: 'Normal', cls: 'bg-green-100 text-green-800', icon: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>' },
+    { name: 'Unaudited', cls: 'bg-amber-100 text-amber-800', icon: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' },
+    { name: 'Hidden', cls: 'bg-gray-100 text-gray-600', icon: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243"/></svg>' },
+    { name: 'Rejected', cls: 'bg-red-100 text-red-800', icon: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v5m0 4h.01M20.5 4.5L15 10a5 5 0 01-6 0L3.5 4.5m17 0L12 20m8.5-15.5H3.5"/></svg>' }
+];
+let idx = 0;
+function cycleStatus() {
+    idx = (idx + 1) % statuses.length;
+    const s = statuses[idx];
+    const badge = document.getElementById('status-badge');
+    badge.className = 'badge ' + s.cls;
+    badge.innerHTML = s.icon + ' ' + s.name;
+}
+</script>
+
+</body>
+</html>
