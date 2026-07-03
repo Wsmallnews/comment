@@ -16,10 +16,11 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 use Wsmallnews\Comment\Enums\CommentStatus;
-use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Comment\Services\CommentCounterService;
 use Wsmallnews\Comment\Support\Utils;
+use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Filament\Filters\FilterComponents;
 use Wsmallnews\Support\Filament\Tables\ColumnComponents;
 use Wsmallnews\Support\Helpers\FilamentModelHelper;
@@ -83,7 +84,7 @@ class CommentTable
                     return $state;
                 }
 
-                return new \Illuminate\Support\HtmlString(
+                return new HtmlString(
                     '<span class="inline-flex items-center gap-1 text-gray-500 dark:text-gray-400">'
                     . svg('heroicon-m-document-text', 'w-4 h-4')->toHtml()
                     . e($record->content_type->getLabel())
