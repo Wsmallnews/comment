@@ -17,9 +17,12 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Wsmallnews\Comment\Enums\CommentStatus;
+use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Comment\Services\CommentCounterService;
 use Wsmallnews\Comment\Support\Utils;
-use Wsmallnews\Support\Filament\Concerns\ModelFormat;
+use Wsmallnews\Support\Filament\Filters\FilterComponents;
+use Wsmallnews\Support\Filament\Tables\ColumnComponents;
+use Wsmallnews\Support\Helpers\FilamentModelHelper;
 
 class CommentTable
 {
@@ -36,6 +39,7 @@ class CommentTable
                 static::updateAtColumn(),
             ])
             ->defaultSort('created_at', 'desc')
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('commentContent'))
             ->searchable()
             ->filters([
                 static::commentableFilter(),
@@ -70,38 +74,53 @@ class CommentTable
             ->toggleable();
     }
 
-    protected static function contentColumn(): Tables\Columns\ViewColumn
+    protected static function contentColumn(): Tables\Columns\TextColumn
     {
-        return Tables\Columns\ViewColumn::make('content')
+        return Tables\Columns\TextColumn::make('content')
             ->label(__('sn-comment::comment.comment_resource.table.content'))
-            ->view('sn-comment::filament.resources.comments.tables.columns.comment-content')
+            ->formatStateUsing(function ($state, $record) {
+                if ($record->content_type === ContentType::Textarea) {
+                    return $state;
+                }
+
+                return new \Illuminate\Support\HtmlString(
+                    '<span class="inline-flex items-center gap-1 text-gray-500 dark:text-gray-400">'
+                    . svg('heroicon-m-document-text', 'w-4 h-4')->toHtml()
+                    . e($record->content_type->getLabel())
+                    . '</span>'
+                );
+            })
+            ->lineClamp(2)
+            ->tooltip(fn ($record) => $record->content_type === ContentType::Textarea ? $record->content : null)
+            ->searchable(['content', 'content.content'])
+            ->action(
+                Action::make('viewContent')
+                    ->modal()
+                    ->modalHeading(fn ($record) => __('sn-comment::comment.comment_resource.comment_content') . ' #' . $record->id)
+                    ->modalWidth(Width::ThreeExtraLarge)
+                    ->modalContent(fn ($record) => view('sn-comment::filament.resources.comments.tables.columns.comment-content-modal', [
+                        'record' => $record,
+                    ]))
+            )
             ->toggleable();
     }
 
     protected static function commenterColumn(): Tables\Columns\TextColumn
     {
-        return Tables\Columns\TextColumn::make('commenter_name')
-            ->label(__('sn-comment::comment.comment_resource.table.commenter'))
-            ->searchable()
-            ->sortable()
-            ->toggleable();
+        return ColumnComponents::morphColumn(
+            'commenter_type',
+            __('sn-comment::comment.comment_resource.table.commenter'),
+            fn ($record) => $record->commenter,
+        );
     }
 
     protected static function commentableColumn(): Tables\Columns\TextColumn
     {
-        return Tables\Columns\TextColumn::make('commentable_type')
-            ->label(__('sn-comment::comment.comment_resource.table.commentable'))
-            ->formatStateUsing(function ($state, $record) {
-                $title = ModelFormat::getTitle($record->commentable);
-                $typeLabel = ModelFormat::getTypeLabel($state);
-
-                return "#{$record->commentable_id} {$title}";
-            })
-            ->description(fn ($record) => ModelFormat::getTypeLabel($record->commentable_type))
-            ->url(fn ($record) => ModelFormat::getUrl($record->commentable))
-            ->searchable()
-            ->sortable()
-            ->toggleable();
+        return ColumnComponents::morphColumn(
+            'commentable_type',
+            __('sn-comment::comment.comment_resource.table.commentable'),
+            fn ($record) => $record->commentable,
+        );
     }
 
     protected static function statusColumn(): Tables\Columns\TextColumn
@@ -131,6 +150,21 @@ class CommentTable
 
     protected static function commentableFilter(): Tables\Filters\Filter
     {
+        return FilterComponents::morphFilter(
+            type: 'commentable',
+            label: __('sn-comment::comment.comment_resource.filter.commentable'),
+            options: function () {
+                $types = Utils::getCommentModel()::query()
+                    ->distinct()
+                    ->whereNotNull('commentable_type')
+                    ->pluck('commentable_type', 'commentable_type');
+
+                return FilamentModelHelper::getTypeOptions($types);
+            },
+            keywordSearchFields: ['title'],
+            morphKeywordPlaceholder: __('sn-comment::comment.comment_resource.filter.commentable_keyword_placeholder')
+        );
+
         return Tables\Filters\Filter::make('commentable')
             ->label(__('sn-comment::comment.comment_resource.filter.commentable'))
             ->schema([
@@ -140,7 +174,7 @@ class CommentTable
                             $types = Utils::getCommentModel()::query()
                                 ->distinct()
                                 ->whereNotNull('commentable_type')
-                                ->pluck('commentable_type');
+                                ->pluck('commentable_type', 'commentable_type');
 
                             return $types->mapWithKeys(fn ($type) => [
                                 $type => static::getCommentableTypeLabel($type),
@@ -263,6 +297,6 @@ class CommentTable
 
     public static function getCommentableTypeLabel(string $type): string
     {
-        return ModelFormat::getTypeLabel($type);
+        return FilamentModelHelper::getTypeLabel($type);
     }
 }
