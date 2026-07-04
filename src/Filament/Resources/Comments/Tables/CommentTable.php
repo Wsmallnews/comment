@@ -16,7 +16,6 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\HtmlString;
 use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Services\CommentCounterService;
 use Wsmallnews\Comment\Support\Utils;
