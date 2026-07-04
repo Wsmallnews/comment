@@ -77,33 +77,19 @@ class CommentTable
 
     protected static function contentColumn(): Tables\Columns\TextColumn
     {
-        return Tables\Columns\TextColumn::make('content')
-            ->label(__('sn-comment::comment.comment_resource.table.content'))
-            ->formatStateUsing(function ($state, $record) {
-                if ($record->content_type === ContentType::Textarea) {
-                    return $state;
-                }
+        return ColumnComponents::contentColumn(
+            name: 'content',
+            label: __('sn-comment::comment.comment_resource.table.content'),
+            searchable: ['content'],
+            actionResolver: function ($action) {
+                $action->modalContent(fn ($record) => view('sn-support::filament.tables.columns.content-modal', [
+                    'contentType' => $record->content_type,
+                    'content' => $record->content_type === ContentType::Textarea ? $record->content : $record->commentContent?->content,
+                ]));
 
-                return new HtmlString(
-                    '<span class="inline-flex items-center gap-1 text-gray-500 dark:text-gray-400">'
-                    . svg('heroicon-m-document-text', 'w-4 h-4')->toHtml()
-                    . e($record->content_type->getLabel())
-                    . '</span>'
-                );
-            })
-            ->lineClamp(2)
-            ->tooltip(fn ($record) => $record->content_type === ContentType::Textarea ? $record->content : null)
-            ->searchable(['content', 'content.content'])
-            ->action(
-                Action::make('viewContent')
-                    ->modal()
-                    ->modalHeading(fn ($record) => __('sn-comment::comment.comment_resource.comment_content') . ' #' . $record->id)
-                    ->modalWidth(Width::ThreeExtraLarge)
-                    ->modalContent(fn ($record) => view('sn-comment::filament.resources.comments.tables.columns.comment-content-modal', [
-                        'record' => $record,
-                    ]))
-            )
-            ->toggleable();
+                return $action;
+            }
+        );
     }
 
     protected static function commenterColumn(): Tables\Columns\TextColumn

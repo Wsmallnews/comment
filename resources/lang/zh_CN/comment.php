@@ -64,7 +64,6 @@ return [
         ],
         'action' => [
             'view_related' => '查看关联评论',
-            'view_content' => '查看内容',
             'bulk_approve' => '批量审核通过',
             'bulk_approve_heading' => '确认批量审核通过',
             'bulk_approve_description' => '确定要将选中的评论批量审核通过吗？',

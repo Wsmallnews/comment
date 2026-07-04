@@ -64,7 +64,6 @@ return [
         ],
         'action' => [
             'view_related' => 'View Related Comments',
-            'view_content' => 'View Content',
             'bulk_approve' => 'Bulk Approve',
             'bulk_approve_heading' => 'Confirm Bulk Approve',
             'bulk_approve_description' => 'Are you sure you want to approve the selected comments?',
