@@ -2,7 +2,7 @@
 
 namespace Wsmallnews\Comment\Livewire\Concerns;
 
-trait CanComment
+trait HasComment
 {
-    public bool $canComment = true;
+    public bool $hasComment = true;
 }
