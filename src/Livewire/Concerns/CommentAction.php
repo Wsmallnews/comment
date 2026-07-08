@@ -54,9 +54,15 @@ trait CommentAction
 
                 $parentId = $comment->parent_id;
 
-                // 更新计数器（在删除前调用，以便获取 status 和 commentable）
+                // 处理评论数量，自动判断是否有子评论，有则级联处理计数器
                 CommentCounterService::afterCommentDeleted($comment);
 
+                // 级联软删除子评论
+                if ($comment->children?->isNotEmpty()) {
+                    $comment->children->each->delete();
+                }
+
+                // 删除自己
                 $comment->delete();
 
                 // 通知评论列表和父评论刷新

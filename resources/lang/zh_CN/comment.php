@@ -64,6 +64,7 @@ return [
         ],
         'action' => [
             'view_related' => '查看关联评论',
+            'delete_description' => '确定要删除此评论吗？此操作将同时删除评论关联的所有回复',
             'bulk_approve' => '批量审核通过',
             'bulk_approve_heading' => '确认批量审核通过',
             'bulk_approve_description' => '确定要将选中的评论批量审核通过吗？',
@@ -73,6 +74,7 @@ return [
             'bulk_reject' => '批量拒绝',
             'bulk_reject_heading' => '确认批量拒绝',
             'bulk_reject_description' => '确定要将选中的评论批量拒绝吗？',
+            'bulk_delete_description' => '确定要将选中的评论批量删除吗？此操作将同时删除评论关联的所有回复',
         ],
         'comment_content' => '评论内容',
         'comment_title' => '评论',

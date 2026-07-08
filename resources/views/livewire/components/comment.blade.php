@@ -20,7 +20,7 @@
             @endif
         </div>
 
-        <div class="flex flex-col gap-4 grow">
+        <div class="flex flex-col gap-4 grow overflow-hidden">
             <div class="w-full flex flex-col gap-2 grow">
                 <div class="flex items-center gap-2">
                     <div class="sn-tip-text inline-block">{{ $comment->commenter_name }}</div>

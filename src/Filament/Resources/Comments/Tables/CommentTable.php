@@ -16,10 +16,13 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Wsmallnews\Comment\Enums\CommentStatus;
+use Wsmallnews\Comment\Models\Comment;
 use Wsmallnews\Comment\Services\CommentCounterService;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Enums\ContentType;
+use Wsmallnews\Support\Filament\Actions\ActionComponents;
 use Wsmallnews\Support\Filament\Filters\FilterComponents;
 use Wsmallnews\Support\Filament\Tables\ColumnComponents;
 use Wsmallnews\Support\Helpers\FilamentModelHelper;
@@ -57,7 +60,7 @@ class CommentTable
                     static::bulkApproveAction(),
                     static::bulkHideAction(),
                     static::bulkRejectAction(),
-                    DeleteBulkAction::make(),
+                    static::bulkDeleteAction(),
                 ]),
             ]);
     }
@@ -219,67 +222,128 @@ class CommentTable
 
     protected static function deleteAction(): DeleteAction
     {
-        return DeleteAction::make();
+        return DeleteAction::make()
+            ->modalDescription(__('sn-comment::comment.comment_resource.action.delete_description'))
+            ->using(function (Comment $record): bool {
+                if ($record->trashed()) {
+                    return false;
+                }
+
+                // 处理评论数量，自动判断是否有子评论，有则级联处理计数器
+                CommentCounterService::afterCommentDeleted($record);
+
+                if ($record->children?->isNotEmpty()) {
+                    $record->children->each->delete();
+                }
+
+                $record->delete();
+
+                return true;
+            });
     }
 
     // ========================= Bulk Actions =========================
 
     protected static function bulkApproveAction(): BulkAction
     {
-        return BulkAction::make('bulk_approve')
+        return ActionComponents::bulkAction(
+            name: 'bulk_approve', 
+            process: function (BulkAction $action, Comment $record): void {
+                $oldStatus = $record->status;
+
+                if ($oldStatus === CommentStatus::Normal) {
+                    $action->reportBulkProcessingFailure();
+
+                    return;
+                }
+
+                $record->update(['status' => CommentStatus::Normal]);
+                CommentCounterService::afterStatusChanged($record, $oldStatus, CommentStatus::Normal);
+            }
+        )
             ->label(__('sn-comment::comment.comment_resource.action.bulk_approve'))
             ->icon(Heroicon::CheckCircle)
             ->color('success')
-            ->requiresConfirmation()
             ->modalHeading(__('sn-comment::comment.comment_resource.action.bulk_approve_heading'))
-            ->modalDescription(__('sn-comment::comment.comment_resource.action.bulk_approve_description'))
-            ->action(function ($records) {
-                static::changeStatus($records, CommentStatus::Normal);
-            });
+            ->modalDescription(__('sn-comment::comment.comment_resource.action.bulk_approve_description'));
     }
 
     protected static function bulkHideAction(): BulkAction
     {
-        return BulkAction::make('bulk_hide')
+        return ActionComponents::bulkAction(
+            name: 'bulk_hide', 
+            process: function (BulkAction $action, Comment $record): void {
+                $oldStatus = $record->status;
+
+                if ($oldStatus === CommentStatus::Hidden) {
+                    $action->reportBulkProcessingFailure();
+
+                    return;
+                }
+
+                $record->update(['status' => CommentStatus::Hidden]);
+                CommentCounterService::afterStatusChanged($record, $oldStatus, CommentStatus::Hidden);
+            }
+        )
             ->label(__('sn-comment::comment.comment_resource.action.bulk_hide'))
             ->icon(Heroicon::EyeSlash)
             ->color('gray')
-            ->requiresConfirmation()
             ->modalHeading(__('sn-comment::comment.comment_resource.action.bulk_hide_heading'))
-            ->modalDescription(__('sn-comment::comment.comment_resource.action.bulk_hide_description'))
-            ->action(function ($records) {
-                static::changeStatus($records, CommentStatus::Hidden);
-            });
+            ->modalDescription(__('sn-comment::comment.comment_resource.action.bulk_hide_description'));
     }
 
     protected static function bulkRejectAction(): BulkAction
     {
-        return BulkAction::make('bulk_reject')
+        return ActionComponents::bulkAction(
+            name: 'bulk_reject', 
+            process: function (BulkAction $action, Comment $record): void {
+                $oldStatus = $record->status;
+
+                if ($oldStatus === CommentStatus::Rejected) {
+                    $action->reportBulkProcessingFailure();
+
+                    return;
+                }
+
+                $record->update(['status' => CommentStatus::Rejected]);
+                CommentCounterService::afterStatusChanged($record, $oldStatus, CommentStatus::Rejected);
+            }
+        )
             ->label(__('sn-comment::comment.comment_resource.action.bulk_reject'))
             ->icon(Heroicon::ShieldExclamation)
             ->color('danger')
-            ->requiresConfirmation()
             ->modalHeading(__('sn-comment::comment.comment_resource.action.bulk_reject_heading'))
-            ->modalDescription(__('sn-comment::comment.comment_resource.action.bulk_reject_description'))
-            ->action(function ($records) {
-                static::changeStatus($records, CommentStatus::Rejected);
+            ->modalDescription(__('sn-comment::comment.comment_resource.action.bulk_reject_description'));
+    }
+
+    protected static function bulkDeleteAction(): BulkAction
+    {
+        return DeleteBulkAction::make()
+            ->modalDescription(__('sn-comment::comment.comment_resource.action.bulk_delete_description'))
+            ->using(function (DeleteBulkAction $action, Collection $records): void {
+                ActionComponents::safeBulkProcess(
+                    action: $action,
+                    records: $records,
+                    process: function (BulkAction $action, Comment $record): void {
+                        // 已被级联删除的子评论静默跳过，不计入失败
+                        if ($record->trashed()) {
+                            return;
+                        }
+
+                        // 处理评论数量，自动判断是否有子评论，有则级联处理计数器
+                        CommentCounterService::afterCommentDeleted($record);
+
+                        if ($record->children?->isNotEmpty()) {
+                            $record->children->each->delete();
+                        }
+
+                        $record->delete() || $action->reportBulkProcessingFailure();
+                    },
+                    prepare: fn (Collection $records) => $records->load('children'),
+                );
             });
     }
 
-    protected static function changeStatus($records, CommentStatus $newStatus): void
-    {
-        foreach ($records as $comment) {
-            $oldStatus = $comment->status;
-            if ($oldStatus === $newStatus) {
-                continue;
-            }
-
-            $comment->update(['status' => $newStatus]);
-            CommentCounterService::afterStatusChanged($comment, $oldStatus, $newStatus);
-        }
-    }
-
-    // ========================= Helpers =========================
 
     public static function getCommentableTypeLabel(string $type): string
     {

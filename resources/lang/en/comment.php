@@ -64,6 +64,7 @@ return [
         ],
         'action' => [
             'view_related' => 'View Related Comments',
+            'delete_description' => 'Are you sure you want to delete this comment? This action will also delete all replies.',
             'bulk_approve' => 'Bulk Approve',
             'bulk_approve_heading' => 'Confirm Bulk Approve',
             'bulk_approve_description' => 'Are you sure you want to approve the selected comments?',
@@ -73,6 +74,7 @@ return [
             'bulk_reject' => 'Bulk Reject',
             'bulk_reject_heading' => 'Confirm Bulk Reject',
             'bulk_reject_description' => 'Are you sure you want to reject the selected comments?',
+            'bulk_delete_description' => 'Are you sure you want to delete the selected comments? This action will also delete all replies.',
         ],
         'comment_content' => 'Comment Content',
         'comment_title' => 'Comment',
