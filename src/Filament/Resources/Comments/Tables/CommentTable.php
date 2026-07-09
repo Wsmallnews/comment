@@ -118,7 +118,7 @@ class CommentTable
         return ColumnComponents::morphColumn(
             'be_replyer_type',
             __('sn-comment::comment.comment_resource.table.be_replyer'),
-            fn($record) => $record->beReplyer,
+            fn ($record) => $record->beReplyer,
         );
     }
 
@@ -257,7 +257,7 @@ class CommentTable
     protected static function bulkApproveAction(): BulkAction
     {
         return ActionComponents::bulkAction(
-            name: 'bulk_approve', 
+            name: 'bulk_approve',
             process: function (BulkAction $action, Comment $record): void {
                 $oldStatus = $record->status;
 
@@ -281,7 +281,7 @@ class CommentTable
     protected static function bulkHideAction(): BulkAction
     {
         return ActionComponents::bulkAction(
-            name: 'bulk_hide', 
+            name: 'bulk_hide',
             process: function (BulkAction $action, Comment $record): void {
                 $oldStatus = $record->status;
 
@@ -305,7 +305,7 @@ class CommentTable
     protected static function bulkRejectAction(): BulkAction
     {
         return ActionComponents::bulkAction(
-            name: 'bulk_reject', 
+            name: 'bulk_reject',
             process: function (BulkAction $action, Comment $record): void {
                 $oldStatus = $record->status;
 
@@ -353,7 +353,6 @@ class CommentTable
                 );
             });
     }
-
 
     public static function getCommentableTypeLabel(string $type): string
     {

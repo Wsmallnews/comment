@@ -43,8 +43,7 @@ class CommentCounterService
      * 自动检测是否有子评论：有子评论时级联处理所有子评论计数器，无子评论时仅处理自身。
      * 注意：调用此方法时 $comment 尚未被删除（需要获取 status 和 commentable）。
      *
-     * @param Comment $comment 被删除的评论实例
-     * @return void
+     * @param  Comment  $comment  被删除的评论实例
      */
     public static function afterCommentDeleted(Comment $comment): void
     {

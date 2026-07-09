@@ -7,7 +7,6 @@ use Filament\Resources\Resource;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
 use Wsmallnews\Comment\Filament\Resources\Comments\Tables\CommentTable;
 use Wsmallnews\Comment\Support\Utils;
