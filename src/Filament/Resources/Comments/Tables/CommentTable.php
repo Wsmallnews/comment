@@ -36,6 +36,7 @@ class CommentTable
                 static::IDColumn(),
                 static::contentColumn(),
                 static::commenterColumn(),
+                static::beReplyerColumn(),
                 static::commentableColumn(),
                 static::statusColumn(),
                 static::createdAtColumn(),
@@ -109,6 +110,15 @@ class CommentTable
             'commentable_type',
             __('sn-comment::comment.comment_resource.table.commentable'),
             fn ($record) => $record->commentable,
+        );
+    }
+
+    protected static function beReplyerColumn(): Tables\Columns\TextColumn
+    {
+        return ColumnComponents::morphColumn(
+            'be_replyer_type',
+            __('sn-comment::comment.comment_resource.table.be_replyer'),
+            fn($record) => $record->beReplyer,
         );
     }
 
@@ -213,7 +223,7 @@ class CommentTable
                     ? Utils::getCommentModel()::find($record->parent_id)
                     : $record;
 
-                return view('sn-comment::filament.resources.comment.comment-tree-modal', [
+                return view('sn-comment::filament.resources.comments.comment-tree-modal', [
                     'rootComment' => $rootComment,
                     'commentable' => $record->commentable,
                 ]);

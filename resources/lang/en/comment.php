@@ -52,6 +52,7 @@ return [
         'table' => [
             'content' => 'Content',
             'commenter' => 'Commenter',
+            'be_replyer' => 'Be Replyer',
             'commentable' => 'Commentable',
             'status' => 'Status',
             'created_at' => 'Created At',
@@ -80,7 +81,9 @@ return [
         'comment_title' => 'Comment',
         'related_comments' => 'Related Comments',
         'reply_to' => 'Reply to',
+        'commenter' => 'Commenter',
         'be_replyer' => 'Be Replyer',
+        'commentable' => 'Commentable',
         'visible_replies' => 'Visible Replies',
         'total_replies' => 'Total Replies',
         'likes' => 'Likes',

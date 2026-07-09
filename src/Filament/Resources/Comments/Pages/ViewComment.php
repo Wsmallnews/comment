@@ -13,9 +13,4 @@ class ViewComment extends ViewRecord
     protected static string $resource = CommentResource::class;
 
     protected string $view = 'sn-comment::filament.resources.comments.pages.view-comment';
-
-    protected function getHeaderActions(): array
-    {
-        return [];
-    }
 }
