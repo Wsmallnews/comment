@@ -1,7 +1,13 @@
 @php
     use Filament\Support\Icons\Heroicon;
     use Illuminate\Support\Arr;
+    use Wsmallnews\Support\Enums\ContentType;
+
     $childPageName = 'ccp_' . $comment->id . '_children';
+
+    // 内容
+    $contentType = $comment->content_type;
+    $content = $contentType === ContentType::Textarea ? $comment->content : $comment->commentContent?->content;
 @endphp
 
 <div class="w-full">
@@ -32,16 +38,11 @@
                 </div>
 
                 <div class="w-full flex flex-col gap-2">
-                    @if ($this->isFormattedContent() && $comment->commentContent)
-                        <x-sn-support::collapse-content
-                            :content-type="$comment->commentContent->content_type"
-                            :content="$comment->commentContent->content"
-                        />
-                    @else
-                        <x-sn-support::collapse-content
-                            :content="$comment->content"
-                        />
-                    @endif
+                    <x-sn-support::collapse-content
+                        :content-type="$contentType"
+                        :content="$content"
+                    />
+                    
                     @if ($comment->images)
                         @php
                             $galleries = Arr::map($comment->images, function ($gallery) {

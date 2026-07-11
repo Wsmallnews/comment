@@ -218,6 +218,8 @@ class CommentTable
             ->color('gray')
             ->modal()
             ->modalWidth(Width::ThreeExtraLarge)
+            ->modalSubmitAction(false)
+            ->modalCancelAction(false)
             ->modalContent(function ($record) {
                 $rootComment = $record->parent_id
                     ? Utils::getCommentModel()::find($record->parent_id)

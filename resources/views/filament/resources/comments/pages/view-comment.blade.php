@@ -14,12 +14,15 @@
     // 内容
     $contentType = $record->content_type;
     $content = $contentType === ContentType::Textarea ? $record->content : $record->commentContent?->content;
+
+    // 父级评论
+    $parent = $record->parent_id ? Utils::getCommentModel()::find($record->parent_id) : null;
+    $parentCommenter = $parent?->commenter;
 @endphp
 
 <x-filament-panels::page>
     <div class="w-full flex flex-col gap-4">
         <div class="sn-container p-6 space-y-5">
-
             {{-- 评论者 & 被回复者 --}}
             <div class="flex flex-col lg:flex-row gap-4">
                 {{-- 评论者 --}}
@@ -30,7 +33,7 @@
                         $commenterTitle = FilamentModelHelper::getTitle($commenter);
                         $commenterDesc = FilamentModelHelper::getDescription($commenter);
                     @endphp
-                    <div class="flex-1 flex items-center gap-4 p-4 sn-contour sn-rounded">
+                    <div class="sn-container-primary sn-rounded flex-1 flex items-center gap-4 p-4">
                         <div class="sn-avatar sn-avatar-lg overflow-hidden">
                             @if ($commenterCover)
                                 <img class="w-full h-full object-cover" src="{{ files_url($commenterCover) }}" alt="{{ $commenterTitle }}" />
@@ -42,22 +45,23 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center gap-2">
-                                @if ($commenterUrl)
-                                    <a href="{{ $commenterUrl }}" class="no-underline">
-                                        <span class="sn-h3-text sn-hover">{{ $commenterTitle }}</span>
-                                    </a>
-                                @else
-                                    <span class="sn-h3-text">{{ $commenterTitle }}</span>
-                                @endif
-                                <span class="sn-badge sn-badge-primary sn-badge-sm">
+                                <span class="sn-primary-text">#{{ $commenter->getKey() }}</span>
+                                <span class="sn-badge sn-badge-primary">
                                     {{ FilamentModelHelper::getModelLabel($commenter) }}
                                 </span>
+                                @if ($commenterUrl)
+                                    <a href="{{ $commenterUrl }}" class="no-underline">
+                                        <span class="sn-content-text sn-hover truncate">{{ $commenterTitle }}</span>
+                                    </a>
+                                @else
+                                    <span class="sn-content-text truncate">{{ $commenterTitle }}</span>
+                                @endif
                             </div>
                             @if ($commenterDesc)
-                                <div class="sn-descript-text">{{ $commenterDesc }}</div>
+                                <div class="sn-descript-text truncate">{{ $commenterDesc }}</div>
                             @endif
                         </div>
-                        <div class="sn-badge sn-badge-gray">
+                        <div class="sn-badge sn-badge-primary">
                             {{ __('sn-comment::comment.comment_resource.commenter') }}
                         </div>
                     </div>
@@ -71,8 +75,8 @@
                         $beReplyerTitle = FilamentModelHelper::getTitle($beReplyer);
                         $beReplyerDesc = FilamentModelHelper::getDescription($beReplyer);
                     @endphp
-                    <div class="flex-1 flex items-center gap-3 px-4 py-3 sn-rounded" style="background: var(--color-warning-50, #fffbeb); border: 1px solid var(--color-warning-200, #fde68a);">
-                        <div class="sn-avatar sn-avatar-sm overflow-hidden">
+                    <div class="sn-container flex-1 flex items-center gap-4 p-4">
+                        <div class="sn-avatar sn-avatar-lg overflow-hidden">
                             @if ($beReplyerCover)
                                 <img class="w-full h-full object-cover" src="{{ files_url($beReplyerCover) }}" alt="{{ $beReplyerTitle }}" />
                             @else
@@ -83,23 +87,23 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center gap-2">
-                                <x-filament::icon icon="heroicon-m-play" class="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                                @if ($beReplyerUrl)
-                                    <a href="{{ $beReplyerUrl }}" class="no-underline">
-                                        <span class="sn-h4-text sn-hover">{{ $beReplyerTitle }}</span>
-                                    </a>
-                                @else
-                                    <span class="sn-h4-text">{{ $beReplyerTitle }}</span>
-                                @endif
-                                <span class="sn-badge sn-badge-primary sn-badge-sm">
+                                <span class="sn-primary-text">#{{ $beReplyer->getKey() }}</span>
+                                <span class="sn-badge sn-badge-primary">
                                     {{ FilamentModelHelper::getModelLabel($beReplyer) }}
                                 </span>
+                                @if ($beReplyerUrl)
+                                    <a href="{{ $beReplyerUrl }}" class="no-underline">
+                                        <span class="sn-content-text sn-hover truncate">{{ $beReplyerTitle }}</span>
+                                    </a>
+                                @else
+                                    <span class="sn-content-text truncate">{{ $beReplyerTitle }}</span>
+                                @endif
                             </div>
                             @if ($beReplyerDesc)
-                                <div class="sn-descript-text">{{ $beReplyerDesc }}</div>
+                                <div class="sn-descript-text truncate">{{ $beReplyerDesc }}</div>
                             @endif
                         </div>
-                        <span class="sn-badge sn-badge-warning sn-badge-sm">
+                        <span class="sn-badge sn-badge-gray">
                             {{ __('sn-comment::comment.comment_resource.be_replyer') }}
                         </span>
                     </div>
@@ -130,7 +134,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="sn-contour sn-rounded w-full p-4">
+                <div class="sn-container w-full p-4">
                     <x-sn-support::content
                         :content-type="$contentType"
                         :content="$content"
@@ -154,7 +158,6 @@
 
         {{-- 元信息区：评论主体、父级评论 --}}
         <div class="sn-container p-6 space-y-5">
-
             {{-- 评论主体 --}}
             @if ($commentable)
                 @php
@@ -167,8 +170,8 @@
                     <h4 class="sn-tip-text uppercase tracking-wider font-semibold mb-3">
                         {{ __('sn-comment::comment.comment_resource.commentable') }}
                     </h4>
-                    <div class="flex items-center gap-3 sn-contour sn-rounded p-4">
-                        <div class="sn-avatar overflow-hidden" style="border-radius: 0.375rem;">
+                    <div class="sn-container flex items-center gap-3 p-4">
+                        <div class="sn-image overflow-hidden">
                             @if ($commentableCover)
                                 <img class="w-full h-full object-cover" src="{{ files_url($commentableCover) }}" alt="{{ $commentableTitle }}" />
                             @else
@@ -179,19 +182,15 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center gap-2">
+                                <span class="sn-primary-text">#{{ $commentable->getKey() }}</span>
+                                <span class="sn-badge sn-badge-primary">
+                                    {{ FilamentModelHelper::getModelLabel($commentable) }}
+                                </span>
                                 @if ($commentableUrl)
-                                    <a href="{{ $commentableUrl }}" class="no-underline flex items-center gap-1">
-                                        <span class="sn-primary-text">#{{ $commentable->getKey() }}</span>
-                                        <span class="sn-badge sn-badge-primary sn-badge-sm">
-                                            {{ FilamentModelHelper::getModelLabel($commentable) }}
-                                        </span>
+                                    <a href="{{ $commentableUrl }}" class="no-underline">
                                         <span class="sn-content-text sn-hover truncate">{{ $commentableTitle }}</span>
                                     </a>
                                 @else
-                                    <span class="sn-primary-text">#{{ $commentable->getKey() }}</span>
-                                    <span class="sn-badge sn-badge-primary sn-badge-sm">
-                                        {{ FilamentModelHelper::getModelLabel($commentable) }}
-                                    </span>
                                     <span class="sn-content-text truncate">{{ $commentableTitle }}</span>
                                 @endif
                             </div>
@@ -204,34 +203,87 @@
             @endif
 
             {{-- 父级评论 --}}
-            @if ($record->parent_id)
-                @php
-                    $parent = Utils::getCommentModel()::find($record->parent_id);
-                @endphp
-                @if ($parent)
-                    <div>
-                        <h4 class="sn-tip-text uppercase tracking-wider font-semibold mb-3">
-                            {{ __('sn-comment::comment.comment_resource.parent_comment') }}
-                        </h4>
-                        <div class="sn-contour sn-rounded p-4">
-                            <div class="flex items-center gap-2 mb-2">
+            @if ($parent)
+                <div>
+                    <h4 class="sn-tip-text uppercase tracking-wider font-semibold mb-3">
+                        {{ __('sn-comment::comment.comment_resource.parent_comment') }}
+                    </h4>
+                    <div class="sn-container p-4 space-y-3">
+                        {{-- 父级评论的评论者信息 --}}
+                        @if ($parentCommenter)
+                            @php
+                                $parentCommenterUrl = FilamentModelHelper::getUrl($parentCommenter);
+                                $parentCommenterCover = FilamentModelHelper::getCoverUrl($parentCommenter);
+                                $parentCommenterTitle = FilamentModelHelper::getTitle($parentCommenter);
+                                $parentCommenterDesc = FilamentModelHelper::getDescription($parentCommenter);
+                            @endphp
+                            <div class="flex items-center gap-3">
+                                <div class="sn-avatar sn-avatar-sm overflow-hidden">
+                                    @if ($parentCommenterCover)
+                                        <img class="w-full h-full object-cover" src="{{ files_url($parentCommenterCover) }}" alt="{{ $parentCommenterTitle }}" />
+                                    @else
+                                        <div class="sn-image-placeholder">
+                                            <x-filament::icon icon="heroicon-m-user" class="w-4 h-4" />
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span class="sn-primary-text">#{{ $parentCommenter->getKey() }}</span>
+                                        <span class="sn-badge sn-badge-primary">
+                                            {{ FilamentModelHelper::getModelLabel($parentCommenter) }}
+                                        </span>
+                                        @if ($parentCommenterUrl)
+                                            <a href="{{ $parentCommenterUrl }}" class="no-underline">
+                                                <span class="sn-content-text sn-hover truncate">{{ $parentCommenterTitle }}</span>
+                                            </a>
+                                        @else
+                                            <span class="sn-content-text truncate">{{ $parentCommenterTitle }}</span>
+                                        @endif
+                                    </div>
+                                    @if ($parentCommenterDesc)
+                                        <div class="sn-descript-text truncate">{{ $parentCommenterDesc }}</div>
+                                    @endif
+                                </div>
+                                <span class="sn-tip-text">#{{ $parent->id }}</span>
+                            </div>
+                        @else
+                            {{-- 无评论者模型时，回退显示 commenter_name --}}
+                            <div class="flex items-center gap-2">
                                 <div class="sn-avatar sn-avatar-sm">
-                                    <span class="flex items-center justify-center w-full h-full text-xs font-bold" style="background: var(--color-primary-100); color: var(--color-primary-700);">
+                                    <span class="flex items-center justify-center w-full h-full text-xs font-bold">
                                         {{ mb_substr($parent->commenter_name ?? '?', 0, 1) }}
                                     </span>
                                 </div>
-                                <span class="sn-h4-text">{{ $parent->commenter_name }}</span>
+
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span class="sn-primary-text">#{{ $parent->commenter_id }}</span>
+                                        <span class="sn-badge sn-badge-primary">
+                                            {{ FilamentModelHelper::getTypeLabel($parent->commenter_type) }}
+                                        </span>
+                                        <span class="sn-content-text truncate">{{ $parent->commenter_name }}</span>
+                                    </div>
+                                </div>
+
                                 <span class="sn-tip-text">#{{ $parent->id }}</span>
                             </div>
-                            <div class="sn-descript-text sn-truncate-2 pl-8">
-                                {{ \Illuminate\Support\Str::limit($parent->content, 120) }}
-                            </div>
+                        @endif
+
+                        {{-- 父级评论内容 --}}
+                        @php
+                            $parentContentType = $parent->content_type;
+                            $parentContent = $parentContentType === ContentType::Textarea ? $parent->content : $parent->commentContent?->content;
+                        @endphp
+                        <div class="sn-container w-full p-4">
+                            <x-sn-support::content
+                                :content-type="$parentContentType"
+                                :content="$parentContent"
+                            />
                         </div>
                     </div>
-                @endif
+                </div>
             @endif
-
         </div>
-
     </div>
 </x-filament-panels::page>
