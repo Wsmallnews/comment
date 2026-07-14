@@ -3,9 +3,7 @@
 namespace Wsmallnews\Comment\Filament\Resources\Comments\Tables;
 
 use Filament\Actions\Action;
-use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
@@ -50,14 +48,14 @@ class CommentTable
                 static::statusFilter(),
             ])
             ->recordActions([
-                ActionGroup::make([
+                ...ActionComponents::recordActions([
                     static::viewRelatedAction(),
                     ViewAction::make(),
                     static::deleteAction(),
                 ]),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
+                ...ActionComponents::toolbarActions([
                     static::bulkApproveAction(),
                     static::bulkHideAction(),
                     static::bulkRejectAction(),
