@@ -2,27 +2,15 @@
 
 namespace Wsmallnews\Comment;
 
-use BezhanSalleh\PluginEssentials\Concerns\Plugin as Essentials;
+use BadMethodCallException;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use Filament\Support\Concerns\EvaluatesClosures;
-use Filament\Support\Icons\Heroicon;
-use Wsmallnews\Comment\Filament\Pages\Comment\CommentPage;
-use Wsmallnews\Comment\Filament\Resources\Comments\CommentResource;
 use Wsmallnews\Comment\Support\Utils;
-use Wsmallnews\Support\Concerns\Plugin\HasCustomProperties;
+use Wsmallnews\Support\Filament\Concerns\RegistersConfigurable;
 
 class CommentPlugin implements Plugin
 {
-    use Essentials\BelongsToParent;
-    use Essentials\BelongsToTenant;
-    use Essentials\HasGlobalSearch;
-    use Essentials\HasLabels;
-    use Essentials\HasNavigation;
-    use Essentials\HasPluginDefaults;
-    use Essentials\WithMultipleResourceSupport;
-    use EvaluatesClosures;
-    use HasCustomProperties;
+    use RegistersConfigurable;
 
     public function getId(): string
     {
@@ -31,16 +19,24 @@ class CommentPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        if (Utils::getPanelRegister('resources')) {
-            $panel->resources([
-                ...Utils::getPanelRegister('resources'),
-            ]);
+        // 注册 resources
+        $resources = Utils::getPanelRegister('resources', true);
+        if ($resources) {
+            $panel->resources([...$resources]);
+        }
+        $configurableResources = $this->getConfigurableResources();
+        if ($configurableResources) {
+            $panel->resources([...$configurableResources]);
         }
 
-        if (Utils::getPanelRegister('pages')) {
-            $panel->pages([
-                ...Utils::getPanelRegister('pages'),
-            ]);
+        // 注册 pages
+        $pages = Utils::getPanelRegister('pages', true);
+        if ($pages) {
+            $panel->pages([...$pages]);
+        }
+        $configurablePages = $this->getConfigurablePages();
+        if ($configurablePages) {
+            $panel->pages([...$configurablePages]);
         }
     }
 
@@ -62,34 +58,12 @@ class CommentPlugin implements Plugin
         return $plugin;
     }
 
-    /**
-     * 资源默认值
-     */
-    protected function getPluginDefaults(): array
+    public function __call(string $method, array $arguments): mixed
     {
-        return [
-            'navigationGroup' => fn () => __('sn-comment::comment.global_default.navigation_group'),
-            'globallySearchable' => false,
-            'globalSearchResultsLimit' => 25,
+        if (method_exists(Utils::class, $method)) {
+            return Utils::$method(...$arguments);
+        }
 
-            'resources' => [
-                CommentResource::class => [
-                    'modelLabel' => fn () => __('sn-comment::comment.comment_resource.model_label'),
-                    'pluralModelLabel' => fn () => __('sn-comment::comment.comment_resource.plural_model_label'),
-                    'navigationLabel' => fn () => __('sn-comment::comment.comment_resource.navigation_label'),
-                    'navigationIcon' => Heroicon::OutlinedChatBubbleLeft,
-                    'activeNavigationIcon' => Heroicon::ChatBubbleLeft,
-                    'navigationSort' => 2,
-                ],
-                CommentPage::class => [
-                    'modelLabel' => fn () => __('sn-comment::comment.comment_page.model_label'),
-                    'pluralModelLabel' => fn () => __('sn-comment::comment.comment_page.plural_model_label'),
-                    'navigationLabel' => fn () => __('sn-comment::comment.comment_page.navigation_label'),
-                    'navigationIcon' => Heroicon::OutlinedChatBubbleLeft,
-                    'activeNavigationIcon' => Heroicon::ChatBubbleLeft,
-                    'navigationSort' => 1,
-                ],
-            ],
-        ];
+        throw new BadMethodCallException("Method {$method} does not exist on CommentPlugin");
     }
 }

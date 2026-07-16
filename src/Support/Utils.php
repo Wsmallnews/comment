@@ -98,10 +98,24 @@ class Utils
      * Get panel register.
      *
      * @param  string  $type  Register type (pages or resources)
+     * @param  bool  $onlyFQCN  Whether to return only FQCNs
+     * 
+     * @return array<string|class-string>
      */
-    public static function getPanelRegister($type = 'pages'): array
+    public static function getPanelRegister(string $type = 'pages', bool $onlyFQCN = false): array
     {
-        return self::getConfig("panel_register.$type", []);
+        $registers = self::getConfig("panel_register.$type", []);
+
+        if ($onlyFQCN) {
+            $classes = [];
+            foreach ($registers as $key => $value) {
+                $classes[] = is_int($key) ? $value : $key;
+            }
+
+            $registers = $classes;
+        }
+
+        return $registers;
     }
 
     /**

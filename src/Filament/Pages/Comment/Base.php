@@ -33,7 +33,7 @@ abstract class Base extends Page
 
     protected static ContentType $contentType = ContentType::Textarea;
 
-    protected static ?CommentStatus $commentStatus = null;
+    protected static CommentStatus $commentStatus = CommentStatus::Normal;
 
     protected string $view = 'sn-comment::filament.pages.comment.comment-page';
 
@@ -67,9 +67,9 @@ abstract class Base extends Page
         return static::$contentType ?? ContentType::Textarea;
     }
 
-    public static function getCommentStatus(): ?CommentStatus
+    public static function getCommentStatus(): CommentStatus
     {
-        return static::$commentStatus;
+        return static::$commentStatus ?? CommentStatus::Normal;
     }
 
     public static function getEmptyLabel(): ?string
