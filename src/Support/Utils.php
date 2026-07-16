@@ -99,7 +99,6 @@ class Utils
      *
      * @param  string  $type  Register type (pages or resources)
      * @param  bool  $onlyFQCN  Whether to return only FQCNs
-     * 
      * @return array<string|class-string>
      */
     public static function getPanelRegister(string $type = 'pages', bool $onlyFQCN = false): array
