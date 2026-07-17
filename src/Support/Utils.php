@@ -12,7 +12,7 @@ use Wsmallnews\Support\Exceptions\InvalidScopeException;
 use Wsmallnews\Support\Support\Utils as SupportUtils;
 
 /**
- * Utility class for CMS package configuration and helpers.
+ * Utility class for Comment package configuration and helpers.
  */
 class Utils
 {
@@ -31,7 +31,6 @@ class Utils
 
     /**
      * Get scopeable configuration as ScopeableContext object.
-     *
      *
      * @throws CommentException
      */
@@ -59,7 +58,6 @@ class Utils
     /**
      * Get scope type.
      *
-     *
      * @throws CommentException
      */
     public static function getScopeType(): string
@@ -69,7 +67,6 @@ class Utils
 
     /**
      * Get scope ID.
-     *
      *
      * @throws CommentException
      */
@@ -87,7 +84,7 @@ class Utils
     }
 
     /**
-     * Get default contentType.
+     * Get default comment status.
      */
     public static function getDefaultCommentStatus(): CommentStatus
     {
@@ -95,27 +92,18 @@ class Utils
     }
 
     /**
-     * Get panel register.
+     * Get panel register raw config.
      *
      * @param  string  $type  Register type (pages or resources)
-     * @param  bool  $onlyFQCN  Whether to return only FQCNs
-     * 
-     * @return array<string|class-string>
+     * @return mixed
      */
-    public static function getPanelRegister(string $type = 'pages', bool $onlyFQCN = false): array
+    public static function getPanelRegister(?string $type = 'pages'): mixed
     {
-        $registers = self::getConfig("panel_register.$type", []);
-
-        if ($onlyFQCN) {
-            $classes = [];
-            foreach ($registers as $key => $value) {
-                $classes[] = is_int($key) ? $value : $key;
-            }
-
-            $registers = $classes;
+        if (blank($type)) {
+            return self::getConfig("panel_register", null);
         }
 
-        return $registers;
+        return self::getConfig("panel_register.$type", null);
     }
 
     /**

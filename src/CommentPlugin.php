@@ -8,6 +8,9 @@ use Filament\Panel;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Filament\Concerns\RegistersConfigurable;
 
+/**
+ * @method static mixed getPanelRegister(?string $type = null)
+ */
 class CommentPlugin implements Plugin
 {
     use RegistersConfigurable;
@@ -19,25 +22,8 @@ class CommentPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        // 注册 resources
-        $resources = Utils::getPanelRegister('resources', true);
-        if ($resources) {
-            $panel->resources([...$resources]);
-        }
-        $configurableResources = $this->getConfigurableResources();
-        if ($configurableResources) {
-            $panel->resources([...$configurableResources]);
-        }
-
-        // 注册 pages
-        $pages = Utils::getPanelRegister('pages', true);
-        if ($pages) {
-            $panel->pages([...$pages]);
-        }
-        $configurablePages = $this->getConfigurablePages();
-        if ($configurablePages) {
-            $panel->pages([...$configurablePages]);
-        }
+        $this->registerConfigurableResources($panel);
+        $this->registerConfigurablePages($panel);
     }
 
     public function boot(Panel $panel): void
