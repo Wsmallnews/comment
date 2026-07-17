@@ -95,12 +95,11 @@ class Utils
      * Get panel register raw config.
      *
      * @param  string  $type  Register type (pages or resources)
-     * @return mixed
      */
     public static function getPanelRegister(?string $type = 'pages'): mixed
     {
         if (blank($type)) {
-            return self::getConfig("panel_register", null);
+            return self::getConfig('panel_register', null);
         }
 
         return self::getConfig("panel_register.$type", null);
