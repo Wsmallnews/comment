@@ -17,22 +17,22 @@ final class CommentPage extends Base
 
     public static function getContentType(): ContentType
     {
-        return static::resolveCustomProperty('contentType') ?? Utils::getDefaultContentType();
+        return self::resolveCustomProperty('contentType') ?? Utils::getDefaultContentType();
     }
 
     public static function getCommentStatus(): CommentStatus
     {
-        return static::resolveCustomProperty('commentStatus') ?? Utils::getDefaultCommentStatus();
+        return self::resolveCustomProperty('commentStatus') ?? Utils::getDefaultCommentStatus();
     }
 
     public static function getEmptyLabel(): ?string
     {
-        return static::resolveCustomProperty('emptyLabel') ?? parent::getEmptyLabel();
+        return self::resolveCustomProperty('emptyLabel') ?? parent::getEmptyLabel();
     }
 
     public static function getEmptyTipLabel(): ?string
     {
-        return static::resolveCustomProperty('emptyTipLabel') ?? parent::getEmptyTipLabel();
+        return self::resolveCustomProperty('emptyTipLabel') ?? parent::getEmptyTipLabel();
     }
 
     public static function getEssentialsPlugin(): ?CommentPlugin
