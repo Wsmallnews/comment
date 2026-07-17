@@ -13,10 +13,12 @@ use Wsmallnews\Preference\Models\Concerns\Preferenceable;
 use Wsmallnews\Preference\Models\Concerns\Preferenceable\Likeable;
 use Wsmallnews\Support\Casts\CounterCast;
 use Wsmallnews\Support\Enums\ContentType;
+use Wsmallnews\Support\Models\Concerns\HasActivityLog;
 use Wsmallnews\Support\Models\SupportModel;
 
 class Comment extends SupportModel
 {
+    use HasActivityLog;
     use Likeable;
     use Preferenceable;
     use SoftDeletes;
@@ -30,6 +32,18 @@ class Comment extends SupportModel
         'status' => CommentStatus::class,
         'content_type' => ContentType::class,
     ];
+
+    protected static array $recordEvents = ['deleted'];
+
+    protected function getActivityTitleAttribute(): string
+    {
+        return 'id';
+    }
+
+    protected function getActivityIgnoreAttributes(): array
+    {
+        return ['updated_at'];
+    }
 
     public function scopeNormal($query)
     {
