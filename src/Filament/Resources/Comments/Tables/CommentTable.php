@@ -99,6 +99,8 @@ class CommentTable
             'commenter_type',
             __('sn-comment::comment.comment_resource.table.commenter'),
             fn ($record) => $record->commenter,
+            fn ($record) => $record->commenter_type,
+            fn ($record) => $record->commenter_id,
         );
     }
 
@@ -108,6 +110,8 @@ class CommentTable
             'commentable_type',
             __('sn-comment::comment.comment_resource.table.commentable'),
             fn ($record) => $record->commentable,
+            fn ($record) => $record->commentable_type,
+            fn ($record) => $record->commentable_id,
         );
     }
 
@@ -117,6 +121,8 @@ class CommentTable
             'be_replyer_type',
             __('sn-comment::comment.comment_resource.table.be_replyer'),
             fn ($record) => $record->beReplyer,
+            fn ($record) => $record->be_replyer_type,
+            fn ($record) => $record->be_replyer_id,
         );
     }
 
