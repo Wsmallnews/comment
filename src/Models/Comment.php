@@ -7,16 +7,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Preference\Models\Concerns\Preferenceable;
 use Wsmallnews\Preference\Models\Concerns\Preferenceable\Likeable;
 use Wsmallnews\Support\Casts\CounterCast;
+use Wsmallnews\Support\Contracts\HasSnSubject;
 use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Models\Concerns\HasActivityLog;
 use Wsmallnews\Support\Models\SupportModel;
 
-class Comment extends SupportModel
+class Comment extends SupportModel implements HasSnSubject
 {
     use HasActivityLog;
     use Likeable;
@@ -43,6 +46,31 @@ class Comment extends SupportModel
     protected function getActivityIgnoreAttributes(): array
     {
         return ['updated_at'];
+    }
+
+    public function getSnSubjectId(): int
+    {
+        return $this->id;
+    }
+
+    public function getSnSubjectTitle(): string | HtmlString | null
+    {
+        return $this->content ? Str::limit($this->content, 50) : $this->content_type->getLabel();
+    }
+
+    public function getSnSubjectDescription(): string | HtmlString | null
+    {
+        return $this->commenter_name;
+    }
+
+    public function getSnSubjectCoverUrl(): string | HtmlString | null
+    {
+        return $this->commenter_avatar_url;
+    }
+
+    public function getSnSubjectHrefUrl(): string | HtmlString | null
+    {
+        return null;
     }
 
     public function scopeNormal($query)
