@@ -55,12 +55,17 @@ return [
             'be_replyer' => '被回复者',
             'commentable' => '评论主体',
             'status' => '状态',
+            'search_placeholder' => '搜索 ID...',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
         ],
         'filter' => [
             'commentable' => '评论主体',
-            'commentable_keyword_placeholder' => '输入ID搜索',
+            'commentable_keyword_placeholder' => '请输入评论主体关键字',
+            'commenter' => '评论者',
+            'commenter_keyword_placeholder' => '请输入评论者姓名或 ID',
+            'be_replyer' => '被回复者',
+            'be_replyer_keyword_placeholder' => '请输入被回复者姓名或 ID',
             'status' => '状态',
         ],
         'action' => [

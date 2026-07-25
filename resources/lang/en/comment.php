@@ -55,12 +55,17 @@ return [
             'be_replyer' => 'Be Replyer',
             'commentable' => 'Commentable',
             'status' => 'Status',
+            'search_placeholder' => 'Search ID...',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ],
         'filter' => [
             'commentable' => 'Commentable',
-            'commentable_keyword_placeholder' => 'Search by ID',
+            'commentable_keyword_placeholder' => 'Please enter commentable keyword',
+            'commenter' => 'Commenter',
+            'commenter_keyword_placeholder' => 'Please enter commenter name or ID',
+            'be_replyer' => 'Be Replyer',
+            'be_replyer_keyword_placeholder' => 'Please enter be replyer name or ID',
             'status' => 'Status',
         ],
         'action' => [

@@ -3,6 +3,7 @@
 namespace Wsmallnews\Comment\Filament\Resources\Comments;
 
 use BackedEnum;
+use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
@@ -58,6 +59,12 @@ abstract class BaseResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return static::applyScopeableToQuery(parent::getEloquentQuery());
+        $panel = Filament::getCurrentPanel();
+
+        return static::applyScopeableToQuery(parent::getEloquentQuery())->with([
+            'commenter' => fn($query) => $query->withoutGlobalScope($panel->getTenancyScopeName()),       // 查询的有普通用户评论，不能限制只关联管理员（移除全局作用域）
+            'commentable',
+            'beReplyer' => fn($query) => $query->withoutGlobalScope($panel->getTenancyScopeName()),       // 查询的有普通用户评论，不能限制只关联管理员（移除全局作用域）
+        ]);
     }
 }

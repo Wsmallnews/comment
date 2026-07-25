@@ -7,8 +7,6 @@ use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
-use Filament\Forms;
-use Filament\Schemas;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
@@ -33,18 +31,21 @@ class CommentTable
             ->columns([
                 static::IDColumn(),
                 static::contentColumn(),
+                static::commentableColumn(),
                 static::commenterColumn(),
                 static::beReplyerColumn(),
-                static::commentableColumn(),
                 static::statusColumn(),
                 static::createdAtColumn(),
                 static::updateAtColumn(),
             ])
             ->defaultSort('created_at', 'desc')
             ->modifyQueryUsing(fn (Builder $query) => $query->with('commentContent'))
-            ->searchable()
+            ->searchPlaceholder(__('sn-comment::comment.comment_resource.table.search_placeholder'))
+            ->filtersFormWidth(Width::Medium)
             ->filters([
                 static::commentableFilter(),
+                static::commenterFilter(),
+                static::beReplyerFilter(),
                 static::statusFilter(),
             ])
             ->recordActions([
@@ -164,45 +165,42 @@ class CommentTable
 
                 return FilamentModelHelper::getTypeOptions($types);
             },
-            keywordSearchFields: ['title'],
             morphKeywordPlaceholder: __('sn-comment::comment.comment_resource.filter.commentable_keyword_placeholder')
         );
+    }
 
-        return Tables\Filters\Filter::make('commentable')
-            ->label(__('sn-comment::comment.comment_resource.filter.commentable'))
-            ->schema([
-                Schemas\Components\FusedGroup::make([
-                    Forms\Components\Select::make('commentable_type')
-                        ->options(function () {
-                            $types = Utils::getCommentModel()::query()
-                                ->distinct()
-                                ->whereNotNull('commentable_type')
-                                ->pluck('commentable_type', 'commentable_type');
+    protected static function commenterFilter(): Tables\Filters\Filter
+    {
+        return FilterComponents::morphFilter(
+            type: 'commenter',
+            label: __('sn-comment::comment.comment_resource.filter.commenter'),
+            options: function () {
+                $commenterTypes = Utils::getCommentModel()::query()
+                    ->distinct()
+                    ->whereNotNull('commenter_type')
+                    ->pluck('commenter_type', 'commenter_type');
 
-                            return $types->mapWithKeys(fn ($type) => [
-                                $type => static::getCommentableTypeLabel($type),
-                            ])->toArray();
-                        })
-                        ->selectablePlaceholder(false)
-                        ->columnSpan(1),
-                    Forms\Components\TextInput::make('commentable_keyword')
-                        ->placeholder(__('sn-comment::comment.comment_resource.filter.commentable_keyword_placeholder'))
-                        ->columnSpan(2),
-                ])->columns(3),
-            ])
-            ->query(function (Builder $query, array $data): Builder {
-                return $query
-                    ->when(
-                        $data['commentable_type'] ?? null,
-                        fn (Builder $query, $type) => $query->where('commentable_type', $type)
-                    )
-                    ->when(
-                        $data['commentable_keyword'] ?? null,
-                        fn (Builder $query, $keyword) => $query->where(function ($query) use ($keyword) {
-                            $query->where('commentable_id', $keyword);
-                        })
-                    );
-            });
+                return FilamentModelHelper::getTypeOptions($commenterTypes);
+            },
+            morphKeywordPlaceholder: __('sn-comment::comment.comment_resource.filter.commenter_keyword_placeholder')
+        );
+    }
+
+    protected static function beReplyerFilter(): Tables\Filters\Filter
+    {
+        return FilterComponents::morphFilter(
+            type: 'be_replyer',
+            label: __('sn-comment::comment.comment_resource.filter.be_replyer'),
+            options: function () {
+                $beReplyerTypes = Utils::getCommentModel()::query()
+                    ->distinct()
+                    ->whereNotNull('be_replyer_type')
+                    ->pluck('be_replyer_type', 'be_replyer_type');
+
+                return FilamentModelHelper::getTypeOptions($beReplyerTypes);
+            },
+            morphKeywordPlaceholder: __('sn-comment::comment.comment_resource.filter.be_replyer_keyword_placeholder')
+        );
     }
 
     protected static function statusFilter(): Tables\Filters\SelectFilter
@@ -358,10 +356,5 @@ class CommentTable
                     prepare: fn (Collection $records) => $records->load('children'),
                 );
             });
-    }
-
-    public static function getCommentableTypeLabel(string $type): string
-    {
-        return FilamentModelHelper::getTypeLabel($type);
     }
 }
