@@ -62,9 +62,9 @@ abstract class BaseResource extends Resource
         $panel = Filament::getCurrentPanel();
 
         return static::applyScopeableToQuery(parent::getEloquentQuery())->with([
-            'commenter' => fn($query) => $query->withoutGlobalScope($panel->getTenancyScopeName()),       // 查询的有普通用户评论，不能限制只关联管理员（移除全局作用域）
+            'commenter' => fn ($query) => $query->withoutGlobalScope($panel->getTenancyScopeName()),       // 查询的有普通用户评论，不能限制只关联管理员（移除全局作用域）
             'commentable',
-            'beReplyer' => fn($query) => $query->withoutGlobalScope($panel->getTenancyScopeName()),       // 查询的有普通用户评论，不能限制只关联管理员（移除全局作用域）
+            'beReplyer' => fn ($query) => $query->withoutGlobalScope($panel->getTenancyScopeName()),       // 查询的有普通用户评论，不能限制只关联管理员（移除全局作用域）
         ]);
     }
 }
