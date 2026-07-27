@@ -18,6 +18,7 @@ use Wsmallnews\Support\Contracts\HasSnSubject;
 use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Models\Concerns\HasActivityLog;
 use Wsmallnews\Support\Models\SupportModel;
+use Wsmallnews\Support\Support\Utils as SupportUtils;
 
 class Comment extends SupportModel implements HasSnSubject
 {
@@ -116,5 +117,10 @@ class Comment extends SupportModel implements HasSnSubject
     public function commentContent(): MorphOne
     {
         return $this->morphOne(Utils::getCommentContentModel(), 'contentable');
+    }
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(SupportUtils::getTenantModel());
     }
 }
