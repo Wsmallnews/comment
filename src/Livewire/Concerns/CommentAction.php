@@ -15,6 +15,7 @@ use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Filament\Actions\ActionComponents;
 use Wsmallnews\Support\Filament\Forms\FormComponents;
+use Wsmallnews\Support\Contracts\HasSnIdentifiable;
 
 trait CommentAction
 {
@@ -152,7 +153,7 @@ trait CommentAction
                 return $schemas;
             })
             ->using(function (array $data, array $arguments) use ($type): Model {
-                $user = $this->getAuthUser();
+                $authUser = $this->getAuthUser();
 
                 $parentCommentId = $arguments['id'] ?? null;
                 $parentComment = $parentCommentId ? Utils::getCommentModel()::find($parentCommentId) : null;
@@ -177,11 +178,11 @@ trait CommentAction
                 // 填充评论关联主体
                 $comment->commentable()->associate($this->commentable);
                 // 填充评论人
-                $comment->commenter()->associate($user);
+                $comment->commenter()->associate($authUser);
 
                 // 额外 评论者字段
-                $data['commenter_name'] = $user->getFilamentName();
-                $data['commenter_avatar_url'] = $user->avatar_url;
+                $data['commenter_name'] = $authUser?->getSnName();
+                $data['commenter_avatar_url'] = $authUser?->getSnAvatarUrl();
                 $data['status'] = $this->commentStatus ?? Utils::getDefaultCommentStatus();
                 $data['content_type'] = $this->contentType;
 

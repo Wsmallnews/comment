@@ -117,7 +117,7 @@
                             :scope-type="$scopeType" :scope-id="$scopeId"
                             :parent-id="$comment->id"
                             :commenter="$commenter" :be-replyer="$beReplyer"
-                            :commentable="$commentable" :user="$user"
+                            :commentable="$commentable" :auth-user="$authUser"
                             :content-type="$contentType" :comment-status="$commentStatus"
                             :page-name="$childPageName"
                             page-type="manual"

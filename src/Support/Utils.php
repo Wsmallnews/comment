@@ -39,7 +39,7 @@ class Utils
         try {
             return SupportUtils::getScopeFromConfig('sn-comment.scopeable');
         } catch (InvalidScopeException $e) {
-            throw new CommentException('Scopeable配置错误: ' . $e->getMessage());
+            throw new CommentException('Scopeable configuration error. ' . $e->getMessage());
         }
     }
 
@@ -118,7 +118,7 @@ class Utils
         $model = self::getConfig('models')[$name] ?? null;
 
         if (blank($model) && $shouldException) {
-            throw new CommentException("模型 {$name} 不存在");
+            throw new CommentException("Model {$name} not found.");
         }
 
         return $model;
