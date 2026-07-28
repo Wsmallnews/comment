@@ -15,7 +15,6 @@ use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Enums\ContentType;
 use Wsmallnews\Support\Filament\Actions\ActionComponents;
 use Wsmallnews\Support\Filament\Forms\FormComponents;
-use Wsmallnews\Support\Contracts\HasSnIdentifiable;
 
 trait CommentAction
 {
