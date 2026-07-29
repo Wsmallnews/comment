@@ -42,7 +42,7 @@ enum CommentStatus: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): string | BackedEnum | null
+    public function getIcon(): string | BackedEnum | Htmlable | null
     {
         return match ($this) {
             self::Normal => Heroicon::Eye,
