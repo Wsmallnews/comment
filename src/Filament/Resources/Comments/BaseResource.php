@@ -58,10 +58,6 @@ abstract class BaseResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return static::applyScopeableToQuery(parent::getEloquentQuery())->with([
-            'commenter',
-            'commentable',
-            'beReplyer',
-        ]);
+        return static::applyScopeableToQuery(parent::getEloquentQuery());
     }
 }

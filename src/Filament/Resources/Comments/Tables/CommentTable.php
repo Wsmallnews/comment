@@ -39,7 +39,9 @@ class CommentTable
                 static::updateAtColumn(),
             ])
             ->defaultSort('created_at', 'desc')
-            ->modifyQueryUsing(fn (Builder $query) => $query->with('commentContent'))
+            ->modifyQueryUsing(fn (Builder $query) => $query->with([
+                'commentContent', 'commenter', 'commentable', 'beReplyer',
+            ]))
             ->searchPlaceholder(__('sn-comment::comment.comment_resource.table.search_placeholder'))
             ->filtersFormWidth(Width::Medium)
             ->filters([
