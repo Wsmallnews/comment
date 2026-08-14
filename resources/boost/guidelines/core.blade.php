@@ -276,6 +276,29 @@ class Base extends BaseComponent    // Wsmallnews\Support\Livewire\Base
 
 所有前端评论组件通过 Base 获得 scope 能力。
 
+### Filament 资源
+
+CommentResource 提供评论的 CRUD 管理，支持 Scopeable 和插件配置：
+
+```php
+use Wsmallnews\Comment\Filament\Resources\Comments\BaseResource;
+
+// BaseResource 已提供：
+// - use Scopeable（applyScopeableToQuery 自动过滤）
+// - table() → CommentTable（含 contentColumn、morphColumn、morphFilter 等）
+// - infolist() → 评论详情展示
+// - getEloquentQuery() → 带 scope + 预加载关联
+```
+
+可配置的具体实现：
+
+```php
+use Wsmallnews\Comment\Filament\Resources\Comments\CommentResource;
+
+// 在 PanelProvider 中注册
+$panel->resources([CommentResource::class]);
+```
+
 ### Filament 面板组件
 
 Filament 面板中的评论组件直接继承 `Filament\Pages\BasePage`，更适合面板环境使用。
