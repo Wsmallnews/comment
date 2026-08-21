@@ -229,7 +229,7 @@ trait CommentAction
                     return $parentComment ? __('sn-comment::comment.reply') . ' @' . $parentComment->commenter_name : __('sn-comment::comment.comment_placeholder');
                 })
                 ->required(),
-            FormComponents::localImageUpload('images')
+            FormComponents::plainImageUpload('images')
                 ->label(__('sn-comment::comment.comment_image'))
                 ->directory(Utils::getFileDirectory('comments'))
                 ->multiple()
