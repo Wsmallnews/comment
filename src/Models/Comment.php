@@ -69,11 +69,6 @@ class Comment extends SupportModel implements HasSnSubject
         return $this->commenter_avatar_url;
     }
 
-    public function getSnSubjectHrefUrl(): string | HtmlString | null
-    {
-        return null;
-    }
-
     public function scopeNormal($query)
     {
         return $query->where('status', CommentStatus::Normal);
