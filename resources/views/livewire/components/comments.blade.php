@@ -1,6 +1,6 @@
-<div class="w-full">
+<div class="w-full @container">
     <div @class([
-        'sn-container px-4 py-8' => $contained,
+        'sn-container sn-padded' => $contained,
         'w-full flex flex-col gap-4',
     ])>
         @if ($this->parentId === 0 && $this->commentAction->isVisible())

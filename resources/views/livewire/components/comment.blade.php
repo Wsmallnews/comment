@@ -10,9 +10,9 @@
     $content = $contentType === ContentType::Textarea ? $comment->content : $comment->commentContent?->content;
 @endphp
 
-<div class="w-full">
-    <div class="w-full flex gap-4 grow">
-        <div class="w-10 h-10 shrink-0 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+<div class="w-full @container">
+    <div class="w-full flex gap-2.5 @md:gap-4 grow">
+        <div class="w-8 h-8 @md:w-10 @md:h-10 shrink-0 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800">
             @if ($comment->commenter_avatar_url)
                 <x-filament::avatar
                     :src="files_url($comment->commenter_avatar_url)"
@@ -21,14 +21,14 @@
                 />
             @else
                 <div class="sn-image-placeholder sn-motion-scale">
-                    <x-filament::icon :icon="Heroicon::User" class="w-10 h-10" aria-hidden="true" />
+                    <x-filament::icon :icon="Heroicon::User" class="w-full h-full" aria-hidden="true" />
                 </div>
             @endif
         </div>
 
-        <div class="flex flex-col gap-4 grow overflow-hidden">
+        <div class="flex flex-col gap-2.5 @md:gap-4 grow overflow-hidden">
             <div class="w-full flex flex-col gap-2 grow">
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
                     <div class="sn-tip-text inline-block">{{ $comment->commenter_name }}</div>
 
                     @if ($comment->be_replyer_id)
@@ -53,7 +53,7 @@
                     @endif
                 </div>
 
-                <div class="sn-tip-text flex justify-between items-center">
+                <div class="sn-tip-text flex flex-wrap justify-between items-center gap-x-2 gap-y-1">
                     <div class="flex gap-2">
                         <div title="{{ $comment->created_at }}">{{ $comment->created_at->diffForHumans() }}</div>
 
