@@ -21,10 +21,10 @@
 @endphp
 
 <x-filament-panels::page>
-    <div class="w-full flex flex-col gap-4">
-        <div class="sn-container p-6 space-y-5">
+    <div class="w-full flex flex-col sn-gap">
+        <div class="sn-container sn-padded flex flex-col sn-gap">
             {{-- 评论者 & 被回复者 --}}
-            <div class="flex flex-col lg:flex-row gap-4">
+            <div class="flex flex-col lg:flex-row sn-gap">
                 {{-- 评论者 --}}
                 @if ($commenter)
                     @php
@@ -33,7 +33,7 @@
                         $commenterTitle = FilamentModelHelper::getTitle($commenter);
                         $commenterDesc = FilamentModelHelper::getDescription($commenter);
                     @endphp
-                    <div class="sn-container-primary sn-rounded flex-1 flex items-center gap-4 p-4">
+                    <div class="sn-container-primary sn-rounded flex-1 flex items-center gap-4 sn-padded">
                         <div class="sn-avatar sn-avatar-lg overflow-hidden">
                             @if ($commenterCover)
                                 <img class="w-full h-full object-cover" src="{{ files_url($commenterCover) }}" alt="{{ $commenterTitle }}" />
@@ -75,7 +75,7 @@
                         $beReplyerTitle = FilamentModelHelper::getTitle($beReplyer);
                         $beReplyerDesc = FilamentModelHelper::getDescription($beReplyer);
                     @endphp
-                    <div class="sn-container flex-1 flex items-center gap-4 p-4">
+                    <div class="sn-container flex-1 flex items-center gap-4 sn-padded">
                         <div class="sn-avatar sn-avatar-lg overflow-hidden">
                             @if ($beReplyerCover)
                                 <img class="w-full h-full object-cover" src="{{ files_url($beReplyerCover) }}" alt="{{ $beReplyerTitle }}" />
@@ -111,7 +111,7 @@
             </div>
 
             {{-- 评论内容 + 统计 --}}
-            <div class="w-full flex flex-col items-center gap-4">
+            <div class="w-full flex flex-col items-center sn-gap">
                 <div class="w-full flex items-center justify-between">
                     <h4 class="sn-tip-text uppercase tracking-wider font-semibold">
                         {{ __('sn-comment::comment.comment_resource.comment_content') }}
@@ -134,7 +134,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="sn-container w-full p-4">
+                <div class="sn-container w-full sn-padded">
                     <x-sn-support::content
                         :content-type="$contentType"
                         :content="$content"
@@ -157,7 +157,7 @@
         </div>
 
         {{-- 元信息区：评论主体、父级评论 --}}
-        <div class="sn-container p-6 space-y-5">
+        <div class="sn-container sn-padded flex flex-col sn-gap">
             {{-- 评论主体 --}}
             @if ($commentable)
                 @php
@@ -170,7 +170,7 @@
                     <h4 class="sn-tip-text uppercase tracking-wider font-semibold mb-3">
                         {{ __('sn-comment::comment.comment_resource.commentable') }}
                     </h4>
-                    <div class="sn-container flex items-center gap-3 p-4">
+                    <div class="sn-container flex items-center gap-3 sn-padded">
                         <div class="sn-image overflow-hidden">
                             @if ($commentableCover)
                                 <img class="w-full h-full object-cover" src="{{ files_url($commentableCover) }}" alt="{{ $commentableTitle }}" />
@@ -208,7 +208,7 @@
                     <h4 class="sn-tip-text uppercase tracking-wider font-semibold mb-3">
                         {{ __('sn-comment::comment.comment_resource.parent_comment') }}
                     </h4>
-                    <div class="sn-container p-4 space-y-3">
+                    <div class="sn-container sn-padded space-y-3">
                         {{-- 父级评论的评论者信息 --}}
                         @if ($parentCommenter)
                             @php
@@ -275,7 +275,7 @@
                             $parentContentType = $parent->content_type;
                             $parentContent = $parentContentType === ContentType::Textarea ? $parent->content : $parent->commentContent?->content;
                         @endphp
-                        <div class="sn-container w-full p-4">
+                        <div class="sn-container w-full sn-padded">
                             <x-sn-support::content
                                 :content-type="$parentContentType"
                                 :content="$parentContent"

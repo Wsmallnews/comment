@@ -11,7 +11,7 @@
 @endphp
 
 <div class="w-full">
-    <div class="w-full flex gap-4 grow">
+    <div class="w-full flex sn-gap grow">
         <div class="w-10 h-10 shrink-0 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800">
             @if ($comment->commenter_avatar_url)
                 <x-filament::avatar

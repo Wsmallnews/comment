@@ -1,7 +1,7 @@
 <div class="w-full">
     <div @class([
-        'sn-container px-4 py-8' => $contained,
-        'w-full flex flex-col gap-4',
+        'sn-container sn-padded' => $contained,
+        'w-full flex flex-col sn-gap',
     ])>
         @if ($this->parentId === 0 && $this->filamentCommentAction->isVisible())
             <div class="w-full flex justify-end">
@@ -10,7 +10,7 @@
         @endif
 
         @if ($comments->isNotEmpty())
-            <x-sn-support::paginators.container class="flex flex-col gap-4" :page-type="$pageType" :page-info="$pageInfo" :paginator-link="$paginatorLink" :page-name="$pageName">
+            <x-sn-support::paginators.container class="flex flex-col sn-gap" :page-type="$pageType" :page-info="$pageInfo" :paginator-link="$paginatorLink" :page-name="$pageName">
                 @foreach($comments as $comment)
                     <livewire:sn-comment-fi-comment-components::comment
                         :scope-type="$scopeType" :scope-id="$scopeId"
