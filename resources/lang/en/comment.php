@@ -66,7 +66,6 @@ return [
             'commenter_keyword_placeholder' => 'Please enter commenter name or ID',
             'be_replyer' => 'Be Replyer',
             'be_replyer_keyword_placeholder' => 'Please enter be replyer name or ID',
-            'status' => 'Status',
         ],
         'action' => [
             'view_related' => 'View Related Comments',

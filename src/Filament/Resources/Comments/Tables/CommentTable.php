@@ -48,7 +48,8 @@ class CommentTable
                 static::commentableFilter(),
                 static::commenterFilter(),
                 static::beReplyerFilter(),
-                static::statusFilter(),
+                FilterComponents::statusFilter(CommentStatus::class),
+                ...FilterComponents::createUpdateRangeFilter(),
             ])
             ->recordActions([
                 ...ActionComponents::recordActions([
@@ -133,6 +134,7 @@ class CommentTable
     {
         return Tables\Columns\TextColumn::make('status')
             ->label(__('sn-comment::comment.comment_resource.table.status'))
+            ->badge()
             ->toggleable();
     }
 
@@ -203,13 +205,6 @@ class CommentTable
             },
             morphKeywordPlaceholder: __('sn-comment::comment.comment_resource.filter.be_replyer_keyword_placeholder')
         );
-    }
-
-    protected static function statusFilter(): Tables\Filters\SelectFilter
-    {
-        return Tables\Filters\SelectFilter::make('status')
-            ->label(__('sn-comment::comment.comment_resource.filter.status'))
-            ->options(CommentStatus::class);
     }
 
     // ========================= Actions =========================

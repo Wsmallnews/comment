@@ -66,7 +66,6 @@ return [
             'commenter_keyword_placeholder' => '请输入评论者姓名或 ID',
             'be_replyer' => '被回复者',
             'be_replyer_keyword_placeholder' => '请输入被回复者姓名或 ID',
-            'status' => '状态',
         ],
         'action' => [
             'view_related' => '查看关联评论',

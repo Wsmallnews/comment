@@ -35,7 +35,7 @@ enum CommentStatus: string implements HasColor, HasIcon, HasLabel
     public function getColor(): string | array | null
     {
         return match ($this) {
-            self::Normal => 'success',
+            self::Normal => 'primary',
             self::Unaudited => 'warning',
             self::Hidden => 'gray',
             self::Rejected => 'danger',
@@ -45,10 +45,10 @@ enum CommentStatus: string implements HasColor, HasIcon, HasLabel
     public function getIcon(): string | BackedEnum | Htmlable | null
     {
         return match ($this) {
-            self::Normal => Heroicon::Eye,
-            self::Unaudited => Heroicon::DocumentCheck,
-            self::Hidden => Heroicon::EyeSlash,
-            self::Rejected => Heroicon::ShieldExclamation,
+            self::Normal => Heroicon::OutlinedCheckCircle,
+            self::Unaudited => Heroicon::OutlinedDocumentCheck,
+            self::Hidden => Heroicon::OutlinedEyeSlash,
+            self::Rejected => Heroicon::OutlinedShieldExclamation,
         };
     }
 }
