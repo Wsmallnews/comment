@@ -24,19 +24,13 @@
             </x-sn-support::paginators.container>
         @else
             @if($this->parentId === 0)
-                <x-filament::empty-state
-                    :contained="false"
-                    icon="heroicon-m-document-text"
+                <x-sn-support::empty
+                    :icon="\Filament\Support\Icons\Heroicon::OutlinedDocumentText"
                     icon-color="gray"
-                >
-                    <x-slot name="heading">
-                        {{ $this->getEmptyLabel() }}
-                    </x-slot>
-
-                    <x-slot name="description">
-                        {{ $this->getEmptyTipLabel() }}
-                    </x-slot>
-                </x-filament::empty-state>
+                    :heading="$this->getEmptyLabel()"
+                    :description="$this->getEmptyTipLabel()"
+                    :contained="false"
+                />
             @endif
         @endif
     </div>
