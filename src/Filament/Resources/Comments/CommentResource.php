@@ -2,7 +2,6 @@
 
 namespace Wsmallnews\Comment\Filament\Resources\Comments;
 
-use Wsmallnews\Comment\CommentPlugin;
 use Wsmallnews\Comment\Filament\Resources\Comments\Pages\ListComments;
 use Wsmallnews\Comment\Filament\Resources\Comments\Pages\ViewComment;
 use Wsmallnews\Support\Filament\Concerns\CanBeConfigured;
@@ -20,10 +19,5 @@ final class CommentResource extends BaseResource
             'index' => ListComments::route('/'),
             'view' => ViewComment::route('/{record}'),
         ];
-    }
-
-    public static function getEssentialsPlugin(): ?CommentPlugin
-    {
-        return CommentPlugin::get();
     }
 }

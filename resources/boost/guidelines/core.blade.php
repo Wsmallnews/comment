@@ -393,8 +393,6 @@ abstract class Base extends Page
 - `getCommentStatus()` → 仅从自定义属性读取
 - `getEmptyLabel()` / `getEmptyTipLabel()` → 优先从自定义属性，fallback 到 parent
 
-`getEssentialsPlugin()` 返回 `CommentPlugin::get()`。
-
 ### Livewire Concerns（Traits）
 
 #### CommentAction（核心操作逻辑）

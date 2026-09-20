@@ -2,7 +2,6 @@
 
 namespace Wsmallnews\Comment\Filament\Pages\Comment;
 
-use Wsmallnews\Comment\CommentPlugin;
 use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Enums\ContentType;
@@ -33,10 +32,5 @@ final class CommentPage extends Base
     public static function getEmptyTipLabel(): ?string
     {
         return self::resolveCustomProperty('emptyTipLabel') ?? parent::getEmptyTipLabel();
-    }
-
-    public static function getEssentialsPlugin(): ?CommentPlugin
-    {
-        return CommentPlugin::get();
     }
 }
