@@ -18,6 +18,8 @@ use Wsmallnews\Comment\Commands\AutoAuditCommentsCommand;
 use Wsmallnews\Comment\Commands\CommentInstallCommand;
 use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Helpers\ScheduleHelper;
+use Wsmallnews\Support\Features\Modules\Module;
+use Wsmallnews\Support\Features\Modules\ModuleRegistry;
 
 class CommentServiceProvider extends PackageServiceProvider
 {
@@ -35,7 +37,15 @@ class CommentServiceProvider extends PackageServiceProvider
             ->hasViews(static::$viewNamespace);
     }
 
-    public function packageRegistered(): void {}
+    public function packageRegistered(): void
+    {
+        // 模块身份登记（ModuleRegistry 单一事实源：类反查/存在性校验/插件实例）
+        ModuleRegistry::register(new Module(
+            id: static::$name,
+            namespace: 'Wsmallnews\\Comment',
+            plugin: CommentPlugin::class,
+        ));
+    }
 
     public function packageBooted(): void
     {
