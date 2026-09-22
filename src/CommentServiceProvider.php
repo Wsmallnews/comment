@@ -17,9 +17,9 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Wsmallnews\Comment\Commands\AutoAuditCommentsCommand;
 use Wsmallnews\Comment\Commands\CommentInstallCommand;
 use Wsmallnews\Comment\Support\Utils;
-use Wsmallnews\Support\Helpers\ScheduleHelper;
 use Wsmallnews\Support\Features\Modules\Module;
 use Wsmallnews\Support\Features\Modules\ModuleRegistry;
+use Wsmallnews\Support\Helpers\ScheduleHelper;
 
 class CommentServiceProvider extends PackageServiceProvider
 {
