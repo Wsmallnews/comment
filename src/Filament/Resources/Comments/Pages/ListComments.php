@@ -4,9 +4,9 @@ namespace Wsmallnews\Comment\Filament\Resources\Comments\Pages;
 
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
+use Illuminate\Database\Eloquent\Builder;
 use Wsmallnews\Comment\Enums\CommentStatus;
 use Wsmallnews\Comment\Filament\Resources\Comments\CommentResource;
-use Wsmallnews\Comment\Support\Utils;
 use Wsmallnews\Support\Filament\Resources\Concerns\Pages\Scopeable;
 
 class ListComments extends ListRecords
@@ -17,35 +17,25 @@ class ListComments extends ListRecords
 
     public function getTabs(): array
     {
-        return [
+        $tabs = [
             'all' => Tab::make()
                 ->label(__('sn-comment::comment.comment_resource.tabs.all'))
-                ->badge(fn () => $this->getCount()),
-            'normal' => Tab::make()
-                ->label(CommentStatus::Normal->getLabel())
-                ->badge(fn () => $this->getCount(CommentStatus::Normal))
-                ->modifyQueryUsing(fn ($query) => $query->where('status', CommentStatus::Normal)),
-            'unaudited' => Tab::make()
-                ->label(CommentStatus::Unaudited->getLabel())
-                ->badge(fn () => $this->getCount(CommentStatus::Unaudited))
-                ->modifyQueryUsing(fn ($query) => $query->where('status', CommentStatus::Unaudited)),
-            'hidden' => Tab::make()
-                ->label(CommentStatus::Hidden->getLabel())
-                ->badge(fn () => $this->getCount(CommentStatus::Hidden))
-                ->modifyQueryUsing(fn ($query) => $query->where('status', CommentStatus::Hidden)),
-            'rejected' => Tab::make()
-                ->label(CommentStatus::Rejected->getLabel())
-                ->badge(fn () => $this->getCount(CommentStatus::Rejected))
-                ->modifyQueryUsing(fn ($query) => $query->where('status', CommentStatus::Rejected)),
+                ->badge(fn (): int => $this->getCount()),
         ];
+
+        foreach (CommentStatus::cases() as $status) {
+            $tabs[$status->value] = Tab::make()
+                ->label($status->getLabel())
+                ->badge(fn (): int => $this->getCount($status))
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('status', $status));
+        }
+
+        return $tabs;
     }
 
     protected function getCount(?CommentStatus $status = null): int
     {
-        $query = Utils::getCommentModel()::query()->snScope(
-            static::getScopeType(),
-            static::getScopeId(),
-        );
+        $query = static::getResource()::getEloquentQuery();
 
         if ($status) {
             $query->where('status', $status);
